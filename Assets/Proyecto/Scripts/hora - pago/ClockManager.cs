@@ -28,6 +28,7 @@ public class ClockManager : MonoBehaviour
         {
             horaActual = horaInicio;
         }
+        
 
         Debug.Log($"Reloj iniciado a las {horaActual}:00");
     }
@@ -46,6 +47,31 @@ public class ClockManager : MonoBehaviour
             timer = 0f;
             AvanzarHora();
         }
+    }
+
+    private void TerminarDia()
+    {
+        relojActivo = false;
+
+        if (GameManager.Instance != null)
+        {
+            var data = GameManager.Instance.GameData;
+
+            // 🔑 Cerrar el resumen
+            if (GameManager.Instance.ResumenDia != null)
+            {
+                GameManager.Instance.ResumenDia.TerminarDia(
+                    data.dineroTotal,
+                    data.pasajerosTotales
+                );
+            }
+
+            // Resetear el flag de resumen mostrado
+            data.resumenNocheMostrado = false;
+        }
+
+        Debug.Log("🌙 Día terminado");
+        OnDiaTerminado?.Invoke();
     }
 
     private void AvanzarHora()
@@ -67,20 +93,7 @@ public class ClockManager : MonoBehaviour
     }
 
 
-    private void TerminarDia()
-    {
-        relojActivo = false;
-
-     
-        if (GameManager.Instance != null)
-        {
-            var data = GameManager.Instance.gameData;
-            data.resumenDia.TerminarDia(data.dineroTotal, data.pasajerosTotales);
-            data.resumenNocheMostrado = false;
-        }
-
-        OnDiaTerminado?.Invoke();
-    }
+    
 
     public int GetHoraActual() => horaActual;
 

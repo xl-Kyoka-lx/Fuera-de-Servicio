@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameData gameData;   
     public GameData GameData => gameData;
 
+    // 🔑 Referencia al ScriptableObject del resumen
+    [SerializeField] private ResumenDiaData resumenDia;
+    public ResumenDiaData ResumenDia => resumenDia;
 
 
     public Transform targetLimpieza;
@@ -68,7 +71,7 @@ public class GameManager : MonoBehaviour
 
     public void ModificarPolea(float cantidad)
     {
-        gameData.contadorPolea = Mathf.Clamp(gameData.contadorPolea + cantidad, 0, 100);
+        gameData.contadorGrasa = Mathf.Clamp(gameData.contadorGrasa + cantidad, 0, 100);
         FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Polea);
         gameData.OnDataChanged?.Invoke();
     }
@@ -148,7 +151,7 @@ public class GameManager : MonoBehaviour
         }
 
         // 🔑 Imprimir el stack trace para saber QUIÉN lo destruyó
-        Debug.Log($"🔴 Stack: {System.Environment.StackTrace}");
+        Debug.Log($" Stack: {System.Environment.StackTrace}");
     }
 
 }

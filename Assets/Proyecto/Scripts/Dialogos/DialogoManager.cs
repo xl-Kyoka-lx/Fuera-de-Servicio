@@ -278,41 +278,37 @@ public class DialogoManager : MonoBehaviour
 
     private string ReemplazarPlaceholders(string texto)
     {
-        GameData data = gameDataFallback;
-
-        if (data == null && GameManager.Instance != null)
-            data = GameManager.Instance.gameData;
-
-        if (data == null)
+        // 🔑 Usar el ResumenDiaData del GameManager
+        if (GameManager.Instance == null || GameManager.Instance.ResumenDia == null)
         {
-            Debug.LogWarning("No hay GameData disponible. Devolviendo texto sin reemplazar.");
+            Debug.LogWarning("⚠️ No hay ResumenDiaData disponible");
             return texto;
         }
 
-        var resumen = data.resumenDia;
+        var data = GameManager.Instance.GameData;
+        var resumen = GameManager.Instance.ResumenDia;
 
-        texto = texto.Replace("{dineroGanado}", resumen.DineroGanado.ToString());
-
-        if (GameManager.Instance == null) return texto;
-
-        //estos son los reemplazos
+        // 🔑 Datos del resumen
         texto = texto.Replace("{dineroGanado}", resumen.DineroGanado.ToString());
         texto = texto.Replace("{pasajerosTransportados}", resumen.PasajerosTransportados.ToString());
         texto = texto.Replace("{eventos}", resumen.eventosOcurridos.ToString());
         texto = texto.Replace("{grafitis}", resumen.grafitisHechos.ToString());
         texto = texto.Replace("{basura}", resumen.basuraTirada.ToString());
 
-  
-        texto = texto.Replace("{dineroTotal}", data.dineroTotal.ToString());
-        texto = texto.Replace("{pasajerosActuales}", data.pasajerosTotales.ToString());
-        texto = texto.Replace("{limpieza}", data.contadorLimpieza.ToString("F0"));
-        texto = texto.Replace("{polea}", data.contadorPolea.ToString("F0"));
-        texto = texto.Replace("{puerta}", data.contadorPuerta.ToString("F0"));
-        texto = texto.Replace("{hora}", data.horaActual.ToString());
+        // 🔑 Datos generales (con verificación de null)
+        if (data != null)
+        {
+            texto = texto.Replace("{dineroTotal}", data.dineroTotal.ToString());
+            texto = texto.Replace("{pasajerosActuales}", data.pasajerosTotales.ToString());
+            texto = texto.Replace("{limpieza}", data.contadorLimpieza.ToString("F0"));
+            texto = texto.Replace("{polea}", data.contadorGrasa.ToString("F0"));
+            texto = texto.Replace("{puerta}", data.contadorPuerta.ToString("F0"));
+            texto = texto.Replace("{hora}", data.horaActual.ToString());
+        }
 
         return texto;
     }
 
- 
+
     public bool HayDialogoActivo() => dialogoActual != null;
 }

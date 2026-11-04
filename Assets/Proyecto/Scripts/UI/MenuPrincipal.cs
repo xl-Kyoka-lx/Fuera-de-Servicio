@@ -39,21 +39,17 @@ public class MenuPrincipal : MonoBehaviour
 
     public void NuevaPartida()
     {
-        Debug.Log("Iniciando nueva partida...");
-
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
-        Debug.Log("PlayerPrefs borrados");
 
-       
-        PlayerPrefs.SetInt(clavePartidaGuardada, 1);
-        PlayerPrefs.Save();
-
-    
-        if (GameManager.Instance != null && GameManager.Instance.gameData != null)
+        if (GameManager.Instance != null)
         {
-            GameManager.Instance.gameData.ResetData();
-            Debug.Log("GameData reseteado");
+            if (GameManager.Instance.GameData != null)
+                GameManager.Instance.GameData.ResetData();
+
+            // 🔑 Resetear el resumen también
+            if (GameManager.Instance.ResumenDia != null)
+                GameManager.Instance.ResumenDia.Resetear();
         }
 
         SceneManager.LoadScene(nombreEscenaDia);

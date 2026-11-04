@@ -21,7 +21,7 @@ public class PanelMensajesMonitor : MonoBehaviour
         else { Destroy(gameObject); return; }
 
         if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
-        if (canvasGroup != null) canvasGroup.alpha = 0f;
+        if (canvasGroup != null) canvasGroup.alpha = 1f;
     }
 
     private void OnDestroy()

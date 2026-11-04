@@ -101,8 +101,8 @@ public class EventoEstadoManager : MonoBehaviour
         LanzarEvento(elegido);
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.gameData.resumenDia.RegistrarEvento();
-            Debug.Log($"Evento registrado. Total del día: {GameManager.Instance.gameData.resumenDia.eventosOcurridos}");
+            //GameManager.Instance.gameData.resumenDia.RegistrarEvento();
+            //Debug.Log($"Evento registrado. Total del día: {GameManager.Instance.gameData.resumenDia.eventosOcurridos}");
         }
         return true;
     }
@@ -127,7 +127,7 @@ public class EventoEstadoManager : MonoBehaviour
         return sistema switch
         {
             TipoSistema.Limpieza => data.contadorLimpieza,
-            TipoSistema.Polea => data.contadorPolea,
+            TipoSistema.Polea => data.contadorGrasa,
             TipoSistema.Puerta => data.contadorPuerta,
             _ => 100f
         };

@@ -128,7 +128,7 @@ public class Maleante : MonoBehaviour
             GameManager.Instance.ModificarLimpieza(-dañoALimpieza);
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.gameData.resumenDia.RegistrarGrafiti();
+            //GameManager.Instance.gameData.resumenDia.RegistrarGrafiti();
         }
         Desaparecer();
     }

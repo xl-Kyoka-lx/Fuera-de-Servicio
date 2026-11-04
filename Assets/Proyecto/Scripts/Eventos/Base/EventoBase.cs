@@ -23,6 +23,8 @@ public abstract class EventoBase : MonoBehaviour
     {
         if (terminado) return;
         terminado = true;
+        if (GameManager.Instance != null && GameManager.Instance.ResumenDia != null)
+            GameManager.Instance.ResumenDia.RegistrarEvento();
 
         OnTerminado?.Invoke();
 

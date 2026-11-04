@@ -21,7 +21,7 @@ public class GameData : ScriptableObject
 
     [Range(0, 100)] public float contadorPopularidad = 50f;
     [Range(0, 100)] public float contadorLimpieza = 100f;
-    [Range(0, 100)] public float contadorPolea = 100f;
+    [Range(0, 100)] public float contadorGrasa = 100f;
     [Range(0, 100)] public float contadorPuerta = 100f;
 
    
@@ -42,7 +42,7 @@ public class GameData : ScriptableObject
     public bool HayEspacio => pasajerosTotales < capacidadMaxima;
     public bool EstaVacio => pasajerosTotales == 0;
 
-    public ResumenDiaData resumenDia = new ResumenDiaData();
+    
 
     public EstadoTienda estadoTienda = new EstadoTienda();
 
@@ -66,13 +66,18 @@ public class GameData : ScriptableObject
         _dineroTotalInicial = dineroTotal;
         _popularidadInicial = contadorPopularidad;
         _limpiezaInicial = contadorLimpieza;
-        _poleaInicial = contadorPolea;
+        _poleaInicial = contadorGrasa;
         _puertaInicial = contadorPuerta;
         _horaInicial = horaActual;
         _climaInicial = climaActual;
 
         valoresInicialesCapturados = true;
 
+    }
+    public void SetGrasa(float nuevoValor)
+    {
+        contadorGrasa = Mathf.Clamp(nuevoValor, 0f, 100f);
+        OnDataChanged?.Invoke();
     }
 
     public void ResetData()
@@ -84,7 +89,7 @@ public class GameData : ScriptableObject
         dineroTotal = _dineroTotalInicial;
         contadorPopularidad = _popularidadInicial;
         contadorLimpieza = _limpiezaInicial;
-        contadorPolea = _poleaInicial;
+        contadorGrasa = _poleaInicial;
         contadorPuerta = _puertaInicial;
         horaActual = _horaInicial;
         climaActual = _climaInicial;

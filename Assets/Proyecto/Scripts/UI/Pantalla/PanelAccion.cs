@@ -25,7 +25,7 @@ public class PanelAccion : MonoBehaviour
         else { Destroy(gameObject); return; }
 
         if (panelContenedor != null)
-            panelContenedor.SetActive(false);
+            panelContenedor.SetActive(true);
     }
 
     private void OnDestroy()

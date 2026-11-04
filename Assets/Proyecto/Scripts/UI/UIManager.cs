@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
             textoLimpieza.text = $" Limpieza: {gameData.contadorLimpieza:F0}%";
 
         if (textoPolea != null)
-            textoPolea.text = $"Mantenimiento: {gameData.contadorPolea:F0}%";
+            textoPolea.text = $"Mantenimiento: {gameData.contadorGrasa:F0}%";
 
         if (textoPuerta != null)
             textoPuerta.text = $" Puerta: {gameData.contadorPuerta:F0}%";

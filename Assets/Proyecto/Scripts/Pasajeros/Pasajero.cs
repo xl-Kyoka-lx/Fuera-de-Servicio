@@ -1,71 +1,70 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public enum EstadoPasajero
 {
-    EsperandoEnAnden,
-    Subiendo,
-    DentroDelAscensor,
-    Bajando,
-    Terminado
+    EsperandoEnAnden,  // Esperando a que llegue el ascensor
+    Subiendo,          // Haciendo "Pop" para subir
+    Terminado          // Ya se subió
 }
 
 public enum RolPasajero
 {
-    SubeEnInicio,
-    SubeEnFinal
+    SubeEnInicio,  // Sube cuando el ascensor está lejos (abajo)
+    SubeEnFinal    // Sube cuando el ascensor está cerca (arriba)
 }
 
 public class Pasajero : MonoBehaviour
 {
-    public float velocidadMovimiento = 3f;
-    public int puntosQueOtorga = 10;
+    [Header("=== CONFIGURACIÓN ===")]
+    public float duracionPop = 0.2f; // Cuánto tarda el efecto "Pop"
 
+    [Header("=== ESTADO ===")]
     public EstadoPasajero estado = EstadoPasajero.EsperandoEnAnden;
     public RolPasajero rol = RolPasajero.SubeEnInicio;
 
-    private Transform spawnOrigen;
     private AscensorManager ascensorManager;
-    private Vector3 posicionObjetivo;
-    private Vector3 offsetInterior; 
-    private bool inicializado = false;
     private int ascensorIndex = 0;
-    private bool yaRegistrado = false;
+    private bool inicializado = false;
+    private Vector3 escalaOriginal;
 
     public Action<Pasajero> OnPasajeroTerminado;
 
-   
-    public void Inicializar(Transform spawn, RolPasajero rolAsignado, int index, AscensorManager manager)
+    // === INICIALIZACIÓN ===
+    public void Inicializar(RolPasajero rolAsignado, int index, AscensorManager manager)
     {
-        spawnOrigen = spawn;
         rol = rolAsignado;
         ascensorIndex = index;
         ascensorManager = manager;
-
-        transform.position = spawn.position;
         estado = EstadoPasajero.EsperandoEnAnden;
         inicializado = true;
+
+        // 🔑 Guardar la escala original y empezar desde 0
+        escalaOriginal = transform.localScale;
+        transform.localScale = Vector3.zero;
+
+        // 🔑 Hacer "Pop" al aparecer
+        StartCoroutine(EfectoPop());
     }
 
+    // === UPDATE ===
     private void Update()
     {
-        if (!inicializado) return;
-        if (ascensorManager == null) return;
+        if (!inicializado || ascensorManager == null) return;
 
-        switch (estado)
+        if (estado == EstadoPasajero.EsperandoEnAnden)
         {
-            case EstadoPasajero.EsperandoEnAnden: ProcesarEspera(); break;
-            case EstadoPasajero.Subiendo: ProcesarSubida(); break;
-            case EstadoPasajero.DentroDelAscensor: ProcesarViaje(); break;
-            case EstadoPasajero.Bajando: ProcesarBajada(); break;
+            ProcesarEspera();
         }
     }
 
-    
+    // === ESPERANDO ===
     private void ProcesarEspera()
     {
-        bool ascensorEstaAbajo = ascensorManager.EstaAbajo(ascensorIndex);
-        bool ascensorEnMovimiento = ascensorManager.ascensores[ascensorIndex].enMovimiento;
+        var asc = ascensorManager.ascensores[ascensorIndex];
+        bool ascensorEstaAbajo = asc.estaAbajo;
+        bool ascensorEnMovimiento = asc.enMovimiento;
 
         bool ascensorEnMiLugar = (rol == RolPasajero.SubeEnInicio && ascensorEstaAbajo)
                               || (rol == RolPasajero.SubeEnFinal && !ascensorEstaAbajo);
@@ -76,103 +75,67 @@ public class Pasajero : MonoBehaviour
         }
     }
 
-   
+    // === SUBIENDO (POP) ===
     private void IniciarSubida()
     {
         estado = EstadoPasajero.Subiendo;
 
-      
-        offsetInterior = new Vector3(
-            UnityEngine.Random.Range(-0.15f, 0.15f),
-            UnityEngine.Random.Range(-0.1f, 0.1f),
-            0
-        );
+        // 🔑 Verificar que haya espacio
+        if (!ascensorManager.HayEspacioEn(ascensorIndex))
+        {
+            Debug.LogWarning($"⚠️ Ascensor {ascensorIndex} lleno. Pasajero se queda esperando.");
+            estado = EstadoPasajero.EsperandoEnAnden;
+            return;
+        }
+
+        // 🔑 Sumar al contador del ascensor
+        ascensorManager.IntentarSubirPasajero(ascensorIndex);
+
+        // 🔑 Registrar en el resumen
+        if (GameManager.Instance != null && GameManager.Instance.ResumenDia != null)
+            GameManager.Instance.ResumenDia.RegistrarPasajeroTransportado();
+
+        // 🔑 Hacer "Pop" y desaparecer
+        StartCoroutine(PopYDesaparecer());
     }
 
-    private void ProcesarSubida()
+    private IEnumerator PopYDesaparecer()
     {
-      
-        Transform puntoInterior = ascensorManager.ascensores[ascensorIndex].puntoInterior;
-        if (puntoInterior != null)
+        // 🔑 Pop: crecer rápido y desaparecer
+        float timer = 0f;
+        while (timer < duracionPop)
         {
-            posicionObjetivo = puntoInterior.TransformPoint(offsetInterior);
+            timer += Time.deltaTime;
+            float t = timer / duracionPop;
+
+            // Crecer y achicar al mismo tiempo
+            float escala = Mathf.Lerp(1.5f, 0f, t);
+            transform.localScale = escalaOriginal * escala;
+
+            yield return null;
         }
 
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            posicionObjetivo,
-            velocidadMovimiento * Time.deltaTime
-        );
-
-        if (Vector3.Distance(transform.position, posicionObjetivo) < 0.1f)
-        {
-            transform.SetParent(ascensorManager.ascensores[ascensorIndex].ascensorTransform);
-
-            transform.localPosition = new Vector3(offsetInterior.x, offsetInterior.y, -0.1f);
-
-            estado = EstadoPasajero.DentroDelAscensor;
-            GameManager.Instance.PasajeroSubio();
-
-            if (!yaRegistrado)
-            {
-                yaRegistrado = true;
-                GameManager.Instance.gameData.resumenDia.RegistrarPasajeroTransportado();
-            }
-        }
+        // 🔑 Terminar
+        estado = EstadoPasajero.Terminado;
+        OnPasajeroTerminado?.Invoke(this);
+        Destroy(gameObject);
     }
 
-    private void ProcesarViaje()
+    // === POP DE APARICIÓN ===
+    private IEnumerator EfectoPop()
     {
-        bool ascensorEstaAbajo = ascensorManager.EstaAbajo(ascensorIndex);
-        bool ascensorEnMovimiento = ascensorManager.ascensores[ascensorIndex].enMovimiento;
-
-        bool ascensorEnMiDestino = (rol == RolPasajero.SubeEnInicio && !ascensorEstaAbajo)
-                                || (rol == RolPasajero.SubeEnFinal && ascensorEstaAbajo);
-
-        if (ascensorEnMiDestino && !ascensorEnMovimiento)
+        float timer = 0f;
+        while (timer < duracionPop)
         {
-            IniciarBajada();
+            timer += Time.deltaTime;
+            float t = timer / duracionPop;
+
+            // 🔑 Curva de rebote (crece y se pasa un poco, luego vuelve)
+            float escala = Mathf.Sin(t * Mathf.PI) * 1.2f;
+            transform.localScale = escalaOriginal * escala;
+
+            yield return null;
         }
-    }
-
-    private void IniciarBajada()
-    {
-        estado = EstadoPasajero.Bajando;
-        transform.SetParent(null);
-
-        Transform puntoSalida = ascensorManager.ObtenerPuntoSalida(ascensorIndex);
-
-        if (puntoSalida != null)
-        {
-           
-            float offsetY = UnityEngine.Random.Range(-0.3f, 0.3f);
-            posicionObjetivo = puntoSalida.position + new Vector3(0, offsetY, 0);
-        }
-        else
-        {
-            
-            Vector2 direccionAleatoria = UnityEngine.Random.insideUnitCircle.normalized;
-            posicionObjetivo = transform.position + (Vector3)(direccionAleatoria * 1.5f);
-           
-        }
-
-    }
-
-    private void ProcesarBajada()
-    {
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            posicionObjetivo,
-            velocidadMovimiento * Time.deltaTime
-        );
-
-        if (Vector3.Distance(transform.position, posicionObjetivo) < 0.1f)
-        {
-            GameManager.Instance.PasajeroCompleto();          
-            estado = EstadoPasajero.Terminado;
-
-            OnPasajeroTerminado?.Invoke(this);
-            Destroy(gameObject, 0.3f);
-        }
+        transform.localScale = escalaOriginal;
     }
 }
