@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class AscensorManager : MonoBehaviour
 {
+  
     [System.Serializable]
     public class AscensorData
     {
@@ -34,10 +35,12 @@ public class AscensorManager : MonoBehaviour
         [HideInInspector] public bool estaAbajo = true;
         [HideInInspector] public bool enMovimiento = false;
 
-        // 🔑 NUEVO: Pasajeros de este ascensor
-        [HideInInspector] public int pasajerosTotales = 0;
-        public int CapacidadMaxima => 5; // O el valor que quieras
-        public bool HayEspacio => pasajerosTotales < CapacidadMaxima;
+        // 🔑 NUEVO: Lista de pasajeros dentro (invisibles pero existentes)
+        [HideInInspector] public List<Pasajero> pasajerosDentro = new List<Pasajero>();
+
+        public int CapacidadMaxima => 5;
+        public bool HayEspacio => pasajerosDentro.Count < CapacidadMaxima;
+        public int PasajerosTotales => pasajerosDentro.Count;
     }
 
 
@@ -131,30 +134,34 @@ public class AscensorManager : MonoBehaviour
         }
     }
 
-    // === MÉTODOS DE PASAJEROS POR ASCENSOR ===
-
-    // 🔑 ¿Hay espacio en el ascensor?
     public bool HayEspacioEn(int ascensorIndex)
     {
         if (ascensorIndex < 0 || ascensorIndex >= ascensores.Count) return false;
         return ascensores[ascensorIndex].HayEspacio;
     }
 
-    // 🔑 Sumar un pasajero al ascensor
-    public bool IntentarSubirPasajero(int ascensorIndex)
+    public bool IntentarSubirPasajero(int ascensorIndex, Pasajero pasajero)
     {
         if (ascensorIndex < 0 || ascensorIndex >= ascensores.Count) return false;
 
         var asc = ascensores[ascensorIndex];
         if (!asc.HayEspacio) return false;
 
-        asc.pasajerosTotales++;
-        Debug.Log($"👥 Ascensor {ascensorIndex}: {asc.pasajerosTotales}/{asc.CapacidadMaxima} pasajeros");
+        asc.pasajerosDentro.Add(pasajero);
+        Debug.Log($"👥 Ascensor {ascensorIndex}: {asc.PasajerosTotales}/{asc.CapacidadMaxima} pasajeros");
         return true;
     }
 
+    public int ObtenerPasajeros(int ascensorIndex)
+    {
+        if (ascensorIndex < 0 || ascensorIndex >= ascensores.Count) return 0;
+        return ascensores[ascensorIndex].PasajerosTotales;
+    }
+
+    
+
     // 🔑 Bajar todos los pasajeros de un ascensor (devuelve cuántos bajaron)
-    public int BajarTodosLosPasajeros(int ascensorIndex)
+    /*public int BajarTodosLosPasajeros(int ascensorIndex)
     {
         if (ascensorIndex < 0 || ascensorIndex >= ascensores.Count) return 0;
 
@@ -164,14 +171,8 @@ public class AscensorManager : MonoBehaviour
 
         Debug.Log($"👥 Ascensor {ascensorIndex}: bajaron {cantidad} pasajeros");
         return cantidad;
-    }
+    }*/
 
-    // 🔑 Obtener pasajeros actuales
-    public int ObtenerPasajeros(int ascensorIndex)
-    {
-        if (ascensorIndex < 0 || ascensorIndex >= ascensores.Count) return 0;
-        return ascensores[ascensorIndex].pasajerosTotales;
-    }
 
     private void VerificarUmbralFrenado()
     {
@@ -345,36 +346,29 @@ public class AscensorManager : MonoBehaviour
         }
         return ascensores.Count > 1 ? ascensores[1].ascensorTransform : null;
     }
-    
+
 
     private void BajarPasajerosDelAscensor(int ascensorIndex)
     {
         var asc = ascensores[ascensorIndex];
-        int cantidad = asc.pasajerosTotales;
 
-        if (cantidad == 0) return;
+        if (asc.pasajerosDentro.Count == 0) return;
 
-        Debug.Log($"🚶 Ascensor {ascensorIndex}: bajando {cantidad} pasajeros");
+        Debug.Log($"🚶 Ascensor {ascensorIndex}: bajando {asc.pasajerosDentro.Count} pasajeros");
 
-        // 🔑 Obtener el punto de salida
         Transform puntoSalida = asc.estaAbajo ? asc.puntoSalidaLejos : asc.puntoSalidaCerca;
         if (puntoSalida == null) return;
 
-        // 🔑 Posición base: donde bajaron
-        Vector3 posicionBase = asc.ascensorTransform.position;
+        // 🔑 Copiar la lista para iterar mientras se modifican
+        var pasajerosACopiar = new List<Pasajero>(asc.pasajerosDentro);
+        asc.pasajerosDentro.Clear();
 
-        // 🔑 Crear efecto de bajada (opcional, por ahora solo el conteo)
-        for (int j = 0; j < cantidad; j++)
+        foreach (var pasajero in pasajerosACopiar)
         {
-            // 🔑 Registrar en el resumen
-            if (GameManager.Instance != null)
+            if (pasajero != null)
             {
-                GameManager.Instance.PasajeroCompleto();
-                GameManager.Instance.SumarDinero(GameManager.Instance.GameData.pagoPorPasajero);
+                pasajero.BajarDelAscensor(puntoSalida.position);
             }
         }
-
-        // 🔑 Resetear contador
-        asc.pasajerosTotales = 0;
     }
 }

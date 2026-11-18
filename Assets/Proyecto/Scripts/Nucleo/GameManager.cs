@@ -65,21 +65,21 @@ public class GameManager : MonoBehaviour
     public void ModificarLimpieza(float cantidad)
     {
         gameData.contadorLimpieza = Mathf.Clamp(gameData.contadorLimpieza + cantidad, 0, 100);
-        FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Limpieza);
+        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Limpieza);
         gameData.OnDataChanged?.Invoke();
     }
 
     public void ModificarPolea(float cantidad)
     {
         gameData.contadorGrasa = Mathf.Clamp(gameData.contadorGrasa + cantidad, 0, 100);
-        FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Polea);
+        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Polea);
         gameData.OnDataChanged?.Invoke();
     }
 
     public void ModificarPuerta(float cantidad)
     {
         gameData.contadorPuerta = Mathf.Clamp(gameData.contadorPuerta + cantidad, 0, 100);
-        FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Puerta);
+        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Puerta);
         gameData.OnDataChanged?.Invoke();
     }
 
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
     public void SumarDinero(int cantidad)
     {
         gameData.dineroTotal += cantidad;
-        FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Dinero);
+        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Dinero);
         gameData.OnDataChanged?.Invoke();
         Debug.Log($" Dinero total: {gameData.dineroTotal}");
     }
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
             Instance = null;
         }
 
-        // 🔑 Imprimir el stack trace para saber QUIÉN lo destruyó
+        // Imprimir el stack trace para saber QUIÉN lo destruyó
         Debug.Log($" Stack: {System.Environment.StackTrace}");
     }
 

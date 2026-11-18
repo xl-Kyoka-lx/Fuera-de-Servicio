@@ -34,7 +34,7 @@ public class PasajeroSpawner : MonoBehaviour
     public List<SpawnConfig> spawns = new List<SpawnConfig>();
 
     [Header("=== CONFIGURACIÓN ===")]
-    public float intervaloSpawn = 3f;
+    public float intervaloSpawn = 2f;
     public int maxPasajerosPorCumulo = 5;
     public bool spawnAutomatico = true;
 
@@ -89,11 +89,14 @@ public class PasajeroSpawner : MonoBehaviour
             return;
         }
 
+        // 🔑 Hacer hijo del spawn (para que se mueva con él si es necesario)
+        nuevo.transform.SetParent(config.spawnPoint);
+
         // 🔑 Aplicar escala
         nuevo.transform.localScale = Vector3.one * config.escalaEnSpawn;
 
-        // 🔑 Inicializar
-        p.Inicializar(config.rol, config.ascensorIndex, ascensorManager);
+        // 🔑 Inicializar con referencia al padre
+        p.Inicializar(config.rol, config.ascensorIndex, ascensorManager, config.spawnPoint);
 
         // 🔑 Suscribirse al evento
         p.OnPasajeroTerminado += CuandoPasajeroTermina;
