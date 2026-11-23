@@ -1353,7 +1353,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1722636720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &288974262
 MonoBehaviour:
@@ -1904,37 +1904,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1544431834}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &380715013
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 380715014}
-  m_Layer: 0
-  m_Name: TargetDinero
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &380715014
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 380715013}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.4, y: 0.13444, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &404269304
 GameObject:
@@ -2608,7 +2577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &535207847
 Transform:
   m_ObjectHideFlags: 0
@@ -4657,7 +4626,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -8.000061, y: -172.01195}
+  m_AnchoredPosition: {x: -8, y: -172.01196}
   m_SizeDelta: {x: -595.26, y: -381.0518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &904264049
@@ -5089,8 +5058,18 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 2
-    umbral: 52.1
-    probabilidadBase: 0.388
+    umbral: 89
+    probabilidadBase: 0.23
+    probabilidadMaxima: 0.869
+  - nombre: Polea Trabada
+    prefab: {fileID: 9161022262547082765, guid: 26de2234400544f4aa325a3a54811abc, type: 3}
+    peso: 0.495
+    requiereAscensorDetenido: 0
+    requiereAscensorCerca: 0
+    requiereAscensorLejos: 0
+    sistema: 1
+    umbral: 0
+    probabilidadBase: 0.15
     probabilidadMaxima: 0.869
   intervaloChequeo: 3
   debugLogs: 1
@@ -6544,7 +6523,7 @@ MonoBehaviour:
   targetLimpieza: {fileID: 376506086}
   targetPolea: {fileID: 1068255753}
   targetPuerta: {fileID: 608087834}
-  targetDinero: {fileID: 380715014}
+  targetDinero: {fileID: 0}
 --- !u!1 &1410426923
 GameObject:
   m_ObjectHideFlags: 0
@@ -8068,6 +8047,7 @@ Transform:
   - {fileID: 535207847}
   - {fileID: 1049016272}
   - {fileID: 749136825}
+  - {fileID: 288974261}
   - {fileID: 252408959}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8115,7 +8095,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1723171042
@@ -9122,11 +9102,9 @@ SceneRoots:
   - {fileID: 763992288}
   - {fileID: 478069409}
   - {fileID: 805629242}
-  - {fileID: 288974261}
   - {fileID: 2124002912}
   - {fileID: 1660451678}
   - {fileID: 1076300856}
-  - {fileID: 380715014}
   - {fileID: 857473594}
   - {fileID: 619394802}
   - {fileID: 37518142}
