@@ -4,7 +4,7 @@ using System;
 public class ClockManager : MonoBehaviour
 {
     
-    public float segundosPorHora = 10f;
+    public float segundosPorHora = 66.67f;
     public int horaInicio = 8;
     public int horaFin = 17;
 
