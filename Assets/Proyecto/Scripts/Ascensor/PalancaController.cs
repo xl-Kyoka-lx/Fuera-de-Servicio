@@ -22,25 +22,22 @@ public class PalancaController : MonoBehaviour
 
     private void Awake()
     {
-        if (inputActions != null)
-        {
-            accionMoverAscensor = inputActions.FindActionMap("Gameplay")?.FindAction("MoverAscensor");
+    Debug.LogWarning("PALANCA TEST: Awake. inputActions = " + (inputActions == null ? "NULL" : "ok"));
 
-            if (accionMoverAscensor == null)
-            {
-                //...
-            }
-        }
-        
+    if (inputActions != null)
+    {
+        accionMoverAscensor = inputActions.FindActionMap("Gameplay")?.FindAction("MoverAscensor");
+        Debug.LogWarning("PALANCA TEST: accion MoverAscensor = " + (accionMoverAscensor == null ? "NO ENCONTRADA" : "encontrada"));
     }
-
+    }
     private void OnEnable()
     {
-        if (accionMoverAscensor != null)
-        {
-            accionMoverAscensor.Enable();
-            accionMoverAscensor.performed += OnMoverAscensorPerformed;
-        }
+    if (accionMoverAscensor != null)
+    {
+        accionMoverAscensor.Enable();
+        accionMoverAscensor.performed += OnMoverAscensorPerformed;
+        Debug.LogWarning("PALANCA TEST: OnEnable, accion habilitada = " + accionMoverAscensor.enabled);
+    }
     }
 
     private void OnDisable()
@@ -48,22 +45,39 @@ public class PalancaController : MonoBehaviour
         if (accionMoverAscensor != null)
         {
             accionMoverAscensor.performed -= OnMoverAscensorPerformed;
-            accionMoverAscensor.Disable();
         }
     }
 
     private void OnMoverAscensorPerformed(InputAction.CallbackContext context)
+{
+    if (enAnimacion) return;
+    if (ascensorManager != null && ascensorManager.enMovimiento) return;
+
+    if (TutorialManager.ViajeBloqueado)
     {
-        if (enAnimacion) return;
+        Debug.LogWarning("PALANCA: bloqueado por el tutorial");
+        return;
+    }
+    if (DialogoManager.Instance != null && DialogoManager.Instance.HayDialogoActivo())
+    {
+        Debug.LogWarning("PALANCA: bloqueado, hay un dialogo abierto");
+        return;
+    }
+    if (GameManager.Instance != null && GameManager.Instance.GameData.eventoOcurriendo)
+    {
+        Debug.LogWarning("PALANCA: bloqueado, eventoOcurriendo = true");
+        return;
+    }
 
-        
-        if (ascensorManager != null && ascensorManager.enMovimiento)
+    MoverPalanca();
+}
+    private void Update()
+    {
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-         
-            return;
+            string estado = accionMoverAscensor == null ? "NULL" : accionMoverAscensor.enabled.ToString();
+            Debug.LogWarning("PALANCA TEST: espacio detectado. Accion habilitada = " + estado);
         }
-
-        MoverPalanca();
     }
 
     private void MoverPalanca()

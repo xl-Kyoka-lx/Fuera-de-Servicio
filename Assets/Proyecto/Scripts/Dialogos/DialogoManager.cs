@@ -8,6 +8,9 @@ public class DialogoManager : MonoBehaviour
 {
     public static DialogoManager Instance { get; private set; }
 
+    
+    public event System.Action<string> OnDialogoTerminado;
+
 
     public TextAsset archivoJson;
 
@@ -20,7 +23,7 @@ public class DialogoManager : MonoBehaviour
     public float velocidadTipeo = 0.03f; 
     public InputActionAsset inputActions;
     public string actionMapName = "Gameplay";
-    public string actionName = "resolver";
+    public string actionName = "Avanzar texto";
 
     private InputAction inputContinuar;
 
@@ -261,7 +264,7 @@ public class DialogoManager : MonoBehaviour
 
     private void TerminarDialogo()
     {
-   
+        string idTerminado = dialogoActual != null ? dialogoActual.id : "";
 
         dialogoActual = null;
         indiceLineaActual = 0;
@@ -271,9 +274,10 @@ public class DialogoManager : MonoBehaviour
         if (panelDialogo != null) panelDialogo.SetActive(false);
         if (indicadorContinuar != null) indicadorContinuar.SetActive(false);
 
-        
         if (EstadoJuegoManager.Instance != null)
-            EstadoJuegoManager.Instance.CambiarEstado(EstadoJuego.Jugando);
+        EstadoJuegoManager.Instance.CambiarEstado(EstadoJuego.Jugando);
+
+        OnDialogoTerminado?.Invoke(idTerminado);
     }
 
     private string ReemplazarPlaceholders(string texto)

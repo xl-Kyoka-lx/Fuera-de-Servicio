@@ -53,13 +53,12 @@ public class EventoPuertaAtascada : EventoBase
         }
     }
 
-    private void OnDisable()
+   private void OnDisable()
+   {
+    if (inputResolver != null)
     {
-        if (inputResolver != null)
-        {
-            inputResolver.performed -= OnResolverPerformed;
-            inputResolver.Disable();
-        }
+         inputResolver.performed -= OnResolverPerformed;
+    }
     }
 
     protected override void Start()

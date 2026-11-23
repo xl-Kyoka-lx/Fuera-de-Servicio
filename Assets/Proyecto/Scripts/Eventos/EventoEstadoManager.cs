@@ -107,6 +107,17 @@ public class EventoEstadoManager : MonoBehaviour
         return true;
     }
 
+    public bool ForzarEvento(TipoSistema sistema)
+    {
+        if (eventoEnCurso) return false;
+        
+        var config = eventos.Find(e => e.sistema == sistema);
+        if (config == null) return false;
+        
+        LanzarEvento(config);
+        return true;
+    }
+
     private bool PuedeOcurrir(EventoEstadoConfig e)
     {
         float valor = ObtenerValorContador(e.sistema);

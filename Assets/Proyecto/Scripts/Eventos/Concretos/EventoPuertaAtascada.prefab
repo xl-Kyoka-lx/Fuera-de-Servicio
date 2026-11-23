@@ -52,7 +52,7 @@ MonoBehaviour:
   tiempoLimite: 3
   inputActions: {fileID: -944628639613478452, guid: fdbfd515e0b7b6248865016c5937f77a, type: 3}
   actionMapName: Gameplay
-  actionName: resolver
+  actionName: MoverAscensor
   animacionPuertaPrefab: {fileID: 0}
   puntoAnimacion: {fileID: 0}
   "da\xF1oAlContadorPuerta": 10

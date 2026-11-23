@@ -7,7 +7,7 @@
             "id": "5124dd5d-69dc-4aea-8b23-f6a64d113ff6",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Pausa",
                     "type": "Button",
                     "id": "44acef01-e1d1-48d8-81d7-b5977585a1ba",
                     "expectedControlType": "",
@@ -27,27 +27,7 @@
                     "priority": 0
                 },
                 {
-                    "name": "Limpieza",
-                    "type": "Button",
-                    "id": "9ef5584b-7359-4cce-a155-eb88ed4b2484",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false,
-                    "priority": 0
-                },
-                {
-                    "name": "Polea",
-                    "type": "Button",
-                    "id": "a304202e-259d-49a7-bdaf-54f720aac199",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false,
-                    "priority": 0
-                },
-                {
-                    "name": "Puerta",
+                    "name": "Frenar",
                     "type": "Button",
                     "id": "7359a86e-fe27-4be3-9bb8-f2244ec758d3",
                     "expectedControlType": "",
@@ -57,9 +37,19 @@
                     "priority": 0
                 },
                 {
-                    "name": "resolver",
+                    "name": "AvisarCabina",
                     "type": "Button",
                     "id": "9815204f-e8aa-4302-ad22-779a42157894",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "Avanzar texto",
+                    "type": "Button",
+                    "id": "5e6ce3a0-5020-43d1-bb43-b41f364ad485",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -71,11 +61,11 @@
                 {
                     "name": "",
                     "id": "0091dff6-3c13-4d36-adc4-584213e0628b",
-                    "path": "",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Pausa",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -92,45 +82,34 @@
                 },
                 {
                     "name": "",
-                    "id": "1957ef32-c60f-4637-bab6-1df19fa101aa",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Limpieza",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e0ce0c34-73ae-487b-8eb9-7ab59d8b7388",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Polea",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "41f684cd-5a6c-420d-a5c6-7f3f1b7a434b",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Puerta",
+                    "action": "Frenar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "80bd4c1c-87f8-466a-b55d-67c470ff07e3",
-                    "path": "<Keyboard>/c",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "resolver",
+                    "action": "AvisarCabina",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "67ea2106-d8d7-4751-8e24-86faa1cdcb01",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Avanzar texto",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -93,7 +93,7 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
             ""id"": ""5124dd5d-69dc-4aea-8b23-f6a64d113ff6"",
             ""actions"": [
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""Pausa"",
                     ""type"": ""Button"",
                     ""id"": ""44acef01-e1d1-48d8-81d7-b5977585a1ba"",
                     ""expectedControlType"": """",
@@ -113,27 +113,7 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""Limpieza"",
-                    ""type"": ""Button"",
-                    ""id"": ""9ef5584b-7359-4cce-a155-eb88ed4b2484"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
-                    ""priority"": 0
-                },
-                {
-                    ""name"": ""Polea"",
-                    ""type"": ""Button"",
-                    ""id"": ""a304202e-259d-49a7-bdaf-54f720aac199"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false,
-                    ""priority"": 0
-                },
-                {
-                    ""name"": ""Puerta"",
+                    ""name"": ""Frenar"",
                     ""type"": ""Button"",
                     ""id"": ""7359a86e-fe27-4be3-9bb8-f2244ec758d3"",
                     ""expectedControlType"": """",
@@ -143,9 +123,19 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""resolver"",
+                    ""name"": ""AvisarCabina"",
                     ""type"": ""Button"",
                     ""id"": ""9815204f-e8aa-4302-ad22-779a42157894"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""Avanzar texto"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e6ce3a0-5020-43d1-bb43-b41f364ad485"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -157,11 +147,11 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0091dff6-3c13-4d36-adc4-584213e0628b"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Pausa"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -178,45 +168,34 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""1957ef32-c60f-4637-bab6-1df19fa101aa"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Limpieza"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e0ce0c34-73ae-487b-8eb9-7ab59d8b7388"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Polea"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""41f684cd-5a6c-420d-a5c6-7f3f1b7a434b"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Puerta"",
+                    ""action"": ""Frenar"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""80bd4c1c-87f8-466a-b55d-67c470ff07e3"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""resolver"",
+                    ""action"": ""AvisarCabina"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67ea2106-d8d7-4751-8e24-86faa1cdcb01"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Avanzar texto"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -227,12 +206,11 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_Newaction = m_Gameplay.FindAction("New action", throwIfNotFound: true);
+        m_Gameplay_Pausa = m_Gameplay.FindAction("Pausa", throwIfNotFound: true);
         m_Gameplay_MoverAscensor = m_Gameplay.FindAction("MoverAscensor", throwIfNotFound: true);
-        m_Gameplay_Limpieza = m_Gameplay.FindAction("Limpieza", throwIfNotFound: true);
-        m_Gameplay_Polea = m_Gameplay.FindAction("Polea", throwIfNotFound: true);
-        m_Gameplay_Puerta = m_Gameplay.FindAction("Puerta", throwIfNotFound: true);
-        m_Gameplay_resolver = m_Gameplay.FindAction("resolver", throwIfNotFound: true);
+        m_Gameplay_Frenar = m_Gameplay.FindAction("Frenar", throwIfNotFound: true);
+        m_Gameplay_AvisarCabina = m_Gameplay.FindAction("AvisarCabina", throwIfNotFound: true);
+        m_Gameplay_Avanzartexto = m_Gameplay.FindAction("Avanzar texto", throwIfNotFound: true);
     }
 
     ~@AscensorControls()
@@ -313,12 +291,11 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
     // Gameplay
     private readonly InputActionMap m_Gameplay;
     private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_Newaction;
+    private readonly InputAction m_Gameplay_Pausa;
     private readonly InputAction m_Gameplay_MoverAscensor;
-    private readonly InputAction m_Gameplay_Limpieza;
-    private readonly InputAction m_Gameplay_Polea;
-    private readonly InputAction m_Gameplay_Puerta;
-    private readonly InputAction m_Gameplay_resolver;
+    private readonly InputAction m_Gameplay_Frenar;
+    private readonly InputAction m_Gameplay_AvisarCabina;
+    private readonly InputAction m_Gameplay_Avanzartexto;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -331,29 +308,25 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
         /// </summary>
         public GameplayActions(@AscensorControls wrapper) { m_Wrapper = wrapper; }
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Newaction".
+        /// Provides access to the underlying input action "Gameplay/Pausa".
         /// </summary>
-        public InputAction @Newaction => m_Wrapper.m_Gameplay_Newaction;
+        public InputAction @Pausa => m_Wrapper.m_Gameplay_Pausa;
         /// <summary>
         /// Provides access to the underlying input action "Gameplay/MoverAscensor".
         /// </summary>
         public InputAction @MoverAscensor => m_Wrapper.m_Gameplay_MoverAscensor;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Limpieza".
+        /// Provides access to the underlying input action "Gameplay/Frenar".
         /// </summary>
-        public InputAction @Limpieza => m_Wrapper.m_Gameplay_Limpieza;
+        public InputAction @Frenar => m_Wrapper.m_Gameplay_Frenar;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Polea".
+        /// Provides access to the underlying input action "Gameplay/AvisarCabina".
         /// </summary>
-        public InputAction @Polea => m_Wrapper.m_Gameplay_Polea;
+        public InputAction @AvisarCabina => m_Wrapper.m_Gameplay_AvisarCabina;
         /// <summary>
-        /// Provides access to the underlying input action "Gameplay/Puerta".
+        /// Provides access to the underlying input action "Gameplay/Avanzartexto".
         /// </summary>
-        public InputAction @Puerta => m_Wrapper.m_Gameplay_Puerta;
-        /// <summary>
-        /// Provides access to the underlying input action "Gameplay/resolver".
-        /// </summary>
-        public InputAction @resolver => m_Wrapper.m_Gameplay_resolver;
+        public InputAction @Avanzartexto => m_Wrapper.m_Gameplay_Avanzartexto;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -380,24 +353,21 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @Pausa.started += instance.OnPausa;
+            @Pausa.performed += instance.OnPausa;
+            @Pausa.canceled += instance.OnPausa;
             @MoverAscensor.started += instance.OnMoverAscensor;
             @MoverAscensor.performed += instance.OnMoverAscensor;
             @MoverAscensor.canceled += instance.OnMoverAscensor;
-            @Limpieza.started += instance.OnLimpieza;
-            @Limpieza.performed += instance.OnLimpieza;
-            @Limpieza.canceled += instance.OnLimpieza;
-            @Polea.started += instance.OnPolea;
-            @Polea.performed += instance.OnPolea;
-            @Polea.canceled += instance.OnPolea;
-            @Puerta.started += instance.OnPuerta;
-            @Puerta.performed += instance.OnPuerta;
-            @Puerta.canceled += instance.OnPuerta;
-            @resolver.started += instance.OnResolver;
-            @resolver.performed += instance.OnResolver;
-            @resolver.canceled += instance.OnResolver;
+            @Frenar.started += instance.OnFrenar;
+            @Frenar.performed += instance.OnFrenar;
+            @Frenar.canceled += instance.OnFrenar;
+            @AvisarCabina.started += instance.OnAvisarCabina;
+            @AvisarCabina.performed += instance.OnAvisarCabina;
+            @AvisarCabina.canceled += instance.OnAvisarCabina;
+            @Avanzartexto.started += instance.OnAvanzartexto;
+            @Avanzartexto.performed += instance.OnAvanzartexto;
+            @Avanzartexto.canceled += instance.OnAvanzartexto;
         }
 
         /// <summary>
@@ -409,24 +379,21 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
         /// <seealso cref="GameplayActions" />
         private void UnregisterCallbacks(IGameplayActions instance)
         {
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @Pausa.started -= instance.OnPausa;
+            @Pausa.performed -= instance.OnPausa;
+            @Pausa.canceled -= instance.OnPausa;
             @MoverAscensor.started -= instance.OnMoverAscensor;
             @MoverAscensor.performed -= instance.OnMoverAscensor;
             @MoverAscensor.canceled -= instance.OnMoverAscensor;
-            @Limpieza.started -= instance.OnLimpieza;
-            @Limpieza.performed -= instance.OnLimpieza;
-            @Limpieza.canceled -= instance.OnLimpieza;
-            @Polea.started -= instance.OnPolea;
-            @Polea.performed -= instance.OnPolea;
-            @Polea.canceled -= instance.OnPolea;
-            @Puerta.started -= instance.OnPuerta;
-            @Puerta.performed -= instance.OnPuerta;
-            @Puerta.canceled -= instance.OnPuerta;
-            @resolver.started -= instance.OnResolver;
-            @resolver.performed -= instance.OnResolver;
-            @resolver.canceled -= instance.OnResolver;
+            @Frenar.started -= instance.OnFrenar;
+            @Frenar.performed -= instance.OnFrenar;
+            @Frenar.canceled -= instance.OnFrenar;
+            @AvisarCabina.started -= instance.OnAvisarCabina;
+            @AvisarCabina.performed -= instance.OnAvisarCabina;
+            @AvisarCabina.canceled -= instance.OnAvisarCabina;
+            @Avanzartexto.started -= instance.OnAvanzartexto;
+            @Avanzartexto.performed -= instance.OnAvanzartexto;
+            @Avanzartexto.canceled -= instance.OnAvanzartexto;
         }
 
         /// <summary>
@@ -468,12 +435,12 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
     public interface IGameplayActions
     {
         /// <summary>
-        /// Method invoked when associated input action "New action" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Pausa" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnPausa(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "MoverAscensor" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -482,32 +449,25 @@ public partial class @AscensorControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMoverAscensor(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Limpieza" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Frenar" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnLimpieza(InputAction.CallbackContext context);
+        void OnFrenar(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Polea" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "AvisarCabina" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPolea(InputAction.CallbackContext context);
+        void OnAvisarCabina(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Puerta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Avanzar texto" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnPuerta(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "resolver" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnResolver(InputAction.CallbackContext context);
+        void OnAvanzartexto(InputAction.CallbackContext context);
     }
 }

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8840508752860882865}
   - component: {fileID: 7021429085693894075}
-  - component: {fileID: 6923321099221015751}
   m_Layer: 0
   m_Name: EmojiEnojado
   m_TagString: Untagged
@@ -93,23 +92,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &6923321099221015751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7324404985120330988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a32f3e81bbd892d45822bb65e6a0f637, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PalancaController
-  ascensorManager: {fileID: 0}
-  inputActions: {fileID: -944628639613478452, guid: fdbfd515e0b7b6248865016c5937f77a, type: 3}
-  anguloIzquierda: 0
-  anguloDerecha: 180
-  velocidadRotacion: 360
-  duracionAnimacion: 0.4
-  palancaADerecha: 0
-  enAnimacion: 0

@@ -3,26 +3,33 @@
     {
       "id": "introduccion",
       "lineas": [
-        {
-          "hablante": "Narrador",
-          "texto": "Tu padre siempre decía que este ascensor era el corazón de la quebrada.",
-          "imagen": ""
-        },
-        {
-          "hablante": "Narrador",
-          "texto": "Ahora que él ya no está, te toca a ti mantenerlo funcionando.",
-          "imagen": ""
-        },
-        {
-          "hablante": "Tú",
-          "texto": "No voy a dejar que se caiga. Por él. Por los vecinos.",
-          "imagen": ""
-        },
-        {
-          "hablante": "Narrador",
-          "texto": "Tu objetivo es simple: llevar pasajeros, mantener el ascensor, y pagar las cuentas al final del día.",
-          "imagen": ""
-        }
+        { "hablante": "Narrador", "texto": "Tu padre siempre decía que este ascensor era el corazón de la quebrada.", "imagen": "" },
+        { "hablante": "Narrador", "texto": "Ahora que él ya no está, te toca a ti mantenerlo funcionando.", "imagen": "" },
+        { "hablante": "Tú", "texto": "No voy a dejar que se caiga. Por él. Por los vecinos.", "imagen": "" },
+        { "hablante": "Narrador", "texto": "Tu objetivo es simple: llevar pasajeros, mantener el ascensor, y pagar las cuentas al final del día.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_controles",
+      "lineas": [
+        { "hablante": "Nota de papá", "texto": "Si estás leyendo esto, ya te tocó a ti. Perdona que no pueda explicártelo en persona.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Con ESPACIO el ascensor arranca. Con SHIFT lo frenas, y hay que hacerlo justo a tiempo.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "ESC pausa el juego, y los menús se manejan con el mouse. Prueba ahora: presiona ESPACIO.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_viaje",
+      "lineas": [
+        { "hablante": "Tú", "texto": "Papá decía que con ESPACIO el ascensor andaba... y tenía razón.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Y a mitad de camino hay que frenar con SHIFT justo a tiempo.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_puerta",
+      "lineas": [
+
+        { "hablante": "Tú", "texto": "Me decía que a veces pasan cosas inesperadas...", "imagen": "" },
+        { "hablante": "Tú", "texto": "Las puertas se atascaban. Papá las desatascaba presionando ESPACIO varias veces.", "imagen": "" }
       ]
     }
   ]
