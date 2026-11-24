@@ -3299,6 +3299,7 @@ MonoBehaviour:
   estadoManager: {fileID: 1049016273}
   eventManager: {fileID: 1914007448}
   clockManager: {fileID: 1236741194}
+  procesoPartida: {fileID: 0}
   eventosMantenimientoEn100: 3
   eventosMantenimientoEn0: 12
   eventosBasuraEn100: 1
@@ -3307,6 +3308,7 @@ MonoBehaviour:
   margenInicio: 15
   margenFinal: 20
   pausaEntreEventos: 4
+  pausaEntreEventosEnLlegada: 0.75
   debugLogs: 1
 --- !u!1 &619394800
 GameObject:
@@ -6123,6 +6125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1164373270}
   - component: {fileID: 1164373271}
+  - component: {fileID: 1164373272}
   m_Layer: 0
   m_Name: AscensorManager
   m_TagString: Untagged
@@ -6189,6 +6192,33 @@ MonoBehaviour:
     enMovimiento: 0
     pasajerosDentro: []
   duracionViaje: 10
+--- !u!114 &1164373272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164373269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 492957d43dfab77488b23e97ec74df78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProcesoPartida
+  ascensorManager: {fileID: 1164373271}
+  director: {fileID: 615684343}
+  pasajerosMinimosParaAvisar: 0
+  esperaMin: 2
+  esperaMax: 4
+  mensajeAvisando: Avisando a la cabina de abajo...
+  mensajeLista: Cabina de abajo lista
+  mensajeSinW: "\xA1Frenos de emergencia! Arrancaste sin avisar a la cabina de abajo (W)"
+  mensajeNoLista: "\xA1Frenos de emergencia! La cabina de abajo a\xFAn no est\xE1 lista"
+  mensajeFaltanPasajeros: "Todav\xEDa no hay pasajeros suficientes para avisar"
+  duracionMensajeError: 2.5
+  colorAviso: {r: 1, g: 0.85, b: 0.3, a: 1}
+  colorLista: {r: 0.4, g: 1, b: 0.5, a: 1}
+  colorError: {r: 1, g: 0.35, b: 0.35, a: 1}
+  fase: 0
 --- !u!1 &1223841136
 GameObject:
   m_ObjectHideFlags: 0
@@ -9114,6 +9144,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5de7ffc8fd71b0e45820f268b5dde959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LimpiezaManager
+  costoLimpiar: 20
+  limpiezaRecuperada: 20
+  tagGrafiti: Grafiti
 --- !u!1 &2092573351
 GameObject:
   m_ObjectHideFlags: 0
