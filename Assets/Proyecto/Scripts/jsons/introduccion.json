@@ -13,14 +13,14 @@
       "id": "tutorial_controles",
       "lineas": [
         { "hablante": "Nota de papá", "texto": "Si estás leyendo esto, ya te tocó a ti. Perdona que no pueda explicártelo en persona.", "imagen": "" },
-        { "hablante": "Nota de papá", "texto": "Con ESPACIO el ascensor arranca. Con SHIFT lo frenas, y hay que hacerlo justo a tiempo.", "imagen": "" },
-        { "hablante": "Nota de papá", "texto": "ESC pausa el juego, y los menús se manejan con el mouse. Prueba ahora: presiona ESPACIO.", "imagen": "" }
+        { "hablante": "Nota de papá", "texto": "Con W avisas a la cabina de abajo que ya puedes partir, y con ESPACIO el ascensor arranca. Con SHIFT lo frenas, y hay que hacerlo justo a tiempo.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "ESC pausa el juego, y los menús se manejan con el mouse. Prueba ahora: presiona W y, cuando la TV diga que la cabina de abajo está lista, presiona ESPACIO.", "imagen": "" }
       ]
     },
     {
       "id": "tutorial_viaje",
       "lineas": [
-        { "hablante": "Tú", "texto": "Papá decía que con ESPACIO el ascensor andaba... y tenía razón.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Papá decía que primero se avisaba con W y que luego, con ESPACIO, el ascensor andaba... y tenía razón.", "imagen": "" },
         { "hablante": "Tú", "texto": "Y a mitad de camino hay que frenar con SHIFT justo a tiempo.", "imagen": "" }
       ]
     },

@@ -112,7 +112,10 @@ public class Pasajero : MonoBehaviour
         bool ascensorEnMiLugar = (rol == RolPasajero.SubeEnInicio && ascensorEstaAbajo)
                               || (rol == RolPasajero.SubeEnFinal && !ascensorEstaAbajo);
 
-        if (ascensorEnMiLugar && !ascensorEnMovimiento)
+        // La W (o la cabina ya lista) cierra la puerta: nadie más sube
+        bool puertaCerrada = ProcesoPartida.Instance != null && ProcesoPartida.Instance.PuertaCerrada(ascensorIndex);
+
+        if (ascensorEnMiLugar && !ascensorEnMovimiento && !puertaCerrada)
         {
             IniciarSubida();
             return;
@@ -141,7 +144,10 @@ public class Pasajero : MonoBehaviour
     {
         yield return new WaitForSeconds(tiempoAntesDeSubir);
 
-        if (!ascensorManager.HayEspacioEn(ascensorIndex))
+        // Si durante ese segundo se pulsó W, la puerta se cerró y no alcanza a subir
+        bool puertaCerrada = ProcesoPartida.Instance != null && ProcesoPartida.Instance.PuertaCerrada(ascensorIndex);
+
+        if (puertaCerrada || !ascensorManager.HayEspacioEn(ascensorIndex))
         {
             estado = EstadoPasajero.EsperandoEnAnden;
             yield break;

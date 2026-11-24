@@ -5,6 +5,9 @@ public class TutorialManager : MonoBehaviour
     // Mientras sea true, ESPACIO no inicia viajes (lo lee PalancaController)
     public static bool ViajeBloqueado = false;
 
+    // Verdadero mientras dura el tutorial (el proceso de partida no penaliza errores en este tiempo)
+    public static bool EnCurso = false;
+
     public AscensorManager ascensorManager;
     public EventManager eventManager;
     public EventoEstadoManager estadoManager;
@@ -16,6 +19,7 @@ public class TutorialManager : MonoBehaviour
     private void Start()
     {
         ViajeBloqueado = false;
+        EnCurso = false;
 
         if (PlayerPrefs.GetInt("TutorialHecho", 0) == 1)
         {
@@ -24,6 +28,7 @@ public class TutorialManager : MonoBehaviour
         }
 
         ViajeBloqueado = true;
+        EnCurso = true;
         if (eventManager != null) eventManager.eventosActivos = false;
         if (estadoManager != null) estadoManager.enabled = false;   // tiene su propio Update
 
@@ -38,6 +43,7 @@ public class TutorialManager : MonoBehaviour
     private void OnDestroy()
     {
         ViajeBloqueado = false;
+        EnCurso = false;
 
         if (DialogoManager.Instance != null)
             DialogoManager.Instance.OnDialogoTerminado -= AlTerminarDialogo;
@@ -104,6 +110,7 @@ public class TutorialManager : MonoBehaviour
 
         paso = Paso.Fin;
         ViajeBloqueado = false;
+        EnCurso = false;
         if (eventManager != null) eventManager.eventosActivos = true;   // los eventos se activan
     }
 

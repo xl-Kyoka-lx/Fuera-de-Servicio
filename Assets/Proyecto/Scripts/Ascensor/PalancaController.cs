@@ -83,6 +83,12 @@ public class PalancaController : MonoBehaviour
         return;
     }
 
+    // Hay que avisar con W y esperar "cabina de abajo lista" antes de partir
+    if (ProcesoPartida.Instance != null && !ProcesoPartida.Instance.IntentarPartir())
+    {
+        return;
+    }
+
     MoverPalanca();
 }
     private void Update()
