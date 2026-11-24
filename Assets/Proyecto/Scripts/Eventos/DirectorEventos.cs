@@ -2,12 +2,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Decide cuántos eventos tiene cada día y cuándo salen.
+//
+// La cantidad del día sigue dependiendo del mantenimiento y la limpieza, y cada evento sigue
+// teniendo una hora programada (para repartirlos en el día). Lo que cambia es el "cuándo":
+// un evento vencido espera a su momento natural, según lo que hace el jugador.
+//
+//   Pestillo trabado      -> al pulsar W (la puerta no cierra)
+//   Engrase               -> al pulsar ESPACIO para partir (el ascensor no arranca)
+//   Puerta atascada       -> al llegar el ascensor
+//   Basura                -> al llegar el ascensor, después de la puerta
+//   Polea trabada         -> en cualquier momento
+//
+// En la llegada puede salir uno, el otro, los dos o ninguno: depende de lo que haya vencido.
 public class DirectorEventos : MonoBehaviour
 {
+    public enum Momento
+    {
+        CualquierMomento,
+        AlPulsarW,
+        AlArrancar,
+        AlLlegar
+    }
+
     [Header("Referencias")]
     public EventoEstadoManager estadoManager;
     public EventManager eventManager;
     public ClockManager clockManager;
+    [Tooltip("Si se deja vacío, se busca solo en la escena")]
+    public ProcesoPartida procesoPartida;
 
     [Header("Eventos de mantenimiento por día")]
     [Tooltip("Cantidad con el mantenimiento en 100%")]
@@ -28,14 +50,17 @@ public class DirectorEventos : MonoBehaviour
     public float margenInicio = 15f;
     [Tooltip("Segundos sin eventos antes del final estimado")]
     public float margenFinal = 20f;
-    [Tooltip("Segundos de calma después de que termina un evento")]
+    [Tooltip("Segundos de calma después de que termina un evento (solo para los eventos de cualquier momento)")]
     public float pausaEntreEventos = 4f;
+    [Tooltip("Segundos entre un evento de la llegada y el siguiente (puerta y luego basura)")]
+    public float pausaEntreEventosEnLlegada = 0.75f;
 
     public bool debugLogs = true;
 
     private class EventoProgramado
     {
         public EventoEstadoManager.EventoEstadoConfig config;
+        public Momento momento;
         public float tiempo;
         public bool lanzado;
     }
@@ -46,23 +71,44 @@ public class DirectorEventos : MonoBehaviour
     private float cooldown = 0f;
     private bool huboEvento = false;
 
+    // Llegada: mientras la ventana esté abierta se van lanzando los eventos vencidos de la llegada
+    private bool ventanaLlegada = false;
+    private float llegadaListaDesde = 0f;
+
     private void Start()
     {
         if (estadoManager == null) estadoManager = FindAnyObjectByType<EventoEstadoManager>();
         if (eventManager == null) eventManager = FindAnyObjectByType<EventManager>();
         if (clockManager == null) clockManager = FindAnyObjectByType<ClockManager>();
+        if (procesoPartida == null) procesoPartida = ProcesoPartida.Instance;
+        if (procesoPartida == null) procesoPartida = FindFirstObjectByType<ProcesoPartida>();
 
         if (estadoManager != null)
             estadoManager.modoDirector = true;
+
+        if (procesoPartida != null)
+        {
+            procesoPartida.OnWPulsada += AlPulsarW;
+            procesoPartida.OnLlegada += AlLlegar;
+        }
+        else
+        {
+            Debug.LogWarning("[Director] No hay ProcesoPartida en la escena: solo saldrán los eventos de cualquier momento");
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (procesoPartida != null)
+        {
+            procesoPartida.OnWPulsada -= AlPulsarW;
+            procesoPartida.OnLlegada -= AlLlegar;
+        }
     }
 
     private void Update()
     {
-        if (estadoManager == null || GameManager.Instance == null) return;
-
-        // Tutorial: mientras esté apagado, no se programa ni se lanza nada
-        if (!estadoManager.enabled) return;
-        if (eventManager != null && !eventManager.eventosActivos) return;
+        if (!PuedeActuar()) return;
 
         if (!yaProgramado)
         {
@@ -85,9 +131,12 @@ public class DirectorEventos : MonoBehaviour
         {
             huboEvento = false;
             cooldown = pausaEntreEventos;
+            llegadaListaDesde = Time.unscaledTime + pausaEntreEventosEnLlegada;
         }
 
         tiempoDia += Time.deltaTime;
+
+        ProcesarLlegada();
 
         if (cooldown > 0f)
         {
@@ -97,11 +146,10 @@ public class DirectorEventos : MonoBehaviour
 
         if (BloqueoEventos.EventosBloqueados) return;
 
-        // Los eventos ya vencidos esperan hasta que las condiciones lo permitan
-        // (por ejemplo, ascensor arriba y quieto)
+        // Eventos de cualquier momento: los vencidos salen en cuanto las condiciones lo permitan
         foreach (var p in programados)
         {
-            if (p.lanzado || p.tiempo > tiempoDia) continue;
+            if (p.lanzado || p.momento != Momento.CualquierMomento || p.tiempo > tiempoDia) continue;
 
             if (estadoManager.LanzarConfig(p.config))
             {
@@ -114,6 +162,119 @@ public class DirectorEventos : MonoBehaviour
             }
         }
     }
+
+    // ---------- Momentos del jugador ----------
+
+    private void AlPulsarW()
+    {
+        // Pulsar W cierra la ventana de la llegada: ya no salen más eventos de ese momento
+        ventanaLlegada = false;
+        IntentarLanzarEnMomento(Momento.AlPulsarW);
+    }
+
+    private void AlLlegar()
+    {
+        ventanaLlegada = true;
+        llegadaListaDesde = Time.unscaledTime + pausaEntreEventosEnLlegada;
+    }
+
+    // Lo llama ProcesoPartida cuando el jugador pulsa ESPACIO con la cabina lista.
+    // Devuelve true si salió un evento (por ejemplo el engrase): el ascensor no arranca
+    // y el jugador tiene que resolverlo y volver a pulsar ESPACIO.
+    public bool IntentarEventoAlArrancar()
+    {
+        return IntentarLanzarEnMomento(Momento.AlArrancar);
+    }
+
+    private void ProcesarLlegada()
+    {
+        if (!ventanaLlegada) return;
+
+        // Si el ascensor ya salió, la ventana se acaba
+        if (procesoPartida != null && procesoPartida.fase != ProcesoPartida.Fase.Cargando)
+        {
+            ventanaLlegada = false;
+            return;
+        }
+
+        // No queda nada vencido para la llegada: se cierra la ventana
+        if (!HayVencidoEn(Momento.AlLlegar))
+        {
+            ventanaLlegada = false;
+            return;
+        }
+
+        if (Time.unscaledTime < llegadaListaDesde) return;
+
+        IntentarLanzarEnMomento(Momento.AlLlegar);
+    }
+
+    private bool HayVencidoEn(Momento momento)
+    {
+        foreach (var p in programados)
+        {
+            if (!p.lanzado && p.momento == momento && p.tiempo <= tiempoDia)
+                return true;
+        }
+        return false;
+    }
+
+    // Lanza un evento vencido de ese momento. La puerta va antes que la basura.
+    private bool IntentarLanzarEnMomento(Momento momento)
+    {
+        if (!PuedeLanzarEnMomento()) return false;
+
+        EventoProgramado elegido = null;
+
+        foreach (var p in programados)
+        {
+            if (p.lanzado || p.momento != momento || p.tiempo > tiempoDia) continue;
+
+            if (elegido == null || Prioridad(p) < Prioridad(elegido))
+                elegido = p;
+        }
+
+        if (elegido == null) return false;
+        if (!estadoManager.LanzarConfig(elegido.config)) return false;
+
+        elegido.lanzado = true;
+
+        if (debugLogs)
+            Debug.Log($"[Director] Lanzado '{elegido.config.nombre}' ({momento}, programado a los {elegido.tiempo:F0}s, ahora {tiempoDia:F0}s)");
+
+        return true;
+    }
+
+    // Menor número = sale antes. La basura va después de la puerta.
+    private int Prioridad(EventoProgramado p)
+    {
+        return p.config.sistema == TipoSistema.Limpieza ? 1 : 0;
+    }
+
+    private bool PuedeActuar()
+    {
+        if (estadoManager == null || GameManager.Instance == null) return false;
+
+        // Tutorial: mientras esté apagado, no se programa ni se lanza nada
+        if (!estadoManager.enabled) return false;
+        if (eventManager != null && !eventManager.eventosActivos) return false;
+
+        return true;
+    }
+
+    private bool PuedeLanzarEnMomento()
+    {
+        if (!PuedeActuar() || !yaProgramado) return false;
+        if (clockManager != null && !clockManager.relojActivo) return false;
+        if (Time.timeScale == 0f) return false;
+        if (DialogoManager.Instance != null && DialogoManager.Instance.HayDialogoActivo()) return false;
+        if (BloqueoEventos.EventosBloqueados) return false;
+        if (estadoManager.HayEventoEnCurso || GameManager.Instance.GameData.eventoOcurriendo) return false;
+
+        return true;
+    }
+
+    // ---------- Programación del día ----------
 
     private void ProgramarDia()
     {
@@ -135,7 +296,7 @@ public class DirectorEventos : MonoBehaviour
         {
             string horario = "";
             foreach (var p in programados)
-                horario += $"\n   {p.tiempo:F0}s -> {p.config.nombre}";
+                horario += $"\n   {p.tiempo:F0}s -> {p.config.nombre} ({p.momento})";
 
             Debug.Log($"[Director] Día programado. Mantenimiento {data.mantenimientoDelDia:F0}% -> {cantMantenimiento} eventos. " +
                       $"Limpieza {data.limpiezaDelDia:F0}% -> {cantBasura} eventos.{horario}");
@@ -155,9 +316,26 @@ public class DirectorEventos : MonoBehaviour
         {
             EventoProgramado p = new EventoProgramado();
             p.config = ElegirConfig(configs);
+            p.momento = MomentoDe(p.config);
             p.tiempo = inicio + tramo * i + Random.Range(0.15f, 0.85f) * tramo;
             programados.Add(p);
         }
+    }
+
+    // El momento se deduce del tipo de evento que lleva el prefab, así no hay que configurar nada a mano.
+    private static Momento MomentoDe(EventoEstadoManager.EventoEstadoConfig config)
+    {
+        if (config.prefab != null)
+        {
+            if (config.prefab.GetComponent<EventoPestillo>() != null) return Momento.AlPulsarW;
+            if (config.prefab.GetComponent<EventoEngrase>() != null) return Momento.AlArrancar;
+            if (config.prefab.GetComponent<EventoPuertaAtascada>() != null) return Momento.AlLlegar;
+        }
+
+        // La basura aparece cuando los pasajeros bajan y dejan sus restos
+        if (config.sistema == TipoSistema.Limpieza) return Momento.AlLlegar;
+
+        return Momento.CualquierMomento;
     }
 
     private EventoEstadoManager.EventoEstadoConfig ElegirConfig(List<EventoEstadoManager.EventoEstadoConfig> configs)

@@ -17,8 +17,9 @@ public class ProcesoPartida : MonoBehaviour
 
     public enum Fase { Cargando, EsperandoCabinaAbajo, Lista }
 
-    [Header("Referencias")]
+    [Header("Referencias (si se deja vacío se busca solo)")]
     public AscensorManager ascensorManager;
+    public DirectorEventos director;
 
     [Header("W")]
     [Tooltip("Pasajeros mínimos dentro de la cabina de arriba para poder pulsar W. 0 = el jugador decide libremente")]
@@ -68,6 +69,7 @@ public class ProcesoPartida : MonoBehaviour
 
         if (ascensorManager == null) ascensorManager = GetComponent<AscensorManager>();
         if (ascensorManager == null) ascensorManager = FindFirstObjectByType<AscensorManager>();
+        if (director == null) director = FindFirstObjectByType<DirectorEventos>();
 
         controls = new AscensorControls();
         controls.Gameplay.AvisarCabina.performed += OnAvisarCabina;
@@ -192,7 +194,14 @@ public class ProcesoPartida : MonoBehaviour
     // La palanca lo llama antes de arrancar. Devuelve true si el ascensor puede partir.
     public bool IntentarPartir()
     {
-        if (fase == Fase.Lista) return true;
+        if (fase == Fase.Lista)
+        {
+            // Un evento (el engrase) puede impedir que el ascensor arranque:
+            // el jugador lo resuelve y vuelve a pulsar ESPACIO
+            if (director != null && director.IntentarEventoAlArrancar()) return false;
+
+            return true;
+        }
 
         string motivo = fase == Fase.Cargando ? mensajeSinW : mensajeNoLista;
         MostrarTemporal(motivo, colorError);

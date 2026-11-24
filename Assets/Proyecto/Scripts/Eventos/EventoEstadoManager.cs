@@ -221,7 +221,11 @@ public class EventoEstadoManager : MonoBehaviour
 
         if (ascensorManager.enMovimiento) return false;
 
-        return !ascensorManager.EstaAbajo(indiceAscensorJugador);
+        // Con el ascensor detenido siempre hay una cabina arriba (las dos se turnan),
+        // así que "arriba y quieto" es simplemente "quieto".
+        // indiceAscensorJugador ya no se usa: antes solo contaba el Ascensor 1 y los eventos
+        // salían un viaje sí y otro no.
+        return true;
     }
 
     private float CalcularProbabilidad(EventoEstadoConfig e)
