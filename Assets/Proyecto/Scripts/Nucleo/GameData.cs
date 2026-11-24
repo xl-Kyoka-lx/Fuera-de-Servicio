@@ -24,6 +24,12 @@ public class GameData : ScriptableObject
     [Range(0, 100)] public float contadorGrasa = 100f;
     [Range(0, 100)] public float contadorPuerta = 100f;
 
+    [Header("Valores de una partida nueva")]
+    [Tooltip("Con lo que empieza el mantenimiento al darle Nueva partida (no depende de lo que haya quedado guardado)")]
+    [Range(0, 100)] public float mantenimientoPartidaNueva = 100f;
+    [Range(0, 100)] public float limpiezaPartidaNueva = 100f;
+    [Range(0, 100)] public float puertaPartidaNueva = 100f;
+
    
     public float spawnBase = 2f;
     public int pagoPorPasajero = 10;
@@ -38,6 +44,31 @@ public class GameData : ScriptableObject
     public bool ascensorEnMovimiento = false;
 
     public bool resumenNocheMostrado = false;
+
+    // Valores con los que se calculan los efectos del día. Se fijan al cargar la escena:
+    // los cambios que ocurran durante el día solo cuentan para el día siguiente.
+    [System.NonSerialized] public float mantenimientoDelDia = 100f;
+    [System.NonSerialized] public float limpiezaDelDia = 100f;
+
+    // Verdadero cuando el mantenimiento llegó a 0 jugando: el ascensor ya no arranca
+    [System.NonSerialized] public bool ascensorAveriado = false;
+
+    // Pasajeros transportados desde el último descuento de limpieza y de mantenimiento
+    [System.NonSerialized] public int pasajerosParaLimpieza = 0;
+    [System.NonSerialized] public int pasajerosParaMantenimiento = 0;
+
+    // La popularidad es el promedio de mantenimiento y limpieza
+    public void ActualizarPopularidad()
+    {
+        contadorPopularidad = Mathf.Clamp((contadorGrasa + contadorLimpieza) * 0.5f, 0f, 100f);
+    }
+
+    public void FijarValoresDelDia()
+    {
+        ActualizarPopularidad();
+        mantenimientoDelDia = Mathf.Clamp(contadorGrasa, 1f, 100f);
+        limpiezaDelDia = Mathf.Clamp(contadorLimpieza, 0f, 100f);
+    }
 
     public bool HayEspacio => pasajerosTotales < capacidadMaxima;
     public bool EstaVacio => pasajerosTotales == 0;
@@ -77,6 +108,7 @@ public class GameData : ScriptableObject
     public void SetGrasa(float nuevoValor)
     {
         contadorGrasa = Mathf.Clamp(nuevoValor, 0f, 100f);
+        ActualizarPopularidad();
         OnDataChanged?.Invoke();
     }
 
@@ -88,14 +120,18 @@ public class GameData : ScriptableObject
         pasajerosTotales = _pasajerosTotalesInicial;
         dineroTotal = _dineroTotalInicial;
         contadorPopularidad = _popularidadInicial;
-        contadorLimpieza = _limpiezaInicial;
-        contadorGrasa = _poleaInicial;
-        contadorPuerta = _puertaInicial;
+        contadorLimpieza = limpiezaPartidaNueva;
+        contadorGrasa = mantenimientoPartidaNueva;
+        contadorPuerta = puertaPartidaNueva;
         horaActual = _horaInicial;
         climaActual = _climaInicial;
+        ActualizarPopularidad();
 
         eventoOcurriendo = false;
         ascensorEnMovimiento = false;
+        ascensorAveriado = false;
+        pasajerosParaLimpieza = 0;
+        pasajerosParaMantenimiento = 0;
 
         OnDataChanged?.Invoke();
 

@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: a646d2b00ca15e34a9a23b9343d8c538
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - emojiFelizPrefab: {fileID: 232212805806073813, guid: e1bab8d1a6253bd40bade1cc1b7270b6, type: 3}
+  - emojiEnojadoPrefab: {fileID: 7324404985120330988, guid: 9557018be6a1da149ae9979d397c7e97, type: 3}
+  - puntoEmoji: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

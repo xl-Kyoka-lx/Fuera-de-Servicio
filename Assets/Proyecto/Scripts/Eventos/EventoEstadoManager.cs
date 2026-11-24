@@ -39,6 +39,8 @@ public class EventoEstadoManager : MonoBehaviour
     public int indiceAscensorJugador = 0;
 
     [Header("Chequeo")]
+    [Tooltip("Marcado = los eventos los lanza el DirectorEventos según el mantenimiento y la limpieza del día. Desmarcado = sistema antiguo por umbrales")]
+    public bool modoDirector = true;
     public float intervaloChequeo = 3f;
     public bool debugLogs = true;
     [Tooltip("Muestra en la Console por qué cada evento puede o no salir. Desmárcalo cuando todo funcione")]
@@ -59,6 +61,7 @@ public class EventoEstadoManager : MonoBehaviour
 
     private void Update()
     {
+        if (modoDirector) return;
         if (eventoEnCurso) return;
 
         timer += Time.deltaTime;
@@ -75,6 +78,7 @@ public class EventoEstadoManager : MonoBehaviour
 
     public bool IntentarLanzarEvento()
     {
+        if (modoDirector) return false;
         if (eventoEnCurso) return false;
         return IntentarLanzarAlguno();
     }
@@ -126,6 +130,40 @@ public class EventoEstadoManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    // ---------- API para el DirectorEventos ----------
+
+    public bool HayEventoEnCurso => eventoEnCurso;
+
+    // basura = true devuelve los eventos del sistema Limpieza; false, todos los demás
+    public List<EventoEstadoConfig> ObtenerConfigs(bool basura)
+    {
+        List<EventoEstadoConfig> lista = new List<EventoEstadoConfig>();
+
+        foreach (var e in eventos)
+        {
+            bool esBasura = e.sistema == TipoSistema.Limpieza;
+            if (esBasura == basura && e.prefab != null)
+                lista.Add(e);
+        }
+
+        return lista;
+    }
+
+    public bool PuedeLanzarAhora(EventoEstadoConfig e)
+    {
+        if (e == null || eventoEnCurso) return false;
+        if (BloqueoEventos.EventosBloqueados) return false;
+        return CumpleCondicionAscensor(e);
+    }
+
+    public bool LanzarConfig(EventoEstadoConfig e)
+    {
+        if (!PuedeLanzarAhora(e)) return false;
+
+        LanzarEvento(e);
+        return true;
     }
 
     public bool ForzarEvento(TipoSistema sistema)

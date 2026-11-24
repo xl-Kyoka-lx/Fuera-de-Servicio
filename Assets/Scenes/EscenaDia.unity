@@ -1980,6 +1980,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 404269304}
   m_CullTransparentMesh: 1
+--- !u!1 &415908852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 415908853}
+  - component: {fileID: 415908854}
+  m_Layer: 0
+  m_Name: Derrota Averia
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &415908853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415908852}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 528.3391, y: 135.82745, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &415908854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415908852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71c5c301d193e8949a64a87b02b8d285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DerrotaAveria
+  titulo: "El ascensor se averi\xF3"
+  mensaje: "El mantenimiento lleg\xF3 a 0 y el ascensor ya no arranca."
+  textoBoton: "Volver al men\xFA"
+  escenaMenu: Menu inicio
+  retraso: 1.5
+  ordenCanvas: 200
 --- !u!1 &468700570
 GameObject:
   m_ObjectHideFlags: 0
@@ -3202,6 +3252,62 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1544431834}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &615684341
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 615684342}
+  - component: {fileID: 615684343}
+  m_Layer: 0
+  m_Name: Director
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &615684342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615684341}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 528.3391, y: 135.82745, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &615684343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615684341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ac966ed3552acf4895e1ee17ad0f8c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DirectorEventos
+  estadoManager: {fileID: 1049016273}
+  eventManager: {fileID: 1914007448}
+  clockManager: {fileID: 1236741194}
+  eventosMantenimientoEn100: 3
+  eventosMantenimientoEn0: 12
+  eventosBasuraEn100: 1
+  eventosBasuraEn0: 6
+  duracionDiaEstimada: 240
+  margenInicio: 15
+  margenFinal: 20
+  pausaEntreEventos: 4
+  debugLogs: 1
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -5108,6 +5214,7 @@ MonoBehaviour:
     condicionAscensor: 1
   ascensorManager: {fileID: 1164373271}
   indiceAscensorJugador: 0
+  modoDirector: 1
   intervaloChequeo: 3
   debugLogs: 1
   debugDetalle: 1
@@ -6143,7 +6250,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1722636720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1236741194
 MonoBehaviour:
@@ -6524,11 +6631,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a939043ddd97bbb43b84eb7f87b29dea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatusManager
-  intervaloLimpeza: 3
-  intervaloPolea: 5
-  decrementoLimpieza: 5
-  decrementoPolea: 5
-  decrementoPuerta: 10
+  pasajerosPorDescuentoLimpieza: 30
+  descuentoLimpieza: 5
+  pasajerosPorDescuentoMantenimiento: 50
+  descuentoMantenimiento: 5
 --- !u!4 &1402869931
 Transform:
   m_ObjectHideFlags: 0
@@ -6542,7 +6648,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1722636720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1402869932
 MonoBehaviour:
@@ -6562,6 +6668,8 @@ MonoBehaviour:
   targetPolea: {fileID: 1068255753}
   targetPuerta: {fileID: 608087834}
   targetDinero: {fileID: 0}
+  desgasteDiarioMantenimiento: 10
+  minimoTrasDesgasteDiario: 1
 --- !u!1 &1410426923
 GameObject:
   m_ObjectHideFlags: 0
@@ -7139,6 +7247,7 @@ MonoBehaviour:
   ventanaTiempo: 1.5
   rangoPerfecto: 0.05
   rangoBueno: 0.15
+  segundosSinEventosTrasFrenar: 2
   "da\xF1oFallo": 10
   "da\xF1oBueno": 3
   ascensorManager: {fileID: 1164373271}
@@ -7855,6 +7964,7 @@ MonoBehaviour:
   intervaloSpawn: 5
   maxPasajerosPorCumulo: 5
   spawnAutomatico: 1
+  spawnMientrasViaja: 1
 --- !u!4 &1660451678
 Transform:
   m_ObjectHideFlags: 0
@@ -8087,6 +8197,8 @@ Transform:
   - {fileID: 749136825}
   - {fileID: 288974261}
   - {fileID: 252408959}
+  - {fileID: 1402869931}
+  - {fileID: 1236741193}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1723171040
@@ -9178,14 +9290,14 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 37518142}
   - {fileID: 820195365}
-  - {fileID: 1402869931}
-  - {fileID: 1236741193}
   - {fileID: 1722636720}
   - {fileID: 1590695592}
   - {fileID: 576202726}
   - {fileID: 150734798}
   - {fileID: 726788793}
   - {fileID: 1443386814}
+  - {fileID: 415908853}
+  - {fileID: 615684342}
   - {fileID: 529247611}
   - {fileID: 2003216405}
   - {fileID: 1847579408}

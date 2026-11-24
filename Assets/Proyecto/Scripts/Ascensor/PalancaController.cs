@@ -52,6 +52,13 @@ public class PalancaController : MonoBehaviour
 {
     if (enAnimacion) return;
 
+    // Mantenimiento en 0: el ascensor se averió y ya no arranca
+    if (GameManager.Instance != null && GameManager.Instance.GameData.ascensorAveriado)
+    {
+        Debug.LogWarning("PALANCA: el ascensor está averiado y no arranca");
+        return;
+    }
+
     // Durante 1 segundo tras terminar un evento, Espacio no arranca el ascensor
     if (BloqueoEventos.ArranqueBloqueado)
     {

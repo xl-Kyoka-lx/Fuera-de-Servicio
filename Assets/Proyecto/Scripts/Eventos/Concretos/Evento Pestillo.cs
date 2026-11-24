@@ -2,6 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
+// Evento: Pestillo trabado.
+// Aparece un círculo grande con un anillo que se va achicando. Hay que presionar
+// Espacio justo cuando el anillo llega al borde del círculo. Es más lento y con
+// más margen de error que el de las colillas.
+//
 // Igual que EventoColillasLatas, crea toda su UI por código: el prefab solo
 // necesita este componente en un objeto vacío.
 public class EventoPestillo : EventoBase
@@ -45,7 +50,7 @@ public class EventoPestillo : EventoBase
     [Tooltip("Congela el juego (ascensor, reloj) mientras dura el evento")]
     public bool detenerTiempo = true;
 
-    [Header("Resultado sobre la puerta")]
+    [Header("Resultado sobre el mantenimiento")]
     public float bonoSiResuelve = 5f;
     public float dañoSiFalla = 10f;
 
@@ -367,7 +372,7 @@ public class EventoPestillo : EventoBase
         RestaurarTiempo();
 
         if (GameManager.Instance != null)
-            GameManager.Instance.ModificarPuerta(ultimoAcierto ? bonoSiResuelve : -dañoSiFalla);
+            GameManager.Instance.ModificarPolea(ultimoAcierto ? bonoSiResuelve : -dañoSiFalla);
 
         if (PanelMensajesMonitor.Instance != null)
         {

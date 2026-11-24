@@ -1,75 +1,57 @@
 ﻿using UnityEngine;
 
+// Desgaste del ascensor según los pasajeros transportados:
+//  - La limpieza baja un poco cada cierta cantidad de pasajeros.
+//  - El mantenimiento baja un poco cada cierta cantidad de pasajeros.
+// Ya no hay desgaste por tiempo ni por cada vez que el ascensor arranca o se detiene.
 public class StatusManager : MonoBehaviour
 {
- 
-    public float intervaloLimpeza = 30f;
-    public float intervaloPolea = 100f;
+    [Header("Limpieza")]
+    [Tooltip("Cada cuántos pasajeros transportados baja la limpieza")]
+    public int pasajerosPorDescuentoLimpieza = 30;
+    [Tooltip("Cuánto baja la limpieza (en puntos de porcentaje)")]
+    public float descuentoLimpieza = 5f;
 
-  
-    public float decrementoLimpieza = 5f;
-    public float decrementoPolea = 5f;
-    public float decrementoPuerta = 10f;
-
-
-    private float timerLimpieza = 0f;
-    private float timerPolea = 0f;
-
-
-    private AscensorController ascensor;
-    private bool estadoAnteriorMovimiento = false;
+    [Header("Mantenimiento")]
+    [Tooltip("Cada cuántos pasajeros transportados baja el mantenimiento")]
+    public int pasajerosPorDescuentoMantenimiento = 50;
+    [Tooltip("Cuánto baja el mantenimiento (en puntos de porcentaje)")]
+    public float descuentoMantenimiento = 5f;
 
     private void Start()
     {
-      
-        ascensor = FindObjectOfType<AscensorController>();
-        if (ascensor != null)
-        {
-            estadoAnteriorMovimiento = ascensor.enMovimiento;
-        }
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnPasajeroCompleto += AlCompletarPasajero;
     }
 
-    private void Update()
+    private void OnDestroy()
     {
-
-        if (GameManager.Instance.gameData.eventoOcurriendo) return;
-
-
-        timerLimpieza += Time.deltaTime;
-        if (timerLimpieza >= intervaloLimpeza)
-        {
-            GameManager.Instance.ModificarLimpieza(-decrementoLimpieza);
-            timerLimpieza = 0f;
-        }
-
-   
-        timerPolea += Time.deltaTime;
-        if (timerPolea >= intervaloPolea)
-        {
-            GameManager.Instance.ModificarPolea(-decrementoPolea);
-            timerPolea = 0f;
-        }
-
-  
-        DetectarCambioEstadoAscensor();
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnPasajeroCompleto -= AlCompletarPasajero;
     }
 
-    private void DetectarCambioEstadoAscensor()
+    private void AlCompletarPasajero()
     {
-        if (ascensor == null) return;
+        var gm = GameManager.Instance;
+        if (gm == null) return;
 
-        bool estadoActual = ascensor.enMovimiento;
+        var data = gm.GameData;
 
-        if (estadoActual != estadoAnteriorMovimiento)
+        data.pasajerosParaLimpieza++;
+        data.pasajerosParaMantenimiento++;
+
+        if (pasajerosPorDescuentoLimpieza > 0 && data.pasajerosParaLimpieza >= pasajerosPorDescuentoLimpieza)
         {
-           
-            if (!estadoActual || estadoActual) 
-            {
-                GameManager.Instance.ModificarPuerta(-decrementoPuerta);
-                Debug.Log($" Descuento de puerta por cambio de estado: -{decrementoPuerta}");
-            }
+            data.pasajerosParaLimpieza -= pasajerosPorDescuentoLimpieza;
+            gm.ModificarLimpieza(-descuentoLimpieza);
+            Debug.Log($"Desgaste por pasajeros: limpieza -{descuentoLimpieza}");
+        }
 
-            estadoAnteriorMovimiento = estadoActual;
+        if (pasajerosPorDescuentoMantenimiento > 0 && data.pasajerosParaMantenimiento >= pasajerosPorDescuentoMantenimiento)
+        {
+            data.pasajerosParaMantenimiento -= pasajerosPorDescuentoMantenimiento;
+            gm.ModificarPolea(-descuentoMantenimiento);
+            Debug.Log($"Desgaste por pasajeros: mantenimiento -{descuentoMantenimiento}");
         }
     }
 }

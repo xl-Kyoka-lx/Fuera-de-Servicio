@@ -33,6 +33,9 @@ public class Pasajero : MonoBehaviour
 
     [Header("=== EMOCIONES ===")]
     [Range(0, 100)] public float felicidad = 50f;
+    [Tooltip("Cuánto se aleja cada pasajero, hacia arriba o hacia abajo, de la popularidad general")]
+    public float variacionFelicidad = 25f;
+    private float sesgoFelicidad = 0f;
     public EmocionPasajero emocionActual = EmocionPasajero.Neutro;
 
     [Header("=== EMOJIS FLOTANTES ===")]
@@ -70,7 +73,8 @@ public class Pasajero : MonoBehaviour
         inicializado = true;
 
         // 🔑 Emoción aleatoria al spawnear
-        felicidad = UnityEngine.Random.Range(0f, 100f);
+        sesgoFelicidad = UnityEngine.Random.Range(-variacionFelicidad, variacionFelicidad);
+        RefrescarEmocionPorPopularidad();
         ActualizarEmocion();
 
         escalaOriginal = transform.localScale;
@@ -263,6 +267,8 @@ public class Pasajero : MonoBehaviour
     // === PAGO SEGÚN EMOCIÓN ===
     public int CalcularPago()
     {
+        RefrescarEmocionPorPopularidad();
+
         int pagoBase = 10;
 
         switch (emocionActual)
@@ -284,6 +290,20 @@ public class Pasajero : MonoBehaviour
     }
 
     // === EMOCIONES ===
+    // La felicidad sigue la popularidad general (promedio de mantenimiento y limpieza),
+    // con una variación propia de cada pasajero.
+    private void RefrescarEmocionPorPopularidad()
+    {
+        if (GameManager.Instance == null) return;
+
+        float popularidad = GameManager.Instance.GameData.contadorPopularidad;
+        felicidad = Mathf.Clamp(popularidad + sesgoFelicidad, 0f, 100f);
+
+        if (felicidad >= 70f) emocionActual = EmocionPasajero.Feliz;
+        else if (felicidad <= 30f) emocionActual = EmocionPasajero.Enojado;
+        else emocionActual = EmocionPasajero.Neutro;
+    }
+
     public void ModificarFelicidad(float cantidad)
     {
         felicidad = Mathf.Clamp(felicidad + cantidad, 0, 100);
@@ -308,6 +328,8 @@ public class Pasajero : MonoBehaviour
     // === EMOJI FLOTANTE ===
     private void MostrarEmoji()
     {
+        RefrescarEmocionPorPopularidad();
+
         GameObject prefabEmoji = emocionActual switch
         {
             EmocionPasajero.Feliz => emojiFelizPrefab,

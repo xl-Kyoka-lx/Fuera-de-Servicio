@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
@@ -145,7 +145,7 @@ public class EventoPuertaAtascada : EventoBase
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.ModificarPuerta(5f);
+            GameManager.Instance.ModificarPolea(5f);
         }
 
         if (PanelMensajesMonitor.Instance != null)
@@ -167,7 +167,7 @@ public class EventoPuertaAtascada : EventoBase
 
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.ModificarPuerta(-dañoAlContadorPuerta);
+            GameManager.Instance.ModificarPolea(-dañoAlContadorPuerta);
         }
 
         if (PanelMensajesMonitor.Instance != null)

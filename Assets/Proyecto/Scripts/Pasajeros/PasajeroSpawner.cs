@@ -59,6 +59,13 @@ public class PasajeroSpawner : MonoBehaviour
     {
         if (pasajeroPrefab == null) return;
 
+        // 🔑 La limpieza del día define cuántos pasajeros suben (100% = varios, 0% = nadie)
+        float factorLimpieza = 1f;
+        if (GameManager.Instance != null)
+            factorLimpieza = Mathf.Clamp01(GameManager.Instance.GameData.limpiezaDelDia / 100f);
+
+        if (factorLimpieza <= 0f || Random.value > factorLimpieza) return;
+
         // 🔑 Solo los spawns del lado donde está (o hacia donde va) su ascensor
         List<SpawnConfig> validos = new List<SpawnConfig>();
         foreach (var c in spawns)
@@ -75,7 +82,8 @@ public class PasajeroSpawner : MonoBehaviour
         SpawnConfig config = validos[Random.Range(0, validos.Count)];
 
         // 🔑 Crear el cúmulo
-        int cantidad = Random.Range(1, maxPasajerosPorCumulo + 1);
+        int maxCumuloHoy = Mathf.Max(1, Mathf.RoundToInt(maxPasajerosPorCumulo * factorLimpieza));
+        int cantidad = Random.Range(1, maxCumuloHoy + 1);
 
         Debug.Log($"👥 Creando cúmulo de {cantidad} pasajeros en {config.nombre}");
 

@@ -4,7 +4,7 @@ using System;
 public class ClockManager : MonoBehaviour
 {
     
-    public float segundosPorHora = 66.67f;
+    public float segundosPorHora = 10f;
     public int horaInicio = 8;
     public int horaFin = 17;
 
@@ -68,6 +68,10 @@ public class ClockManager : MonoBehaviour
 
             // Resetear el flag de resumen mostrado
             data.resumenNocheMostrado = false;
+
+            // Desgaste fijo del ascensor al terminar cada día
+            if (!data.ascensorAveriado)
+                GameManager.Instance.AplicarDesgasteDiario();
         }
 
         Debug.Log("🌙 Día terminado");

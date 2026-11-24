@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,18 @@ public class GameManager : MonoBehaviour
     public Transform targetPuerta;
     public Transform targetDinero;
 
+    [Header("Mantenimiento del ascensor")]
+    [Tooltip("Puntos de mantenimiento que se pierden al terminar cada día (se reparan en la tienda)")]
+    public float desgasteDiarioMantenimiento = 10f;
+    [Tooltip("El desgaste diario nunca deja el mantenimiento por debajo de este valor. Llegar a 0 solo ocurre jugando y hace perder")]
+    public float minimoTrasDesgasteDiario = 1f;
+
+    // Se avisa cuando el mantenimiento llega a 0 durante la partida
+    public System.Action OnMantenimientoCero;
+
+    // Se avisa cada vez que un pasajero llega a su destino y paga
+    public System.Action OnPasajeroCompleto;
+
 
 
 
@@ -30,6 +43,11 @@ public class GameManager : MonoBehaviour
 
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
+
+            // Cada vez que se carga una escena se fijan los valores con los que se calcula el día
+            SceneManager.sceneLoaded += AlCargarEscena;
+            if (gameData != null)
+                gameData.FijarValoresDelDia();
 
             if (gameData != null)
                 gameData.CapturarValoresIniciales();
@@ -66,6 +84,7 @@ public class GameManager : MonoBehaviour
     {
         gameData.contadorLimpieza = Mathf.Clamp(gameData.contadorLimpieza + cantidad, 0, 100);
         //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Limpieza);
+        gameData.ActualizarPopularidad();
         gameData.OnDataChanged?.Invoke();
     }
 
@@ -73,7 +92,16 @@ public class GameManager : MonoBehaviour
     {
         gameData.contadorGrasa = Mathf.Clamp(gameData.contadorGrasa + cantidad, 0, 100);
         //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Polea);
+        gameData.ActualizarPopularidad();
         gameData.OnDataChanged?.Invoke();
+
+        // Mantenimiento en 0 jugando = el ascensor se averió y se pierde
+        if (gameData.contadorGrasa <= 0f && !gameData.ascensorAveriado)
+        {
+            gameData.ascensorAveriado = true;
+            Debug.Log("El mantenimiento llegó a 0: el ascensor se averió");
+            OnMantenimientoCero?.Invoke();
+        }
     }
 
     public void ModificarPuerta(float cantidad)
@@ -84,6 +112,26 @@ public class GameManager : MonoBehaviour
     }
 
     
+    private void AlCargarEscena(Scene escena, LoadSceneMode modo)
+    {
+        if (gameData != null)
+            gameData.FijarValoresDelDia();
+    }
+
+    // Se llama al terminar el día: el mantenimiento baja un valor fijo,
+    // pero este desgaste nunca lo deja en 0 (solo se pierde jugando).
+    public void AplicarDesgasteDiario()
+    {
+        if (gameData == null) return;
+
+        float nuevo = Mathf.Max(minimoTrasDesgasteDiario, gameData.contadorGrasa - desgasteDiarioMantenimiento);
+        gameData.contadorGrasa = Mathf.Min(gameData.contadorGrasa, nuevo);
+        gameData.ActualizarPopularidad();
+        gameData.OnDataChanged?.Invoke();
+
+        Debug.Log($"Desgaste diario aplicado. Mantenimiento: {gameData.contadorGrasa:F0}%");
+    }
+
     public bool IntentarSubirPasajero()
     {
         if (!gameData.HayEspacio)
@@ -121,6 +169,7 @@ public class GameManager : MonoBehaviour
         gameData.pasajerosTotales = Mathf.Max(0, gameData.pasajerosTotales - 1);
         gameData.dineroTotal += gameData.pagoPorPasajero;
         gameData.OnDataChanged?.Invoke();
+        OnPasajeroCompleto?.Invoke();
 
         Debug.Log($" +{gameData.pagoPorPasajero} dinero. Pasajeros: {gameData.pasajerosTotales}");
     }
@@ -140,6 +189,8 @@ public class GameManager : MonoBehaviour
     }
     private void OnDestroy()
     {
+        SceneManager.sceneLoaded -= AlCargarEscena;
+
         Debug.Log($"+ [{Time.time:F2}s] GameManager.OnDestroy() en escena: '{gameObject.scene.name}'");
         Debug.Log($"+Este GameObject: {gameObject.name}");
         Debug.Log($"+ Instance actual: {Instance}");
