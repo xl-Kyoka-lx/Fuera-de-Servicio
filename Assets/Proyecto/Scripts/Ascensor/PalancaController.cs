@@ -51,6 +51,13 @@ public class PalancaController : MonoBehaviour
     private void OnMoverAscensorPerformed(InputAction.CallbackContext context)
 {
     if (enAnimacion) return;
+
+    // Durante 1 segundo tras terminar un evento, Espacio no arranca el ascensor
+    if (BloqueoEventos.ArranqueBloqueado)
+    {
+        Debug.LogWarning("PALANCA: bloqueado, acaba de terminar un evento");
+        return;
+    }
     if (ascensorManager != null && ascensorManager.enMovimiento) return;
 
     if (TutorialManager.ViajeBloqueado)

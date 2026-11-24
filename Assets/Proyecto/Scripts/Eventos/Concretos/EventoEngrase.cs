@@ -2,11 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-// Evento: Engrase de emergencia.
-// Hay una barra vertical con un cuadrado y una línea que se mueve sola.
-// Mientras el jugador mantiene presionado Espacio, el cuadrado sube; si lo suelta, baja.
-// Hay que mantener el cuadrado en contacto con la línea un total de 10 segundos
-// (acumulables, no hace falta que sean seguidos).
 public class EventoEngrase : EventoBase
 {
     [Header("Mensajes (salen en la TV)")]
@@ -15,13 +10,9 @@ public class EventoEngrase : EventoBase
     public Color colorMensaje = Color.yellow;
 
     [Header("UI de la barra (hijos del prefab)")]
-    [Tooltip("El fondo de la barra. Define la altura del recorrido")]
     public RectTransform barra;
-    [Tooltip("Cuadrado del jugador. Ancla abajo al centro, pivote al centro")]
     public RectTransform cuadrado;
-    [Tooltip("Línea que se mueve sola. Ancla abajo al centro, pivote al centro")]
     public RectTransform linea;
-    [Tooltip("Opcional: Image del cuadrado, cambia de color al tocar la línea")]
     public Image imagenCuadrado;
     public Color colorSinContacto = Color.white;
     public Color colorConContacto = Color.green;

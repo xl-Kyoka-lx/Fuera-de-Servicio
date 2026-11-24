@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8818526584387128897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8260872005418632769}
+  - component: {fileID: 6844812107676040192}
+  m_Layer: 0
+  m_Name: EventoColillasLatas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8260872005418632769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818526584387128897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1445.8512, y: 695.10547, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6844812107676040192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8818526584387128897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65798e5b7879b76449f6f2bc97126801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventoColillasLatas
+  duracionMaxima: 10
+  mensajeInicial: "\xA1Hay basura en la cabina!"
+  mensajeInstruccion: "Haz clic en cada c\xEDrculo cuando el anillo lo alcance"
+  colorMensaje: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  numeroCirculos: 5
+  radioCirculo: 55
+  escalaInicialAnillo: 3
+  margenPantalla: 160
+  tiempoInicial: 0.6
+  intervaloAparicion: 0.8
+  tiempoAproximacion: 1.5
+  ventanaAcierto: 0.25
+  ventanaFallo: 0.35
+  colorDisco: {r: 0.34591186, g: 0.34591186, b: 0.34591186, a: 0.9}
+  colorBorde: {r: 1, g: 1, b: 1, a: 1}
+  colorAnillo: {r: 1, g: 1, b: 1, a: 1}
+  colorAcierto: {r: 0.3, g: 0.9, b: 0.3, a: 0.9}
+  colorFallo: {r: 0.9, g: 0.25, b: 0.25, a: 0.9}
+  oscurecerFondo: 0.3
+  detenerTiempo: 1
+  aciertosRequeridos: 3
+  limpiezaPorAcierto: 4
+  limpiezaPorFallo: 4
+  ordenCanvas: 100

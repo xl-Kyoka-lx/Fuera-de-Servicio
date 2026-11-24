@@ -43,6 +43,9 @@ public class EventManager : MonoBehaviour
         if (GameManager.Instance != null && GameManager.Instance.GameData.eventoOcurriendo) return;
         if (Time.timeScale == 0f) return;
 
+        // No se lanzan eventos mientras se frena (ni 2 s después)
+        if (BloqueoEventos.EventosBloqueados) return;
+
         timerSiguienteEvento -= Time.deltaTime;
 
         if (timerSiguienteEvento <= 0f)
@@ -89,6 +92,9 @@ public class EventManager : MonoBehaviour
 
     private void TerminarEvento(GameObject evento)
     {
+        // Durante 1 segundo tras terminar un evento, Espacio no arranca el ascensor
+        BloqueoEventos.BloquearArranque(1f);
+
         eventoEnCurso = false;
 
         if (GameManager.Instance != null)

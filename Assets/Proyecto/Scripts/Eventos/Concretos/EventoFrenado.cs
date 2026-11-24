@@ -10,6 +10,9 @@ public class EventoFrenado : MonoBehaviour
     public float rangoBueno = 0.15f;
 
    
+    [Tooltip("Segundos sin eventos después de la ventana de frenado")]
+    public float segundosSinEventosTrasFrenar = 2f;
+
     public float dañoFallo = 10f;
     public float dañoBueno = 3f;
 
@@ -68,6 +71,9 @@ public class EventoFrenado : MonoBehaviour
         if (eventoActivo) return;
         
         eventoActivo = true;
+
+        // Mientras se frena, y 2 s después, no ocurren eventos
+        BloqueoEventos.BloquearEventos(ventanaTiempo + segundosSinEventosTrasFrenar);
         yaPresiono = false;
         progresoAlPresionar = -1f;
 

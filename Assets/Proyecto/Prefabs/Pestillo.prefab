@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7407656246306822782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8494937894057733027}
+  - component: {fileID: 2328892769290538108}
+  m_Layer: 0
+  m_Name: Pestillo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8494937894057733027
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7407656246306822782}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 560.9429, y: 296.81384, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2328892769290538108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7407656246306822782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0f21384f0c85e48aaec5e9f63a8521, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventoPestillo
+  duracionMaxima: 10
+  mensajeInicial: "\xA1El pestillo de la puerta se trab\xF3!"
+  mensajeInstruccion: "Presiona Espacio cuando el anillo llegue al c\xEDrculo"
+  colorMensaje: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  radioCirculo: 110
+  escalaInicialAnillo: 3
+  tiempoInicial: 0.6
+  tiempoAproximacion: 2
+  ventanaAcierto: 0.4
+  ventanaFallo: 0.9
+  intentosMaximos: 1
+  colorDisco: {r: 0.34509805, g: 0.34509805, b: 0.34509805, a: 0.9}
+  colorBorde: {r: 1, g: 1, b: 1, a: 1}
+  colorAnillo: {r: 1, g: 1, b: 1, a: 1}
+  colorAcierto: {r: 0.3, g: 0.9, b: 0.3, a: 0.9}
+  colorFallo: {r: 0.9, g: 0.25, b: 0.25, a: 0.9}
+  oscurecerFondo: 0.3
+  detenerTiempo: 1
+  bonoSiResuelve: 5
+  "da\xF1oSiFalla": 10
+  ordenCanvas: 100
+  inputActions: {fileID: -944628639613478452, guid: fdbfd515e0b7b6248865016c5937f77a, type: 3}
+  actionMapName: Gameplay
+  actionName: MoverAscensor

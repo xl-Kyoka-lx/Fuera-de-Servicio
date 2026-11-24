@@ -38,6 +38,9 @@ public class PasajeroSpawner : MonoBehaviour
     public int maxPasajerosPorCumulo = 5;
     public bool spawnAutomatico = true;
 
+    [Tooltip("Si está marcado, mientras el ascensor viaja los pasajeros aparecen en el lado al que va a llegar. Si no, solo aparecen con el ascensor detenido")]
+    public bool spawnMientrasViaja = true;
+
     private float timer = 0f;
 
     private void Update()
@@ -56,11 +59,20 @@ public class PasajeroSpawner : MonoBehaviour
     {
         if (pasajeroPrefab == null) return;
 
-        // 🔑 Elegir un spawn config al azar
-        SpawnConfig config = spawns[Random.Range(0, spawns.Count)];
+        // 🔑 Solo los spawns del lado donde está (o hacia donde va) su ascensor
+        List<SpawnConfig> validos = new List<SpawnConfig>();
+        foreach (var c in spawns)
+        {
+            if (c.spawnPoint == null) continue;
+            if (!AscensorEnEseLado(c)) continue;
+            if (!ascensorManager.HayEspacioEn(c.ascensorIndex)) continue;
+            validos.Add(c);
+        }
 
-        // 🔑 Verificar que el ascensor tenga espacio
-        if (!ascensorManager.HayEspacioEn(config.ascensorIndex)) return;
+        if (validos.Count == 0) return;
+
+        // 🔑 Elegir uno al azar entre los válidos
+        SpawnConfig config = validos[Random.Range(0, validos.Count)];
 
         // 🔑 Crear el cúmulo
         int cantidad = Random.Range(1, maxPasajerosPorCumulo + 1);
@@ -71,6 +83,25 @@ public class PasajeroSpawner : MonoBehaviour
         {
             CrearPasajero(config);
         }
+    }
+
+    // Verdadero si el ascensor de este spawn está en el lado del spawn,
+    // o va a llegar a él (si está viajando y spawnMientrasViaja está marcado).
+    private bool AscensorEnEseLado(SpawnConfig config)
+    {
+        if (config.ascensorIndex < 0 || config.ascensorIndex >= ascensorManager.ascensores.Count)
+            return false;
+
+        var asc = ascensorManager.ascensores[config.ascensorIndex];
+
+        if (asc.enMovimiento && !spawnMientrasViaja)
+            return false;
+
+        // estaAbajo solo cambia al llegar, así que en viaje el destino es el lado contrario
+        bool ladoAbajo = asc.enMovimiento ? !asc.estaAbajo : asc.estaAbajo;
+
+        return (config.rol == RolPasajero.SubeEnInicio && ladoAbajo)
+            || (config.rol == RolPasajero.SubeEnFinal && !ladoAbajo);
     }
 
     private void CrearPasajero(SpawnConfig config)

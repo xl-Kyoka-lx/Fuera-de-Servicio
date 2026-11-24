@@ -5058,9 +5058,21 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 2
-    umbral: 10
-    probabilidadBase: 0.23
-    probabilidadMaxima: 0.869
+    umbral: 100
+    probabilidadBase: 0.5
+    probabilidadMaxima: 0.5
+    condicionAscensor: 1
+  - nombre: Pestillo trabado
+    prefab: {fileID: 7407656246306822782, guid: 75c3dccc3843ac047810eed01ba701db, type: 3}
+    peso: 0.495
+    requiereAscensorDetenido: 0
+    requiereAscensorCerca: 0
+    requiereAscensorLejos: 0
+    sistema: 2
+    umbral: 100
+    probabilidadBase: 0.5
+    probabilidadMaxima: 0.5
+    condicionAscensor: 1
   - nombre: Polea Trabada
     prefab: {fileID: 9161022262547082765, guid: 26de2234400544f4aa325a3a54811abc, type: 3}
     peso: 0.495
@@ -5068,21 +5080,37 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 1
-    umbral: 10
-    probabilidadBase: 0.2
-    probabilidadMaxima: 0.869
+    umbral: 2.3
+    probabilidadBase: 0.3
+    probabilidadMaxima: 0.3
+    condicionAscensor: 0
   - nombre: engrase
     prefab: {fileID: 4511150583319582439, guid: 49a110ccd6322d94dbb427771ec6491c, type: 3}
     peso: 0.495
-    requiereAscensorDetenido: 0
+    requiereAscensorDetenido: 1
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 1
     umbral: 10
     probabilidadBase: 0.3
     probabilidadMaxima: 0.869
+    condicionAscensor: 1
+  - nombre: Osu!
+    prefab: {fileID: 8818526584387128897, guid: 1b9227cc432c9fe4280350ea0f8732d9, type: 3}
+    peso: 0.495
+    requiereAscensorDetenido: 0
+    requiereAscensorCerca: 0
+    requiereAscensorLejos: 0
+    sistema: 0
+    umbral: 1
+    probabilidadBase: 0.3
+    probabilidadMaxima: 0.869
+    condicionAscensor: 1
+  ascensorManager: {fileID: 1164373271}
+  indiceAscensorJugador: 0
   intervaloChequeo: 3
   debugLogs: 1
+  debugDetalle: 1
 --- !u!1 &1058982171
 GameObject:
   m_ObjectHideFlags: 0
@@ -8547,6 +8575,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1827762343}
   m_CullTransparentMesh: 1
+--- !u!1 &1847579407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1847579408}
+  m_Layer: 0
+  m_Name: ColillasLatas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1847579408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1847579407}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 560.9429, y: 296.81384, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1864734393
 GameObject:
   m_ObjectHideFlags: 0
@@ -9129,5 +9188,6 @@ SceneRoots:
   - {fileID: 1443386814}
   - {fileID: 529247611}
   - {fileID: 2003216405}
+  - {fileID: 1847579408}
   - {fileID: 1517004199}
   - {fileID: 133869399}
