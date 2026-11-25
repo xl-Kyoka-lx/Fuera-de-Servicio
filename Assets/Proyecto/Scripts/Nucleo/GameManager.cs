@@ -25,6 +25,26 @@ public class GameManager : MonoBehaviour
     [Tooltip("El desgaste diario nunca deja el mantenimiento por debajo de este valor. Llegar a 0 solo ocurre jugando y hace perder")]
     public float minimoTrasDesgasteDiario = 1f;
 
+    [Header("Popularidad al terminar el día (al darle a Continuar)")]
+    [Tooltip("Si el mantenimiento o la limpieza están bajo este valor (%), restan popularidad; si están sobre él, suman")]
+    public float umbralPopularidad = 60f;
+    [Tooltip("Puntos de popularidad que se pierden por cada uno (mantenimiento y limpieza) que quede bajo el umbral")]
+    public float popularidadPerdidaMediana = 8f;
+    [Tooltip("Puntos de popularidad que se ganan por cada uno que quede sobre el umbral")]
+    public float popularidadGanadaPequena = 3f;
+
+    [Header("Valores actuales (solo mirar, se actualizan solos)")]
+    public float actualMantenimiento;
+    public float actualLimpieza;
+    public float actualPopularidad;
+
+    [Header("Pruebas: marca la casilla y mueve los deslizadores")]
+    [Tooltip("Marcada: cada cambio que hagas aquí se aplica al instante")]
+    public bool aplicarValoresDePrueba = false;
+    [Range(0, 100)] public float pruebaMantenimiento = 100f;
+    [Range(0, 100)] public float pruebaLimpieza = 100f;
+    [Range(0, 100)] public float pruebaPopularidad = 50f;
+
     // Se avisa cuando el mantenimiento llega a 0 durante la partida
     public System.Action OnMantenimientoCero;
 
@@ -112,6 +132,30 @@ public class GameManager : MonoBehaviour
     }
 
     
+    // Sube (positivo) o baja (negativo) la popularidad
+    public void ModificarPopularidad(float cantidad)
+    {
+        if (gameData == null) return;
+
+        gameData.contadorPopularidad = Mathf.Clamp(gameData.contadorPopularidad + cantidad, 0f, 100f);
+        gameData.OnDataChanged?.Invoke();
+    }
+
+    // Al darle a Continuar en la noche: el mantenimiento y la limpieza ajustan la popularidad.
+    // Cada uno, si está bajo el umbral resta una cantidad mediana; si no, suma una pequeña.
+    public void AplicarPopularidadDelDia()
+    {
+        if (gameData == null) return;
+
+        float cambio = 0f;
+        cambio += gameData.contadorGrasa < umbralPopularidad ? -popularidadPerdidaMediana : popularidadGanadaPequena;
+        cambio += gameData.contadorLimpieza < umbralPopularidad ? -popularidadPerdidaMediana : popularidadGanadaPequena;
+
+        ModificarPopularidad(cambio);
+
+        Debug.Log($"Popularidad del día: {cambio:+0;-0;0} (mantenimiento {gameData.contadorGrasa:F0}%, limpieza {gameData.contadorLimpieza:F0}%). Ahora: {gameData.contadorPopularidad:F0}");
+    }
+
     private void AlCargarEscena(Scene escena, LoadSceneMode modo)
     {
         if (gameData != null)
@@ -187,6 +231,31 @@ public class GameManager : MonoBehaviour
         gameData.OnDataChanged?.Invoke();
         Debug.Log($" Pasajero subió. Total: {gameData.pasajerosTotales}");
     }
+    private void Update()
+    {
+        if (gameData == null) return;
+
+        actualMantenimiento = gameData.contadorGrasa;
+        actualLimpieza = gameData.contadorLimpieza;
+        actualPopularidad = gameData.contadorPopularidad;
+    }
+
+    // Se llama sola cuando cambias algo en el Inspector
+    private void OnValidate()
+    {
+        if (!aplicarValoresDePrueba || gameData == null) return;
+
+        gameData.contadorGrasa = pruebaMantenimiento;
+        gameData.contadorLimpieza = pruebaLimpieza;
+        gameData.contadorPopularidad = pruebaPopularidad;
+
+        // Para que el cambio se note hoy mismo y no solo desde el día siguiente
+        gameData.mantenimientoDelDia = Mathf.Clamp(pruebaMantenimiento, 1f, 100f);
+        gameData.limpiezaDelDia = pruebaLimpieza;
+
+        gameData.OnDataChanged?.Invoke();
+    }
+
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= AlCargarEscena;

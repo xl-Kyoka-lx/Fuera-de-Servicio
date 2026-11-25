@@ -3304,7 +3304,6 @@ MonoBehaviour:
   eventosMantenimientoEn0: 12
   eventosBasuraEn100: 1
   eventosBasuraEn0: 6
-  duracionDiaEstimada: 240
   margenInicio: 15
   margenFinal: 20
   pausaEntreEventos: 4
@@ -6209,6 +6208,8 @@ MonoBehaviour:
   pasajerosMinimosParaAvisar: 0
   esperaMin: 2
   esperaMax: 4
+  penalizacionPorArranqueIncorrecto: 8
+  recuperacionPorViajeLimpio: 2
   mensajeAvisando: Avisando a la cabina de abajo...
   mensajeLista: Cabina de abajo lista
   mensajeSinW: "\xA1Frenos de emergencia! Arrancaste sin avisar a la cabina de abajo (W)"
@@ -6294,7 +6295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d172098defb62cd45ac4cfb7c095d5f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClockManager
-  segundosPorHora: 3
+  duracionDiaSegundos: 600
   horaInicio: 8
   horaFin: 17
   horaActual: 8
@@ -6700,6 +6701,16 @@ MonoBehaviour:
   targetDinero: {fileID: 0}
   desgasteDiarioMantenimiento: 10
   minimoTrasDesgasteDiario: 1
+  umbralPopularidad: 60
+  popularidadPerdidaMediana: 8
+  popularidadGanadaPequena: 3
+  actualMantenimiento: 0
+  actualLimpieza: 0
+  actualPopularidad: 0
+  aplicarValoresDePrueba: 0
+  pruebaMantenimiento: 2.6
+  pruebaLimpieza: 2.2
+  pruebaPopularidad: 4.1
 --- !u!1 &1410426923
 GameObject:
   m_ObjectHideFlags: 0

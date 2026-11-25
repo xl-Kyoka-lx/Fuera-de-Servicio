@@ -57,6 +57,9 @@ public class NocheManager : MonoBehaviour
 
     public void OnContinuar()
     {
+        // El mantenimiento y la limpieza con los que termina la noche ajustan la popularidad
+        if (GameManager.Instance != null)
+            GameManager.Instance.AplicarPopularidadDelDia();
 
         if (panelPago != null)
             panelPago.SetActive(true);

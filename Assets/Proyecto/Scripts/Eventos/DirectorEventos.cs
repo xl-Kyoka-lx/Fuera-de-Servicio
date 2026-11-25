@@ -1,19 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Decide cuántos eventos tiene cada día y cuándo salen.
-//
-// La cantidad del día sigue dependiendo del mantenimiento y la limpieza, y cada evento sigue
-// teniendo una hora programada (para repartirlos en el día). Lo que cambia es el "cuándo":
-// un evento vencido espera a su momento natural, según lo que hace el jugador.
-//
-//   Pestillo trabado      -> al pulsar W (la puerta no cierra)
-//   Engrase               -> al pulsar ESPACIO para partir (el ascensor no arranca)
-//   Puerta atascada       -> al llegar el ascensor
-//   Basura                -> al llegar el ascensor, después de la puerta
-//   Polea trabada         -> en cualquier momento
-//
-// En la llegada puede salir uno, el otro, los dos o ninguno: depende de lo que haya vencido.
 public class DirectorEventos : MonoBehaviour
 {
     public enum Momento
@@ -44,9 +31,7 @@ public class DirectorEventos : MonoBehaviour
     public float eventosBasuraEn0 = 6f;
 
     [Header("Horario del día")]
-    [Tooltip("Duración estimada del día jugando, en segundos (incluye los viajes). Los eventos se reparten dentro de este tiempo")]
-    public float duracionDiaEstimada = 240f;
-    [Tooltip("Segundos sin eventos al empezar el día")]
+    [Tooltip("Segundos sin eventos al empezar el día (el día completo dura lo que diga el ClockManager)")]
     public float margenInicio = 15f;
     [Tooltip("Segundos sin eventos antes del final estimado")]
     public float margenFinal = 20f;
@@ -75,6 +60,7 @@ public class DirectorEventos : MonoBehaviour
     private bool ventanaLlegada = false;
     private float llegadaListaDesde = 0f;
 
+    [System.Obsolete]
     private void Start()
     {
         if (estadoManager == null) estadoManager = FindAnyObjectByType<EventoEstadoManager>();
@@ -110,6 +96,9 @@ public class DirectorEventos : MonoBehaviour
     {
         if (!PuedeActuar()) return;
 
+        // El reparto de eventos sigue al reloj del día, que corre a ritmo fijo
+        if (clockManager != null) tiempoDia = clockManager.SegundosTranscurridos;
+
         if (!yaProgramado)
         {
             ProgramarDia();
@@ -133,8 +122,6 @@ public class DirectorEventos : MonoBehaviour
             cooldown = pausaEntreEventos;
             llegadaListaDesde = Time.unscaledTime + pausaEntreEventosEnLlegada;
         }
-
-        tiempoDia += Time.deltaTime;
 
         ProcesarLlegada();
 
@@ -308,8 +295,10 @@ public class DirectorEventos : MonoBehaviour
     {
         if (configs.Count == 0 || cantidad <= 0) return;
 
-        float inicio = margenInicio;
-        float fin = Mathf.Max(inicio + 1f, duracionDiaEstimada - margenFinal);
+        // Se reparten desde ahora hasta poco antes del final del día
+        float duracionDia = clockManager != null ? clockManager.duracionDiaSegundos : 600f;
+        float inicio = tiempoDia + margenInicio;
+        float fin = Mathf.Max(inicio + 1f, duracionDia - margenFinal);
         float tramo = (fin - inicio) / cantidad;
 
         for (int i = 0; i < cantidad; i++)

@@ -29,6 +29,12 @@ public class ProcesoPartida : MonoBehaviour
     public float esperaMin = 2f;
     public float esperaMax = 4f;
 
+    [Header("Popularidad")]
+    [Tooltip("Puntos de popularidad que se pierden al arrancar mal")]
+    public float penalizacionPorArranqueIncorrecto = 8f;
+    [Tooltip("Puntos que se recuperan al terminar un viaje sin errores")]
+    public float recuperacionPorViajeLimpio = 2f;
+
     [Header("Mensajes de la TV")]
     public string mensajeAvisando = "Avisando a la cabina de abajo...";
     public string mensajeLista = "Cabina de abajo lista";
@@ -57,7 +63,9 @@ public class ProcesoPartida : MonoBehaviour
     private float esperaRestante;
     private float mensajeTemporalHasta;
     private bool mensajePropioEnPantalla;
+    private bool huboErrorEnEsteCiclo;
 
+    [Obsolete]
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -117,6 +125,9 @@ public class ProcesoPartida : MonoBehaviour
         // Llegó el ascensor: empieza a cargarse el siguiente viaje
         if (!enMovimiento && estabaEnMovimiento)
         {
+            RecuperarPopularidadSiViajeLimpio();
+            huboErrorEnEsteCiclo = false;
+
             fase = Fase.Cargando;
             esperaRestante = 0f;
             mensajeTemporalHasta = 0f;
@@ -209,11 +220,27 @@ public class ProcesoPartida : MonoBehaviour
         // Que no se pueda repetir el error pulsando ESPACIO muchas veces seguidas
         BloqueoEventos.BloquearArranque(duracionMensajeError);
 
+        huboErrorEnEsteCiclo = true;
+
         // En el tutorial el error enseña, pero no cuenta contra la popularidad
         if (!TutorialManager.EnCurso)
+        {
+            if (GameManager.Instance != null)
+                GameManager.Instance.ModificarPopularidad(-penalizacionPorArranqueIncorrecto);
+
             OnErrorDeProcedimiento?.Invoke("arranque");
+        }
 
         return false;
+    }
+
+    // Un viaje sin errores sube de a poco la popularidad
+    private void RecuperarPopularidadSiViajeLimpio()
+    {
+        if (huboErrorEnEsteCiclo || TutorialManager.EnCurso) return;
+        if (GameManager.Instance == null) return;
+
+        GameManager.Instance.ModificarPopularidad(recuperacionPorViajeLimpio);
     }
 
     // === PUERTAS ===

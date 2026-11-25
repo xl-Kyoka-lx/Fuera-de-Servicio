@@ -20,6 +20,7 @@ public class GameData : ScriptableObject
     public int capacidadMaxima = 10;
 
     [Range(0, 100)] public float contadorPopularidad = 50f;
+
     [Range(0, 100)] public float contadorLimpieza = 100f;
     [Range(0, 100)] public float contadorGrasa = 100f;
     [Range(0, 100)] public float contadorPuerta = 100f;
@@ -57,10 +58,11 @@ public class GameData : ScriptableObject
     [System.NonSerialized] public int pasajerosParaLimpieza = 0;
     [System.NonSerialized] public int pasajerosParaMantenimiento = 0;
 
-    // La popularidad es el promedio de mantenimiento y limpieza
+    // La popularidad ya no se calcula: se mueve con GameManager.ModificarPopularidad.
+    // Aquí solo se mantiene entre 0 y 100.
     public void ActualizarPopularidad()
     {
-        contadorPopularidad = Mathf.Clamp((contadorGrasa + contadorLimpieza) * 0.5f, 0f, 100f);
+        contadorPopularidad = Mathf.Clamp(contadorPopularidad, 0f, 100f);
     }
 
     public void FijarValoresDelDia()
