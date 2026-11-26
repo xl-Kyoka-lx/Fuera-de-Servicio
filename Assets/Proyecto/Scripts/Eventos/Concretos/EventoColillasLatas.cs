@@ -35,6 +35,12 @@ public class EventoColillasLatas : EventoBase
     [Tooltip("Un clic más temprano que esto se ignora; entre este valor y la ventana de acierto cuenta como fallo")]
     public float ventanaFallo = 0.5f;
 
+    [Header("Arte (opcional)")]
+    [Tooltip("Sprite del círculo relleno. Si se deja vacío se dibuja uno por código. Si el arte ya trae color, pon Color Disco en blanco")]
+    public Sprite spriteDiscoArte;
+    [Tooltip("Sprite del anillo que se cierra. Si se deja vacío se dibuja uno por código. Si el arte ya trae color, pon Color Anillo en blanco")]
+    public Sprite spriteAnilloArte;
+
     [Header("Colores")]
     public Color colorDisco = new Color(0.45f, 0.35f, 0.25f, 0.9f);
     public Color colorBorde = Color.white;
@@ -86,7 +92,6 @@ public class EventoColillasLatas : EventoBase
     private bool minijuegoActivo = false;
     private bool terminando = false;
     private float timerFin = 0f;
-    private float timeScaleAnterior = 1f;
     private bool tiempoDetenido = false;
 
     private const float DURACION_DESVANECER = 0.25f;
@@ -117,8 +122,7 @@ public class EventoColillasLatas : EventoBase
 
         if (detenerTiempo)
         {
-            timeScaleAnterior = Time.timeScale;
-            Time.timeScale = 0f;
+            PausaJuego.Pedir(this);
             tiempoDetenido = true;
         }
 
@@ -129,25 +133,24 @@ public class EventoColillasLatas : EventoBase
     {
         if (!tiempoDetenido) return;
         tiempoDetenido = false;
-        Time.timeScale = timeScaleAnterior;
+        PausaJuego.Liberar(this);
     }
 
     private void OnDestroy()
     {
         RestaurarTiempo();
 
-        if (texDisco != null) Destroy(texDisco);
-        if (texAnillo != null) Destroy(texAnillo);
-        if (spriteDisco != null) Destroy(spriteDisco);
-        if (spriteAnillo != null) Destroy(spriteAnillo);
+        // Solo se destruye lo creado por código; los sprites de arte son assets del proyecto.
+        if (texDisco != null) { Destroy(spriteDisco); Destroy(texDisco); }
+        if (texAnillo != null) { Destroy(spriteAnillo); Destroy(texAnillo); }
     }
 
     // ---------- Creación de visuales por código (sin arte externo) ----------
 
     private void CrearSprites()
     {
-        spriteDisco = CrearSprite(256, 0f, out texDisco);
-        spriteAnillo = CrearSprite(256, 0.93f, out texAnillo);
+        spriteDisco = spriteDiscoArte != null ? spriteDiscoArte : CrearSprite(256, 0f, out texDisco);
+        spriteAnillo = spriteAnilloArte != null ? spriteAnilloArte : CrearSprite(256, 0.93f, out texAnillo);
     }
 
     // radioInterno01: 0 = círculo lleno; 0.93 = anillo delgado.

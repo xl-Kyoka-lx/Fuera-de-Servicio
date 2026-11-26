@@ -207,8 +207,9 @@ public class ProcesoPartida : MonoBehaviour
     {
         if (fase == Fase.Lista)
         {
-            // Un evento (el engrase) puede impedir que el ascensor arranque:
-            // el jugador lo resuelve y vuelve a pulsar ESPACIO
+            // Tutorial: el primer ESPACIO con la cabina lista muestra el engrase
+            if (TutorialManager.Instance != null && TutorialManager.Instance.IntentarEventoAlArrancar()) return false;
+
             if (director != null && director.IntentarEventoAlArrancar()) return false;
 
             return true;

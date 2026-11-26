@@ -38,6 +38,7 @@ public class AscensorManager : MonoBehaviour
         // 🔑 NUEVO: Lista de pasajeros dentro (invisibles pero existentes)
         [HideInInspector] public List<Pasajero> pasajerosDentro = new List<Pasajero>();
 
+        // Máximo de pasajeros por cabina: con 5/5 nadie más sube
         public int CapacidadMaxima => 5;
         public bool HayEspacio => pasajerosDentro.Count < CapacidadMaxima;
         public int PasajerosTotales => pasajerosDentro.Count;
@@ -59,10 +60,16 @@ public class AscensorManager : MonoBehaviour
     
     public float duracionViaje = 30f;
 
+    [Tooltip("Segundos entre un pasajero y el siguiente al bajar de la cabina")]
+    public float separacionAlBajar = 0.4f;
+
   
     public event Action OnLlegoAlInicio;
     public event Action OnLlegoAlFinal;
     public event Action OnSalioDelPunto;
+
+    // Cambió la cantidad de pasajeros dentro de alguna cabina (subió o bajaron)
+    public event Action OnPasajerosCambiados;
 
 
     public bool enMovimiento
@@ -148,6 +155,7 @@ public class AscensorManager : MonoBehaviour
         if (!asc.HayEspacio) return false;
 
         asc.pasajerosDentro.Add(pasajero);
+        OnPasajerosCambiados?.Invoke();
         Debug.Log($"👥 Ascensor {ascensorIndex}: {asc.PasajerosTotales}/{asc.CapacidadMaxima} pasajeros");
         return true;
     }
@@ -161,17 +169,6 @@ public class AscensorManager : MonoBehaviour
     
 
     // 🔑 Bajar todos los pasajeros de un ascensor (devuelve cuántos bajaron)
-    /*public int BajarTodosLosPasajeros(int ascensorIndex)
-    {
-        if (ascensorIndex < 0 || ascensorIndex >= ascensores.Count) return 0;
-
-        var asc = ascensores[ascensorIndex];
-        int cantidad = asc.pasajerosTotales;
-        asc.pasajerosTotales = 0;
-
-        Debug.Log($"👥 Ascensor {ascensorIndex}: bajaron {cantidad} pasajeros");
-        return cantidad;
-    }*/
 
 
     private void VerificarUmbralFrenado()
@@ -303,49 +300,6 @@ public class AscensorManager : MonoBehaviour
     }
 
  
-    public Vector3 ObtenerPosicionInterior()
-    {
-      
-        return ObtenerPosicionInterior(0);
-    }
-
-    public Vector3 ObtenerPosicionInterior(int index)
-    {
-        if (index < 0 || index >= ascensores.Count) return Vector3.zero;
-
-        var asc = ascensores[index];
-        if (asc.puntoInterior == null) return Vector3.zero;
-
-        Vector3 offset = new Vector3(
-            UnityEngine.Random.Range(-0.3f, 0.3f),
-            UnityEngine.Random.Range(-0.2f, 0.2f),
-            0
-        );
-        return asc.puntoInterior.position + offset;
-    }
-
-  
-    public Transform ObtenerAscensorCerca()
-    {
-        foreach (var asc in ascensores)
-        {
-            if (asc.nombre.ToLower().Contains("cerca") ||
-                asc.nombre.ToLower().Contains("arriba"))
-                return asc.ascensorTransform;
-        }
-        return ascensores.Count > 0 ? ascensores[0].ascensorTransform : null;
-    }
-
-    public Transform ObtenerAscensorLejos()
-    {
-        foreach (var asc in ascensores)
-        {
-            if (asc.nombre.ToLower().Contains("lejos") ||
-                asc.nombre.ToLower().Contains("abajo"))
-                return asc.ascensorTransform;
-        }
-        return ascensores.Count > 1 ? ascensores[1].ascensorTransform : null;
-    }
 
 
     private void BajarPasajerosDelAscensor(int ascensorIndex)
@@ -362,12 +316,17 @@ public class AscensorManager : MonoBehaviour
         // 🔑 Copiar la lista para iterar mientras se modifican
         var pasajerosACopiar = new List<Pasajero>(asc.pasajerosDentro);
         asc.pasajerosDentro.Clear();
+        OnPasajerosCambiados?.Invoke();
 
+        // Salen por la puerta de la cabina, uno detrás del otro
+        Vector3 puerta = asc.ascensorTransform != null ? asc.ascensorTransform.position : puntoSalida.position;
+        int orden = 0;
         foreach (var pasajero in pasajerosACopiar)
         {
             if (pasajero != null)
             {
-                pasajero.BajarDelAscensor(puntoSalida.position);
+                pasajero.BajarDelAscensor(puntoSalida.position, puerta, asc.estaAbajo, orden * separacionAlBajar);
+                orden++;
             }
         }
     }

@@ -8,7 +8,9 @@ public enum EstadoPasajero
     Subiendo,
     DentroDelAscensor,
     Bajando,
-    Terminado
+    Terminado,
+    CambiandoDeAnden,   // va al andén de la otra cabina (la suya ya cerró la puerta)
+    Retirandose         // terminó el día: se va sin subir
 }
 
 public enum RolPasajero
@@ -54,16 +56,51 @@ public class Pasajero : MonoBehaviour
     public EstadoPasajero estado = EstadoPasajero.EsperandoEnAnden;
     public RolPasajero rol = RolPasajero.SubeEnInicio;
 
+    // Pasajero bondadoso: al bajar conversa con el jugador y deja una propina
+    // NonSerialized: si Unity serializa este campo, al instanciar el prefab lo crea vacío (nunca null)
+    // y TODOS los pasajeros quedan marcados como bondadosos -> Camila nunca se asigna.
+    [NonSerialized] public PasajeroBondadosoData datosBondadoso;
+    public bool EsBondadoso => datosBondadoso != null && !string.IsNullOrEmpty(datosBondadoso.id);
+
     private AscensorManager ascensorManager;
     private int ascensorIndex = 0;
     private bool inicializado = false;
     private Vector3 escalaOriginal;
     private Transform spawnPadre; // 🔑 Para volver al spawn al bajar
 
+    // Cabina que está esperando (la cambia el PasajeroSpawner si esa cabina ya cerró la puerta)
+    public int AscensorIndex => ascensorIndex;
+    public bool EstaEsperando => estado == EstadoPasajero.EsperandoEnAnden;
+    public bool EstaAfuera => estado == EstadoPasajero.EsperandoEnAnden
+                           || estado == EstadoPasajero.Subiendo
+                           || estado == EstadoPasajero.CambiandoDeAnden;
+
     public Action<Pasajero> OnPasajeroTerminado;
 
+    // === FILA EN EL ANDÉN ===
+    // El PasajeroSpawner le dice a qué puesto de la fila ir y si ya le toca subir.
+    public Func<Pasajero, bool> PuedeSubir;
+    private Vector3 destinoFila;
+    private float velocidadFila;
+    private bool tieneDestino = false;
+    public bool Deslizando => tieneDestino;
+
+    // Saliendo de pantalla o esperando afuera para entrar al andén de la otra cabina
+    private bool enTransito = false;
+
+    [Header("=== AL CAMINAR ===")]
+    [Tooltip("Hacia dónde mira el dibujo original. Al caminar se da vuelta (espejo) para mirar hacia donde va")]
+    public bool spriteMiraALaDerecha = true;
+
+    public void MarcarBondadoso(PasajeroBondadosoData datos)
+    {
+        datosBondadoso = datos;
+        RefrescarEmocionPorPopularidad();
+    }
+
     // === INICIALIZACIÓN ===
-    public void Inicializar(RolPasajero rolAsignado, int index, AscensorManager manager, Transform padre = null)
+    // conPop = false: aparece de inmediato (entra deslizándose a la fila en vez de hacer pop)
+    public void Inicializar(RolPasajero rolAsignado, int index, AscensorManager manager, Transform padre = null, bool conPop = true)
     {
         rol = rolAsignado;
         ascensorIndex = index;
@@ -78,12 +115,61 @@ public class Pasajero : MonoBehaviour
         ActualizarEmocion();
 
         escalaOriginal = transform.localScale;
+
+        if (!conPop)
+        {
+            MostrarEmoji();
+            return;
+        }
+
         transform.localScale = Vector3.zero;
 
         StartCoroutine(EfectoPop());
 
         // 🔑 Mostrar emoji al aparecer (después del pop)
         StartCoroutine(MostrarEmojiDespuesDePop());
+    }
+
+    // Se desliza hasta esa posición (su puesto en la fila)
+    public void IrA(Vector3 posicion, float velocidad)
+    {
+        posicion.z = transform.position.z;
+        velocidadFila = velocidad;
+
+        if ((posicion - transform.position).sqrMagnitude < 0.000001f)
+        {
+            tieneDestino = false;
+            return;
+        }
+
+        destinoFila = posicion;
+        tieneDestino = true;
+    }
+
+    // Espejo: mira hacia el lado al que camina
+    private void MirarHacia(float dx)
+    {
+        if (Mathf.Abs(dx) < 0.0001f) return;
+
+        var sr = GetComponent<SpriteRenderer>();
+        if (sr == null) return;
+
+        bool vaALaDerecha = dx > 0f;
+        sr.flipX = vaALaDerecha != spriteMiraALaDerecha;
+    }
+
+    private void MoverHaciaDestino()
+    {
+        if (!tieneDestino) return;
+
+        MirarHacia(destinoFila.x - transform.position.x);
+        transform.position = Vector3.MoveTowards(transform.position, destinoFila, velocidadFila * Time.deltaTime);
+
+        if ((transform.position - destinoFila).sqrMagnitude < 0.000001f)
+        {
+            transform.position = destinoFila;
+            tieneDestino = false;
+        }
     }
 
     private IEnumerator MostrarEmojiDespuesDePop()
@@ -97,10 +183,80 @@ public class Pasajero : MonoBehaviour
     {
         if (!inicializado || ascensorManager == null) return;
 
+        if (estado == EstadoPasajero.EsperandoEnAnden || estado == EstadoPasajero.CambiandoDeAnden)
+            MoverHaciaDestino();
+
+        // Llegó a su puesto en la fila del otro andén
+        if (estado == EstadoPasajero.CambiandoDeAnden && !enTransito && !tieneDestino)
+        {
+            timerEmojiEspera = 0f;
+            estado = EstadoPasajero.EsperandoEnAnden;
+        }
+
         if (estado == EstadoPasajero.EsperandoEnAnden)
         {
             ProcesarEspera();
         }
+    }
+
+    // === CAMBIO DE ANDÉN ===
+    // Su cabina cerró la puerta sin que alcanzara a subir. El cambio tiene dos partes:
+    //  1) SalirParaCambiar: se da vuelta y sale caminando por atrás de su fila (por donde llegó).
+    //  2) EntrarEnAnden: después de esperar afuera, aparece por atrás de la fila de la otra cabina
+    //     y camina hasta su puesto (el spawner le da el puesto con IrA).
+    public void SalirParaCambiar(Vector3 salida, float velocidad)
+    {
+        if (estado != EstadoPasajero.EsperandoEnAnden) return;
+
+        estado = EstadoPasajero.CambiandoDeAnden;
+        enTransito = true;
+        IrA(salida, velocidad);
+    }
+
+    public void EntrarEnAnden(int nuevoIndice, Transform nuevoPadre, float escala, Vector3 entrada)
+    {
+        if (estado != EstadoPasajero.CambiandoDeAnden) return;
+
+        ascensorIndex = nuevoIndice;
+        spawnPadre = nuevoPadre;
+        transform.SetParent(nuevoPadre, true);
+        entrada.z = transform.position.z;
+        transform.position = entrada;
+        escalaOriginal = Vector3.one * escala;
+        transform.localScale = escalaOriginal;
+
+        tieneDestino = false;
+        enTransito = false;   // desde aquí camina a su puesto y vuelve a esperar
+    }
+
+    // === RETIRARSE (fin del día, o no cabe en la fila) ===
+    // Se va deslizando hasta 'salida' y desaparece.
+    public void Retirarse(Vector3 salida, float velocidad)
+    {
+        if (!EstaAfuera) return;
+
+        StopAllCoroutines();   // corta una subida a medias
+        tieneDestino = false;
+        transform.localScale = escalaOriginal;
+        estado = EstadoPasajero.Retirandose;
+        salida.z = transform.position.z;
+        StartCoroutine(SecuenciaRetirarse(salida, velocidad));
+    }
+
+    private IEnumerator SecuenciaRetirarse(Vector3 salida, float velocidad)
+    {
+        // Tiempo real: el día puede terminar con el juego congelado
+        MirarHacia(salida.x - transform.position.x);
+
+        while ((transform.position - salida).sqrMagnitude > 0.000001f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, salida, velocidad * Time.unscaledDeltaTime);
+            yield return null;
+        }
+
+        estado = EstadoPasajero.Terminado;
+        OnPasajeroTerminado?.Invoke(this);
+        Destroy(gameObject);
     }
 
     private void ProcesarEspera()
@@ -115,7 +271,10 @@ public class Pasajero : MonoBehaviour
         // La W (o la cabina ya lista) cierra la puerta: nadie más sube
         bool puertaCerrada = ProcesoPartida.Instance != null && ProcesoPartida.Instance.PuertaCerrada(ascensorIndex);
 
-        if (ascensorEnMiLugar && !ascensorEnMovimiento && !puertaCerrada)
+        // Sube en orden: ya en su puesto y solo si le toca (los primeros de la fila que caben)
+        bool leToca = !tieneDestino && (PuedeSubir == null || PuedeSubir(this));
+
+        if (ascensorEnMiLugar && !ascensorEnMovimiento && !puertaCerrada && leToca)
         {
             IniciarSubida();
             return;
@@ -131,7 +290,7 @@ public class Pasajero : MonoBehaviour
     }
 
     private float timerEmojiEspera = 0f;
-    public float intervaloEmojiEspera = 3f; 
+    public float intervaloEmojiEspera = 3f;
 
     // === SUBIENDO ===
     private void IniciarSubida()
@@ -155,8 +314,20 @@ public class Pasajero : MonoBehaviour
 
         yield return StartCoroutine(PopYDesaparecer());
 
+        // Mientras hacía el pop pudo llenarse la cabina (otro pasajero subió antes) o cerrarse la puerta.
+        // Si no cabe, vuelve al andén en vez de quedar "dentro" sin contar.
+        puertaCerrada = ProcesoPartida.Instance != null && ProcesoPartida.Instance.PuertaCerrada(ascensorIndex);
+        if (puertaCerrada || !ascensorManager.IntentarSubirPasajero(ascensorIndex, this))
+        {
+            transform.localScale = escalaOriginal;
+            estado = EstadoPasajero.EsperandoEnAnden;
+            yield break;
+        }
+
         estado = EstadoPasajero.DentroDelAscensor;
-        ascensorManager.IntentarSubirPasajero(ascensorIndex, this);
+
+        if (BondadososManager.Instance != null)
+            BondadososManager.Instance.AlSubirPasajero(this);
 
         if (GameManager.Instance != null && GameManager.Instance.ResumenDia != null)
             GameManager.Instance.ResumenDia.RegistrarPasajeroTransportado();
@@ -219,7 +390,9 @@ public class Pasajero : MonoBehaviour
         transform.localScale = escalaOriginal;
     }
 
-    public void BajarDelAscensor(Vector3 posicionSalida)
+    // Llegó a su estación: sale por la puerta de la cabina, paga y se va caminando hasta la salida.
+    // retraso: para que, si bajan varios, salgan uno detrás del otro.
+    public void BajarDelAscensor(Vector3 posicionSalida, Vector3 puerta, bool estacionAbajo, float retraso = 0f)
     {
         if (estado != EstadoPasajero.DentroDelAscensor) return;
 
@@ -229,14 +402,35 @@ public class Pasajero : MonoBehaviour
         // 🔑 Cambiar estado ANTES de activar
         estado = EstadoPasajero.Bajando;
 
-        // 🔑 Iniciar corrutina (el GameObject ya está activo, solo el sprite está oculto)
-        StartCoroutine(SecuenciaBajada(posicionSalida));
+        StartCoroutine(SecuenciaBajada(posicionSalida, puerta, estacionAbajo, retraso));
     }
 
-    private IEnumerator SecuenciaBajada(Vector3 posicionSalida)
+    private IEnumerator SecuenciaBajada(Vector3 posicionSalida, Vector3 puerta, bool estacionAbajo, float retraso)
     {
-        transform.SetParent(spawnPadre);
-        transform.position = posicionSalida;
+        if (retraso > 0f)
+            yield return new WaitForSeconds(retraso);
+
+        // Tamaño y suelo del andén donde se baja (no del andén donde subió: es la otra estación)
+        Transform padre = spawnPadre;
+        float velocidad = 1f;
+        Vector3 escalaLlegada = escalaOriginal;
+        if (PasajeroSpawner.Instance != null &&
+            PasajeroSpawner.Instance.DatosDeLlegada(ascensorIndex, estacionAbajo, out var p, out var escala, out var vel))
+        {
+            padre = p;
+            escalaLlegada = Vector3.one * escala;
+            velocidad = vel;
+            // Camina por el suelo del andén
+            puerta.y = p.position.y;
+            posicionSalida.y = p.position.y;
+        }
+
+        transform.SetParent(padre, true);
+        puerta.z = transform.position.z;
+        posicionSalida.z = transform.position.z;
+        transform.position = puerta;
+        escalaOriginal = escalaLlegada;
+        transform.localScale = Vector3.zero;
 
         // 🔑 Mostrar el sprite de nuevo
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
@@ -248,7 +442,10 @@ public class Pasajero : MonoBehaviour
             if (srHijo != null) srHijo.enabled = true;
         }
 
-        transform.localScale = Vector3.zero;
+        MirarHacia(posicionSalida.x - puerta.x);
+
+        // Sale de la cabina y paga
+        yield return StartCoroutine(EfectoPop());
 
         int pago = CalcularPago();
         if (GameManager.Instance != null)
@@ -257,17 +454,42 @@ public class Pasajero : MonoBehaviour
             GameManager.Instance.SumarDinero(pago);
             Debug.Log($"💰 Pasajero pagó ${pago} (Emoción: {emocionActual})");
         }
+        MostrarPago(pago);
 
         // 🔑 Mostrar emoji al aparecer
         MostrarEmoji();
 
-        yield return StartCoroutine(EfectoPop());
-        yield return new WaitForSeconds(tiempoAntesDeBajar);
-        yield return StartCoroutine(PopYDesaparecer());
+        if (EsBondadoso && BondadososManager.Instance != null)
+            yield return StartCoroutine(BondadososManager.Instance.Encuentro(this, datosBondadoso));
+
+        // Se va caminando hasta la salida del andén
+        MirarHacia(posicionSalida.x - transform.position.x);
+        while ((transform.position - posicionSalida).sqrMagnitude > 0.000001f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, posicionSalida, velocidad * Time.deltaTime);
+            yield return null;
+        }
 
         estado = EstadoPasajero.Terminado;
         OnPasajeroTerminado?.Invoke(this);
         Destroy(gameObject);
+    }
+
+    [Header("=== PAGO ===")]
+    public Color colorPago = new Color(0.4f, 1f, 0.4f);
+    public Color colorSinPago = new Color(1f, 0.4f, 0.4f);
+
+    // "+$20" sobre la cabeza (o "$0" en rojo si no pagó)
+    private void MostrarPago(int pago)
+    {
+        float alto = 1f;
+        var sr = GetComponent<SpriteRenderer>();
+        if (sr != null && sr.sprite != null) alto = sr.bounds.size.y;
+
+        Vector3 cabeza = transform.position + Vector3.up * (alto * 0.6f);
+
+        if (pago > 0) TextoFlotante.Mostrar($"+${pago}", cabeza, colorPago, alto);
+        else TextoFlotante.Mostrar("$0", cabeza, colorSinPago, alto);
     }
 
     // === PAGO SEGÚN EMOCIÓN ===
@@ -276,6 +498,8 @@ public class Pasajero : MonoBehaviour
         RefrescarEmocionPorPopularidad();
 
         int pagoBase = 10;
+        if (GameManager.Instance != null && GameManager.Instance.GameData != null)
+            pagoBase = GameManager.Instance.GameData.pagoPorPasajero;
 
         switch (emocionActual)
         {
@@ -300,6 +524,13 @@ public class Pasajero : MonoBehaviour
     // con una variación propia de cada pasajero.
     private void RefrescarEmocionPorPopularidad()
     {
+        if (EsBondadoso)
+        {
+            felicidad = 100f;
+            emocionActual = EmocionPasajero.Feliz;
+            return;
+        }
+
         if (GameManager.Instance == null) return;
 
         float popularidad = GameManager.Instance.GameData.contadorPopularidad;
@@ -360,6 +591,7 @@ public class Pasajero : MonoBehaviour
 
         floatScript.Inicializar(0.5f, 1.5f, escalaEmoji);
     }
+
     // 🔑 Iniciar la corrutina de emojis constantes
     private void IniciarEmojisConstantes()
     {

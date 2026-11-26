@@ -47,7 +47,7 @@ public class DerrotaAveria : MonoBehaviour
         yield return new WaitForSecondsRealtime(retraso);
 
         CrearPantalla();
-        Time.timeScale = 0f;
+        PausaJuego.Pedir(this);
     }
 
     private void CrearPantalla()
@@ -107,7 +107,7 @@ public class DerrotaAveria : MonoBehaviour
 
     private void VolverAlMenu()
     {
-        Time.timeScale = 1f;
+        PausaJuego.Limpiar();
 
         if (GameManager.Instance != null)
             GameManager.Instance.ResetearJuego();

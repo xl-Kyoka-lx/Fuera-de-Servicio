@@ -20,10 +20,8 @@ public class DiaInicioManager : MonoBehaviour
 
         GameManager.Instance.ResumenDia.IniciarDia(
             data.dineroTotal,
-            data.pasajerosTotales,
             data.contadorLimpieza,
-            data.contadorGrasa,
-            data.contadorPuerta
+            data.contadorGrasa
         );
 
         Debug.Log("📊 Día iniciado, resumen reseteado");

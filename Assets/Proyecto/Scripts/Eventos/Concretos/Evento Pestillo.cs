@@ -38,6 +38,12 @@ public class EventoPestillo : EventoBase
     [Tooltip("1 = solo un intento. Si pones 2 o más, el círculo vuelve a aparecer tras fallar")]
     public int intentosMaximos = 1;
 
+    [Header("Arte (opcional)")]
+    [Tooltip("Sprite del círculo relleno. Si se deja vacío se dibuja uno por código. Si el arte ya trae color, pon Color Disco en blanco")]
+    public Sprite spriteDiscoArte;
+    [Tooltip("Sprite del anillo que se cierra. Si se deja vacío se dibuja uno por código. Si el arte ya trae color, pon Color Anillo en blanco")]
+    public Sprite spriteAnilloArte;
+
     [Header("Colores")]
     public Color colorDisco = new Color(0.45f, 0.35f, 0.25f, 0.9f);
     public Color colorBorde = Color.white;
@@ -85,7 +91,6 @@ public class EventoPestillo : EventoBase
     private float radioPx = 110f;
 
     private bool minijuegoActivo = false;
-    private float timeScaleAnterior = 1f;
     private bool tiempoDetenido = false;
 
     private const float DURACION_FADE_IN = 0.2f;
@@ -120,8 +125,8 @@ public class EventoPestillo : EventoBase
 
         radioPx = radioCirculo * (Screen.height / 1080f);
 
-        spriteDisco = CrearSprite(256, 0f, out texDisco);
-        spriteAnillo = CrearSprite(256, 0.95f, out texAnillo);
+        spriteDisco = spriteDiscoArte != null ? spriteDiscoArte : CrearSprite(256, 0f, out texDisco);
+        spriteAnillo = spriteAnilloArte != null ? spriteAnilloArte : CrearSprite(256, 0.95f, out texAnillo);
         CrearUI();
 
         t = 0f;
@@ -132,8 +137,7 @@ public class EventoPestillo : EventoBase
 
         if (detenerTiempo)
         {
-            timeScaleAnterior = Time.timeScale;
-            Time.timeScale = 0f;
+            PausaJuego.Pedir(this);
             tiempoDetenido = true;
         }
 
@@ -144,17 +148,16 @@ public class EventoPestillo : EventoBase
     {
         if (!tiempoDetenido) return;
         tiempoDetenido = false;
-        Time.timeScale = timeScaleAnterior;
+        PausaJuego.Liberar(this);
     }
 
     private void OnDestroy()
     {
         RestaurarTiempo();
 
-        if (texDisco != null) Destroy(texDisco);
-        if (texAnillo != null) Destroy(texAnillo);
-        if (spriteDisco != null) Destroy(spriteDisco);
-        if (spriteAnillo != null) Destroy(spriteAnillo);
+        // Solo se destruye lo creado por código; los sprites de arte son assets del proyecto.
+        if (texDisco != null) { Destroy(spriteDisco); Destroy(texDisco); }
+        if (texAnillo != null) { Destroy(spriteAnillo); Destroy(texAnillo); }
     }
 
     // ---------- Visuales por código (sin arte externo) ----------

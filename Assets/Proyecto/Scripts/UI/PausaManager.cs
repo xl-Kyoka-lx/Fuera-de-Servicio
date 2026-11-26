@@ -13,6 +13,12 @@ public class PausaManager : MonoBehaviour
 
     public static bool juegoPausado = false;
 
+    private void OnDestroy()
+    {
+        // Es estática: si se cambia de escena con la pausa abierta no debe quedar marcada
+        juegoPausado = false;
+    }
+
     void Update()
     {
 
@@ -32,7 +38,7 @@ public class PausaManager : MonoBehaviour
     public void Pausar()
     {
         if (panelOpcionesPausa != null) panelOpcionesPausa.SetActive(true);
-        Time.timeScale = 0f;
+        PausaJuego.Pedir(this);
         juegoPausado = true;
 
         
@@ -45,7 +51,7 @@ public class PausaManager : MonoBehaviour
     public void Reanudar()
     {
         if (panelOpcionesPausa != null) panelOpcionesPausa.SetActive(false);
-        Time.timeScale = 1f;
+        PausaJuego.Liberar(this);
         juegoPausado = false;
 
         
@@ -57,7 +63,7 @@ public class PausaManager : MonoBehaviour
 
     public void VolverAlMenuPrincipal()
     {
-        Time.timeScale = 1f;
+        PausaJuego.Limpiar();
         juegoPausado = false;
         SceneManager.LoadScene("Menu inicio");
     }

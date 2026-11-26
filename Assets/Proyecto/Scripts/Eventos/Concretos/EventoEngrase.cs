@@ -58,7 +58,6 @@ public class EventoEngrase : EventoBase
     private float tiempoRestante = 0f;
     private bool minijuegoActivo = false;
     private bool yaResuelto = false;
-    private float timeScaleAnterior = 1f;
     private bool tiempoDetenido = false;
 
     private void Awake()
@@ -109,8 +108,7 @@ public class EventoEngrase : EventoBase
 
         if (detenerTiempo)
         {
-            timeScaleAnterior = Time.timeScale;
-            Time.timeScale = 0f;
+            PausaJuego.Pedir(this);
             tiempoDetenido = true;
         }
 
@@ -122,7 +120,7 @@ public class EventoEngrase : EventoBase
     {
         if (!tiempoDetenido) return;
         tiempoDetenido = false;
-        Time.timeScale = timeScaleAnterior;
+        PausaJuego.Liberar(this);
     }
 
     private void OnDestroy()

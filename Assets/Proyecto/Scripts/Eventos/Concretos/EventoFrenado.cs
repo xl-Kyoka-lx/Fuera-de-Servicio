@@ -27,6 +27,9 @@ public class EventoFrenado : MonoBehaviour
     private bool yaPresiono = false;
     private float progresoAlPresionar = -1f;
 
+    // Freno reforzado (tienda): más tiempo para frenar
+    private float VentanaActual => ventanaTiempo * EfectosManager.MultiplicadorMargenFrenado;
+
     private void Awake()
     {
         if (inputActions != null)
@@ -73,14 +76,14 @@ public class EventoFrenado : MonoBehaviour
         eventoActivo = true;
 
         // Mientras se frena, y 2 s después, no ocurren eventos
-        BloqueoEventos.BloquearEventos(ventanaTiempo + segundosSinEventosTrasFrenar);
+        BloqueoEventos.BloquearEventos(VentanaActual + segundosSinEventosTrasFrenar);
         yaPresiono = false;
         progresoAlPresionar = -1f;
 
        
         if (PanelAccion.Instance != null)
         {
-            PanelAccion.Instance.MostrarAccion("¡FRENA! [ESPACIO]", ventanaTiempo);
+            PanelAccion.Instance.MostrarAccion("¡FRENA! [ESPACIO]", VentanaActual);
         }
 
         StartCoroutine(EsperarFrenado());
@@ -97,7 +100,7 @@ public class EventoFrenado : MonoBehaviour
 
     private IEnumerator EsperarFrenado()
     {
-        yield return new WaitForSecondsRealtime(ventanaTiempo);
+        yield return new WaitForSecondsRealtime(VentanaActual);
         EvaluarFrenado();
     }
 

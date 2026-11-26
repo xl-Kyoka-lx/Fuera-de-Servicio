@@ -8,13 +8,6 @@
       "esMejoraUnica": false
     },
     {
-      "id": "letrero",
-      "nombre": "Letrero informativo",
-      "precio": 1650,
-      "descripcion": "Letrero de convivencia que concientiza a los pasajeros. Reduce la frecuencia con la que los escolares intentan rayar las paredes de la cabina.",
-      "esMejoraUnica": true
-    },
-    {
       "id": "frenos",
       "nombre": "Freno Reforzado",
       "precio": 1500,
@@ -40,13 +33,6 @@
       "nombre": "Kit de limpieza",
       "precio": 150,
       "descripcion": "Bolsas y artículos para barrer colillas, latas y papeles del piso antes de cerrar el turno. Evita que los pasajeros tiren más basura por imitación.",
-      "esMejoraUnica": false
-    },
-    {
-      "id": "lija_barniz",
-      "nombre": "Lija y barniz",
-      "precio": 100,
-      "descripcion": "Borra los tags y rayones de plumón o cuchillo en la madera. Mantiene la confianza de los vecinos y evita que al día siguiente aparezcan nuevos rayones.",
       "esMejoraUnica": false
     },
     {

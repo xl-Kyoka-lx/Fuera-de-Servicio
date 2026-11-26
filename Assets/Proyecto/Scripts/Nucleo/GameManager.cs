@@ -13,12 +13,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ResumenDiaData resumenDia;
     public ResumenDiaData ResumenDia => resumenDia;
 
-
-    public Transform targetLimpieza;
-    public Transform targetPolea;
-    public Transform targetPuerta;
-    public Transform targetDinero;
-
     [Header("Mantenimiento del ascensor")]
     [Tooltip("Puntos de mantenimiento que se pierden al terminar cada día (se reparan en la tienda)")]
     public float desgasteDiarioMantenimiento = 10f;
@@ -88,22 +82,10 @@ public class GameManager : MonoBehaviour
             gameData.ResetData();
     }
 
-    public Transform ObtenerTarget(TipoSistema tipo)
-    {
-        return tipo switch
-        {
-            TipoSistema.Limpieza => targetLimpieza,
-            TipoSistema.Polea => targetPolea,
-            TipoSistema.Puerta => targetPuerta,
-            TipoSistema.Dinero => targetDinero,
-            _ => null
-        };
-    }
 
     public void ModificarLimpieza(float cantidad)
     {
         gameData.contadorLimpieza = Mathf.Clamp(gameData.contadorLimpieza + cantidad, 0, 100);
-        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Limpieza);
         gameData.ActualizarPopularidad();
         gameData.OnDataChanged?.Invoke();
     }
@@ -111,7 +93,6 @@ public class GameManager : MonoBehaviour
     public void ModificarPolea(float cantidad)
     {
         gameData.contadorGrasa = Mathf.Clamp(gameData.contadorGrasa + cantidad, 0, 100);
-        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Polea);
         gameData.ActualizarPopularidad();
         gameData.OnDataChanged?.Invoke();
 
@@ -124,14 +105,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ModificarPuerta(float cantidad)
-    {
-        gameData.contadorPuerta = Mathf.Clamp(gameData.contadorPuerta + cantidad, 0, 100);
-        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Puerta);
-        gameData.OnDataChanged?.Invoke();
-    }
-
-    
     // Sube (positivo) o baja (negativo) la popularidad
     public void ModificarPopularidad(float cantidad)
     {
@@ -176,61 +149,24 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Desgaste diario aplicado. Mantenimiento: {gameData.contadorGrasa:F0}%");
     }
 
-    public bool IntentarSubirPasajero()
-    {
-        if (!gameData.HayEspacio)
-        {
-            Debug.Log(" Ascensor lleno");
-            return false;
-        }
-
-        gameData.pasajerosTotales++;
-        gameData.OnDataChanged?.Invoke();
-        Debug.Log($" Pasajeros: {gameData.pasajerosTotales}/{gameData.capacidadMaxima}");
-        return true;
-    }
 
     
     public void SumarDinero(int cantidad)
     {
         gameData.dineroTotal += cantidad;
-        //FloatingTextManager.Instance.MostrarTexto(cantidad, TipoSistema.Dinero);
         gameData.OnDataChanged?.Invoke();
         Debug.Log($" Dinero total: {gameData.dineroTotal}");
     }
 
 
-    public void BajarTodosLosPasajeros()
-    {
-        int cantidad = gameData.pasajerosTotales;
-        gameData.pasajerosTotales = 0;
-        gameData.OnDataChanged?.Invoke();
-        Debug.Log($" Bajaron {cantidad} pasajeros");
-    }
   
+    // Un pasajero llegó a su destino. El pago lo hace el propio Pasajero (según su emoción).
     public void PasajeroCompleto()
     {
-        gameData.pasajerosTotales = Mathf.Max(0, gameData.pasajerosTotales - 1);
-        gameData.dineroTotal += gameData.pagoPorPasajero;
-        gameData.OnDataChanged?.Invoke();
         OnPasajeroCompleto?.Invoke();
-
-        Debug.Log($" +{gameData.pagoPorPasajero} dinero. Pasajeros: {gameData.pasajerosTotales}");
     }
 
 
-    public void PasajeroSubio()
-    {
-        if (!gameData.HayEspacio)
-        {
-            Debug.Log(" Ascensor lleno, no puede subir más pasajeros");
-            return;
-        }
-
-        gameData.pasajerosTotales++;
-        gameData.OnDataChanged?.Invoke();
-        Debug.Log($" Pasajero subió. Total: {gameData.pasajerosTotales}");
-    }
     private void Update()
     {
         if (gameData == null) return;

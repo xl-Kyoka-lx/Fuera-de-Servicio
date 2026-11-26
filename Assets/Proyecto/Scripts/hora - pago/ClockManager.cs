@@ -7,14 +7,17 @@ public class ClockManager : MonoBehaviour
 {
     [Tooltip("Duración real de un día completo, en segundos (600 = 10 minutos)")]
     public float duracionDiaSegundos = 600f;
-    public int horaInicio = 8;
-    public int horaFin = 17;
+    public int horaInicio = 7;
+    public int horaFin = 21;
 
-    public int horaActual = 8;
+    public int horaActual = 7;
     public bool relojActivo = true;
 
     public event Action<int> OnHoraCambio;
     public event Action OnDiaTerminado;
+
+    // Llegó la hora de cierre. El día termina un poco después (cuando acaba el viaje o el evento en curso)
+    public event Action OnCierreDelDia;
 
     private float timer = 0f;
 
@@ -29,14 +32,11 @@ public class ClockManager : MonoBehaviour
 
     private void Start()
     {
+        // Cada día empieza a la hora de apertura
+        horaActual = horaInicio;
+        timer = 0f;
         if (GameManager.Instance != null)
-        {
-            horaActual = GameManager.Instance.GameData.horaActual;
-        }
-        else
-        {
-            horaActual = horaInicio;
-        }
+            GameManager.Instance.GameData.horaActual = horaInicio;
 
         Debug.Log($"Reloj iniciado a las {horaActual}:00 (día de {duracionDiaSegundos:F0} s, {SegundosPorHora:F1} s por hora)");
     }
@@ -87,10 +87,7 @@ public class ClockManager : MonoBehaviour
             // Cerrar el resumen
             if (GameManager.Instance.ResumenDia != null)
             {
-                GameManager.Instance.ResumenDia.TerminarDia(
-                    data.dineroTotal,
-                    data.pasajerosTotales
-                );
+                GameManager.Instance.ResumenDia.TerminarDia(data.dineroTotal);
             }
 
             // Resetear el flag de resumen mostrado
@@ -120,11 +117,18 @@ public class ClockManager : MonoBehaviour
         if (horaActual >= horaFin)
         {
             // No se corta en medio de un evento o de un viaje: se espera a que terminen
-            terminandoDia = true;
+            if (!terminandoDia)
+            {
+                terminandoDia = true;
+                OnCierreDelDia?.Invoke();
+            }
         }
     }
 
     public int GetHoraActual() => horaActual;
+
+    // Hora con decimales (7.5 = 07:30). La usa el horario de pasajeros
+    public float HoraDecimal => horaActual + Mathf.Clamp01(timer / SegundosPorHora);
 
     public void ReiniciarDia()
     {

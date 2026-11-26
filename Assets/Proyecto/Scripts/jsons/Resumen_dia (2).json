@@ -24,11 +24,6 @@
           "imagen": ""
         },
         {
-          "hablante": "Resumen del dia",
-          "texto": "Grafitis en el ascensor:{grafitis}",
-          "imagen": ""
-        },
-        {
           "hablante": "Narrador",
           "texto": "Tu dinero total es: ${dineroTotal}",
           "imagen": ""

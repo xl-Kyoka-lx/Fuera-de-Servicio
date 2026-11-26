@@ -242,56 +242,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 37518142}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &30239529
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 30239531}
-  - component: {fileID: 30239530}
-  m_Layer: 0
-  m_Name: FloatingTextManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &30239530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 30239529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce52d48168d47df4185df6d9fefa852f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FloatingTextManager
-  floatingTextPrefab: {fileID: 99323371864425878, guid: 769796c103735eb4e82765b919627e01, type: 3}
-  duracionTexto: 1
-  velocidadSubida: 1.5
-  distanciaAleatoria: 0.3
-  colorPositivo: {r: 0, g: 1, b: 0, a: 1}
-  colorNegativo: {r: 1, g: 0, b: 0, a: 1}
---- !u!4 &30239531
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 30239529}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.49409, y: 0.39111, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1722636720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &37518141
 GameObject:
   m_ObjectHideFlags: 0
@@ -1167,10 +1117,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   textoLimpieza: {fileID: 1058982173}
   textoPolea: {fileID: 1410426925}
-  textoPuerta: {fileID: 268686566}
   textoPasajeros: {fileID: 670259174}
   textoEstadoAscensor: {fileID: 308225919}
   textoDinero: {fileID: 485119800}
+  ascensorManager: {fileID: 0}
+  indiceCabina: 0
 --- !u!4 &252408959
 Transform:
   m_ObjectHideFlags: 0
@@ -1371,6 +1322,86 @@ MonoBehaviour:
   eventManager: {fileID: 1914007448}
   estadoManager: {fileID: 1049016273}
   clockManager: {fileID: 1236741194}
+  procesoPartida: {fileID: 1164373272}
+  bondadosos: {fileID: 713418768}
+  segundosAntesDePolea: 8
+  esperaMaximaDespedida: 6
+  esperaMaximaCamila: 15
+--- !u!1 &292878863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 292878864}
+  - component: {fileID: 292878866}
+  - component: {fileID: 292878865}
+  m_Layer: 5
+  m_Name: Retrato
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &292878864
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292878863}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2092573352}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -318.31, y: 151.99}
+  m_SizeDelta: {x: 163.3708, y: 171.2749}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &292878865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292878863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -8395155748819382592, guid: 700daf937e7bf0e4b9f69f8aeabc01bf, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &292878866
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 292878863}
+  m_CullTransparentMesh: 1
 --- !u!1 &308225917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2611,54 +2642,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &535207846
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 535207847}
-  - component: {fileID: 535207848}
-  m_Layer: 0
-  m_Name: EventoMaleanteManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &535207847
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535207846}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1722636720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &535207848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 535207846}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ff5d5301a1b3d34d84fdc9a46971789, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EventoMaleanteManager
-  maleantePrefab: {fileID: 3426835874148799952, guid: 8e5e20deb0cf9bd42a4aee434711274a, type: 3}
-  tiempoMinEntreEventos: 20
-  tiempoMaxEntreEventos: 40
-  ascensorManager: {fileID: 1164373271}
 --- !u!1 &540277625
 GameObject:
   m_ObjectHideFlags: 0
@@ -3180,8 +3163,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2391999, y: -73.844}
-  m_SizeDelta: {x: 220.111, y: 216.64}
+  m_AnchoredPosition: {x: -0, y: -74}
+  m_SizeDelta: {x: 239.351, y: 232.0702}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &607773534
 MonoBehaviour:
@@ -4097,6 +4080,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 711077479}
   m_CullTransparentMesh: 1
+--- !u!1 &713418766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 713418767}
+  - component: {fileID: 713418768}
+  m_Layer: 0
+  m_Name: BondadososManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &713418767
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713418766}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1722636720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &713418768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713418766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21892f71b06c6a846a4b4c9b6a4e5ee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BondadososManager
+  archivoJson: {fileID: 4900000, guid: 96ca36da55a24cb49ab31a4e4e0d6694, type: 3}
+  ascensorManager: {fileID: 1164373271}
+  primeraAparicionMin: 60
+  primeraAparicionMax: 90
+  intervaloMin: 90
+  intervaloMax: 150
+  maximoPorDia: 4
+  multiplicadorDinero: 1
+  idCamila: camila_vecina
 --- !u!1 &726788791
 GameObject:
   m_ObjectHideFlags: 0
@@ -5165,9 +5201,6 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 2
-    umbral: 100
-    probabilidadBase: 0.5
-    probabilidadMaxima: 0.5
     condicionAscensor: 1
   - nombre: Pestillo trabado
     prefab: {fileID: 7407656246306822782, guid: 75c3dccc3843ac047810eed01ba701db, type: 3}
@@ -5176,9 +5209,6 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 2
-    umbral: 100
-    probabilidadBase: 0.5
-    probabilidadMaxima: 0.5
     condicionAscensor: 1
   - nombre: Polea Trabada
     prefab: {fileID: 9161022262547082765, guid: 26de2234400544f4aa325a3a54811abc, type: 3}
@@ -5187,9 +5217,6 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 1
-    umbral: 2.3
-    probabilidadBase: 0.3
-    probabilidadMaxima: 0.3
     condicionAscensor: 0
   - nombre: engrase
     prefab: {fileID: 4511150583319582439, guid: 49a110ccd6322d94dbb427771ec6491c, type: 3}
@@ -5198,9 +5225,6 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 1
-    umbral: 10
-    probabilidadBase: 0.3
-    probabilidadMaxima: 0.869
     condicionAscensor: 1
   - nombre: Osu!
     prefab: {fileID: 8818526584387128897, guid: 1b9227cc432c9fe4280350ea0f8732d9, type: 3}
@@ -5209,16 +5233,9 @@ MonoBehaviour:
     requiereAscensorCerca: 0
     requiereAscensorLejos: 0
     sistema: 0
-    umbral: 1
-    probabilidadBase: 0.3
-    probabilidadMaxima: 0.869
     condicionAscensor: 1
   ascensorManager: {fileID: 1164373271}
-  indiceAscensorJugador: 0
-  modoDirector: 1
-  intervaloChequeo: 3
   debugLogs: 1
-  debugDetalle: 1
 --- !u!1 &1058982171
 GameObject:
   m_ObjectHideFlags: 0
@@ -5615,8 +5632,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.2744, y: -14.1846}
-  m_SizeDelta: {x: 675.46, y: 91.3518}
+  m_AnchoredPosition: {x: -7.9899, y: -32.436}
+  m_SizeDelta: {x: 723.8522, y: 91.3518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1068838464
 MonoBehaviour:
@@ -5920,7 +5937,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.2719, y: 51.556}
+  m_AnchoredPosition: {x: -32.186, y: 39.796}
   m_SizeDelta: {x: 675.46, y: 53.112}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1120524496
@@ -6191,6 +6208,7 @@ MonoBehaviour:
     enMovimiento: 0
     pasajerosDentro: []
   duracionViaje: 10
+  separacionAlBajar: 0.4
 --- !u!114 &1164373272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6296,9 +6314,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClockManager
   duracionDiaSegundos: 600
-  horaInicio: 8
-  horaFin: 17
-  horaActual: 8
+  horaInicio: 7
+  horaFin: 21
+  horaActual: 7
   relojActivo: 1
 --- !u!1 &1281947829
 GameObject:
@@ -6555,8 +6573,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.4453, y: -1.5845}
-  m_SizeDelta: {x: 792.1694, y: 196.221}
+  m_AnchoredPosition: {x: -5.7542, y: -10.792}
+  m_SizeDelta: {x: 811.51, y: 177.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1331997843
 MonoBehaviour:
@@ -6695,10 +6713,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   gameData: {fileID: 11400000, guid: 0ef9326353151db438ba47a4365191bb, type: 2}
   resumenDia: {fileID: 11400000, guid: f08e813c84cc6ec47ab94cbf957ab553, type: 2}
-  targetLimpieza: {fileID: 376506086}
-  targetPolea: {fileID: 1068255753}
-  targetPuerta: {fileID: 608087834}
-  targetDinero: {fileID: 0}
   desgasteDiarioMantenimiento: 10
   minimoTrasDesgasteDiario: 1
   umbralPopularidad: 60
@@ -6858,8 +6872,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1417694765}
   - component: {fileID: 1417694764}
-  - component: {fileID: 1417694763}
-  - component: {fileID: 1417694762}
   m_Layer: 8
   m_Name: Ascensor 2
   m_TagString: Untagged
@@ -6867,37 +6879,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1417694762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417694761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1106090748d66c47bcb9d90bb3305a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ControlAscensor
-  ascensorController: {fileID: 1417694763}
---- !u!114 &1417694763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417694761}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9debeec52f25b324b86b5420d8fbb5d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AscensorController
-  puntoInicio: {fileID: 1286148427}
-  puntoFin: {fileID: 1223841137}
-  puntoInterior: {fileID: 1505011943}
-  velocidadViaje: 2
-  enMovimiento: 0
-  estaAbajo: 1
 --- !u!212 &1417694764
 SpriteRenderer:
   serializedVersion: 3
@@ -7012,6 +6993,10 @@ MonoBehaviour:
   textoHablante: {fileID: 1120524496}
   textoContenido: {fileID: 1068838464}
   indicadorContinuar: {fileID: 1461942827}
+  imagenRetrato: {fileID: 292878865}
+  retratos:
+  - nombre: Camila
+    sprite: {fileID: -8395155748819382592, guid: 700daf937e7bf0e4b9f69f8aeabc01bf, type: 3}
   velocidadTipeo: 0.03
   inputActions: {fileID: -944628639613478452, guid: fdbfd515e0b7b6248865016c5937f77a, type: 3}
   actionMapName: Gameplay
@@ -7025,12 +7010,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1443386812}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 321.5868, y: 81.48714, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1722636720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1459647089
 GameObject:
@@ -7336,8 +7321,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1544431834}
   - component: {fileID: 1544431833}
-  - component: {fileID: 1544431835}
-  - component: {fileID: 1544431836}
   m_Layer: 8
   m_Name: Ascensor 1
   m_TagString: Untagged
@@ -7425,37 +7408,6 @@ Transform:
   - {fileID: 1781530979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1544431835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544431832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9debeec52f25b324b86b5420d8fbb5d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AscensorController
-  puntoInicio: {fileID: 542179309}
-  puntoFin: {fileID: 1223841137}
-  puntoInterior: {fileID: 564698635}
-  velocidadViaje: 2
-  enMovimiento: 0
-  estaAbajo: 1
---- !u!114 &1544431836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544431832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1106090748d66c47bcb9d90bb3305a8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ControlAscensor
-  ascensorController: {fileID: 1544431835}
 --- !u!1 &1565243630
 GameObject:
   m_ObjectHideFlags: 0
@@ -7493,8 +7445,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -6.5}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -4.0700073, y: -3.25}
+  m_SizeDelta: {x: 8.14, y: 6.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1565243632
 MonoBehaviour:
@@ -7725,7 +7677,7 @@ Transform:
   m_GameObject: {fileID: 1604928466}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.1458, y: -4.14, z: 0}
+  m_LocalPosition: {x: 1.29, y: -3.94, z: 0}
   m_LocalScale: {x: 1.5, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7843,8 +7795,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 4.4647, y: -2.6432}
-  m_SizeDelta: {x: 213.66, y: 74.574}
+  m_AnchoredPosition: {x: 0.3712, y: -2.358}
+  m_SizeDelta: {x: 218.8, y: 73.664}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1625200853
 MonoBehaviour:
@@ -7932,7 +7884,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -1.1401672, y: 5.5096684, z: 1.0819092, w: 1.3497066}
+  m_margin: {x: -1.1401672, y: 5.5096684, z: 0.3420105, w: 1.3497066}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7977,6 +7929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PasajeroSpawner
   pasajeroPrefab: {fileID: 8532923454890525623, guid: cbc1da2cb5659934fad649b30d409169, type: 3}
   ascensorManager: {fileID: 1164373271}
+  clockManager: {fileID: 0}
   spawns:
   - nombre: inicio Asc1
     spawnPoint: {fileID: 1521345438}
@@ -7984,28 +7937,65 @@ MonoBehaviour:
     rol: 0
     radioCumulo: 0.5
     escalaEnSpawn: 0.05
+    espacioEnFila: 0
+    invertirFila: 0
   - nombre: inicio Asc2
     spawnPoint: {fileID: 1459647090}
     ascensorIndex: 1
     rol: 0
     radioCumulo: 0.5
     escalaEnSpawn: 0.05
+    espacioEnFila: 0
+    invertirFila: 0
   - nombre: final Asc1
     spawnPoint: {fileID: 1281947830}
     ascensorIndex: 0
     rol: 1
     radioCumulo: 0.5
     escalaEnSpawn: 0.25
+    espacioEnFila: 0
+    invertirFila: 0
   - nombre: final Asc2
     spawnPoint: {fileID: 1305045761}
     ascensorIndex: 1
     rol: 1
     radioCumulo: 0.5
     escalaEnSpawn: 0.25
+    espacioEnFila: 0
+    invertirFila: 0
   intervaloSpawn: 5
   maxPasajerosPorCumulo: 5
+  maxEsperandoPorAnden: 10
   spawnAutomatico: 1
   spawnMientrasViaja: 1
+  usarHorario: 1
+  intensidadFueraDeFranja: 0.4
+  pesoDireccionDominante: 0.85
+  horario:
+  - nombre: "Peak ma\xF1ana (cerro al plan)"
+    desde: 7.5
+    hasta: 9.5
+    intensidad: 2
+    direccion: 1
+  - nombre: "Mediod\xEDa (compras, tr\xE1mites)"
+    desde: 12
+    hasta: 14.5
+    intensidad: 1.4
+    direccion: 0
+  - nombre: Tarde (colegios, turistas)
+    desde: 15.5
+    hasta: 17.5
+    intensidad: 1.4
+    direccion: 2
+  - nombre: Peak tarde (regreso laboral)
+    desde: 18
+    hasta: 20.5
+    intensidad: 2
+    direccion: 2
+  puestosPorSegundo: 3
+  puestosDeEntrada: 4
+  segundosFueraAlCambiar: 3
+  separacionRelativa: 0.9
 --- !u!4 &1660451678
 Transform:
   m_ObjectHideFlags: 0
@@ -8229,17 +8219,16 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 30239531}
-  - {fileID: 1914007447}
-  - {fileID: 2007729296}
   - {fileID: 1164373270}
-  - {fileID: 535207847}
+  - {fileID: 1914007447}
   - {fileID: 1049016272}
   - {fileID: 749136825}
   - {fileID: 288974261}
   - {fileID: 252408959}
   - {fileID: 1402869931}
   - {fileID: 1236741193}
+  - {fileID: 713418767}
+  - {fileID: 1443386814}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1723171040
@@ -8940,12 +8929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 056cde88069877f45b5b3b668d534046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventManager
-  maleanteManager: {fileID: 535207848}
-  estadoManager: {fileID: 1049016273}
-  tiempoMinEntreEventos: 10
-  tiempoMaxEntreEventos: 30
   eventosActivos: 1
-  eventoEnCurso: 0
 --- !u!1 &1936598679
 GameObject:
   m_ObjectHideFlags: 0
@@ -9111,53 +9095,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2007729295
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2007729296}
-  - component: {fileID: 2007729297}
-  m_Layer: 0
-  m_Name: LimpiezaManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2007729296
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007729295}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1722636720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2007729297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007729295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5de7ffc8fd71b0e45820f268b5dde959, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LimpiezaManager
-  costoLimpiar: 20
-  limpiezaRecuperada: 20
-  tagGrafiti: Grafiti
 --- !u!1 &2092573351
 GameObject:
   m_ObjectHideFlags: 0
@@ -9192,12 +9129,13 @@ RectTransform:
   - {fileID: 1120524495}
   - {fileID: 1068838463}
   - {fileID: 1461942828}
+  - {fileID: 292878864}
   m_Father: {fileID: 1669031110}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9.86969, y: -121.39676}
-  m_SizeDelta: {x: -82.9052, y: -294.1158}
+  m_AnchoredPosition: {x: -0.00015258789, y: -131.99998}
+  m_SizeDelta: {x: 0.00030518, y: -294.1158}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2092573353
 MonoBehaviour:
@@ -9339,7 +9277,6 @@ SceneRoots:
   - {fileID: 576202726}
   - {fileID: 150734798}
   - {fileID: 726788793}
-  - {fileID: 1443386814}
   - {fileID: 415908853}
   - {fileID: 615684342}
   - {fileID: 529247611}

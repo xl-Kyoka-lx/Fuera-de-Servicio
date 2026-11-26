@@ -10,7 +10,7 @@ public class BotonReintentar : MonoBehaviour
         Debug.Log(" Reiniciando juego...");
 
    
-        Time.timeScale = 1f;
+        PausaJuego.Limpiar();
 
       
         if (GameManager.Instance != null)

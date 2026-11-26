@@ -11,34 +11,51 @@ public class EstadoTienda
     public List<string> mejorasCompradas = new List<string>();
     public List<string> consumiblesIds = new List<string>();
     public List<int> consumiblesCantidades = new List<int>();
+
+    public int ObtenerCantidad(string id)
+    {
+        int i = consumiblesIds.IndexOf(id);
+        return i >= 0 && i < consumiblesCantidades.Count ? consumiblesCantidades[i] : 0;
+    }
+
+    public void SumarCantidad(string id, int cantidad)
+    {
+        int i = consumiblesIds.IndexOf(id);
+        if (i < 0 || i >= consumiblesCantidades.Count)
+        {
+            // Listas desparejas (datos viejos): se reparan antes de agregar
+            while (consumiblesCantidades.Count < consumiblesIds.Count) consumiblesCantidades.Add(0);
+            if (i < 0)
+            {
+                consumiblesIds.Add(id);
+                consumiblesCantidades.Add(0);
+                i = consumiblesIds.Count - 1;
+            }
+        }
+        consumiblesCantidades[i] = Mathf.Max(0, consumiblesCantidades[i] + cantidad);
+    }
 }
 
 public class GameData : ScriptableObject
 {
-    public int pasajerosTotales = 0;
     public int dineroTotal = 0;
-    public int capacidadMaxima = 10;
 
     [Range(0, 100)] public float contadorPopularidad = 50f;
 
     [Range(0, 100)] public float contadorLimpieza = 100f;
     [Range(0, 100)] public float contadorGrasa = 100f;
-    [Range(0, 100)] public float contadorPuerta = 100f;
 
     [Header("Valores de una partida nueva")]
     [Tooltip("Con lo que empieza el mantenimiento al darle Nueva partida (no depende de lo que haya quedado guardado)")]
     [Range(0, 100)] public float mantenimientoPartidaNueva = 100f;
     [Range(0, 100)] public float limpiezaPartidaNueva = 100f;
-    [Range(0, 100)] public float puertaPartidaNueva = 100f;
 
    
-    public float spawnBase = 2f;
+    [Tooltip("Pago base de cada pasajero (feliz puede pagar el doble, enojado la mitad o nada)")]
     public int pagoPorPasajero = 10;
-    [Range(0f, 1f)] public float probabilidadPago = 0.5f;
 
    
-    public int horaActual = 8;
-    public ClimaEnum climaActual = ClimaEnum.Soleado;
+    public int horaActual = 7;
 
 
     public bool eventoOcurriendo = false;
@@ -72,8 +89,6 @@ public class GameData : ScriptableObject
         limpiezaDelDia = Mathf.Clamp(contadorLimpieza, 0f, 100f);
     }
 
-    public bool HayEspacio => pasajerosTotales < capacidadMaxima;
-    public bool EstaVacio => pasajerosTotales == 0;
 
     
 
@@ -83,35 +98,23 @@ public class GameData : ScriptableObject
     public System.Action OnDataChanged;
 
     [System.NonSerialized] private bool valoresInicialesCapturados = false;
-    [System.NonSerialized] private int _pasajerosTotalesInicial;
     [System.NonSerialized] private int _dineroTotalInicial;
     [System.NonSerialized] private float _popularidadInicial;
     [System.NonSerialized] private float _limpiezaInicial;
     [System.NonSerialized] private float _poleaInicial;
-    [System.NonSerialized] private float _puertaInicial;
     [System.NonSerialized] private int _horaInicial;
-    [System.NonSerialized] private ClimaEnum _climaInicial;
 
   
     public void CapturarValoresIniciales()
     {
-        _pasajerosTotalesInicial = pasajerosTotales;
         _dineroTotalInicial = dineroTotal;
         _popularidadInicial = contadorPopularidad;
         _limpiezaInicial = contadorLimpieza;
         _poleaInicial = contadorGrasa;
-        _puertaInicial = contadorPuerta;
         _horaInicial = horaActual;
-        _climaInicial = climaActual;
 
         valoresInicialesCapturados = true;
 
-    }
-    public void SetGrasa(float nuevoValor)
-    {
-        contadorGrasa = Mathf.Clamp(nuevoValor, 0f, 100f);
-        ActualizarPopularidad();
-        OnDataChanged?.Invoke();
     }
 
     public void ResetData()
@@ -119,14 +122,11 @@ public class GameData : ScriptableObject
         if (!valoresInicialesCapturados)
             CapturarValoresIniciales();
 
-        pasajerosTotales = _pasajerosTotalesInicial;
         dineroTotal = _dineroTotalInicial;
         contadorPopularidad = _popularidadInicial;
         contadorLimpieza = limpiezaPartidaNueva;
         contadorGrasa = mantenimientoPartidaNueva;
-        contadorPuerta = puertaPartidaNueva;
         horaActual = _horaInicial;
-        climaActual = _climaInicial;
         ActualizarPopularidad();
 
         eventoOcurriendo = false;
@@ -135,16 +135,12 @@ public class GameData : ScriptableObject
         pasajerosParaLimpieza = 0;
         pasajerosParaMantenimiento = 0;
 
+        // Partida nueva: sin mejoras ni consumibles de la tienda
+        estadoTienda = new EstadoTienda();
+
         OnDataChanged?.Invoke();
 
         
     }
 }
 
-public enum ClimaEnum
-{
-    Soleado,
-    Lluvioso,
-    Ventoso,
-    Neblinoso
-}

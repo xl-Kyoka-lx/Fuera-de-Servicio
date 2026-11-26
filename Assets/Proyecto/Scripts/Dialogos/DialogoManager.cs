@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class DialogoManager : MonoBehaviour
 {
@@ -18,6 +19,20 @@ public class DialogoManager : MonoBehaviour
     public TextMeshProUGUI textoHablante;
     public TextMeshProUGUI textoContenido;
     public GameObject indicadorContinuar; 
+
+    [System.Serializable]
+    public class Retrato
+    {
+        [Tooltip("Nombre del personaje tal como aparece en 'hablante' (por ejemplo Camila), o el valor de 'imagen' en el JSON")]
+        public string nombre;
+        public Sprite sprite;
+    }
+
+    [Header("Retratos")]
+    [Tooltip("Image del panel de diálogo donde se muestra la cara de quien habla. Se oculta si el personaje no tiene retrato")]
+    public Image imagenRetrato;
+    [Tooltip("Retrato de cada personaje")]
+    public List<Retrato> retratos = new List<Retrato>();
 
    
     public float velocidadTipeo = 0.03f; 
@@ -62,8 +77,8 @@ public class DialogoManager : MonoBehaviour
     private void ValidarPlaceholders()
     {
         string[] validos = {
-        "dineroGanado", "pasajerosTransportados", "eventos", "grafitis", "basura",
-        "dineroTotal", "pasajerosActuales", "limpieza", "polea", "puerta", "hora"
+        "dineroGanado", "pasajerosTransportados", "eventos",
+        "dineroTotal", "limpieza", "polea", "hora"
     };
 
         foreach (var dialogo in dialogosCargados)
@@ -135,6 +150,7 @@ public class DialogoManager : MonoBehaviour
 
     public void MostrarDialogo(string id)
     {
+        
         Dialogo dialogo = dialogosCargados.Find(d => d.id == id);
 
         if (dialogo == null)
@@ -144,6 +160,20 @@ public class DialogoManager : MonoBehaviour
         }
 
         dialogoActual = dialogo;
+        indiceLineaActual = 0;
+
+        if (EstadoJuegoManager.Instance != null)
+            EstadoJuegoManager.Instance.CambiarEstado(EstadoJuego.EnDialogo);
+
+        if (panelDialogo != null) panelDialogo.SetActive(true);
+        MostrarLineaActual();
+    }
+
+    public void MostrarDialogoDirecto(string id, List<LineaDialogo> lineas)
+    {
+        if (lineas == null || lineas.Count == 0) return;
+
+        dialogoActual = new Dialogo { id = id, lineas = lineas };
         indiceLineaActual = 0;
 
         if (EstadoJuegoManager.Instance != null)
@@ -166,6 +196,8 @@ public class DialogoManager : MonoBehaviour
 
         if (textoHablante != null)
             textoHablante.text = linea.hablante;
+
+        MostrarRetrato(linea);
 
         if (textoContenido != null)
         {
@@ -296,17 +328,13 @@ public class DialogoManager : MonoBehaviour
         texto = texto.Replace("{dineroGanado}", resumen.DineroGanado.ToString());
         texto = texto.Replace("{pasajerosTransportados}", resumen.PasajerosTransportados.ToString());
         texto = texto.Replace("{eventos}", resumen.eventosOcurridos.ToString());
-        texto = texto.Replace("{grafitis}", resumen.grafitisHechos.ToString());
-        texto = texto.Replace("{basura}", resumen.basuraTirada.ToString());
 
         // 🔑 Datos generales (con verificación de null)
         if (data != null)
         {
             texto = texto.Replace("{dineroTotal}", data.dineroTotal.ToString());
-            texto = texto.Replace("{pasajerosActuales}", data.pasajerosTotales.ToString());
             texto = texto.Replace("{limpieza}", data.contadorLimpieza.ToString("F0"));
             texto = texto.Replace("{polea}", data.contadorGrasa.ToString("F0"));
-            texto = texto.Replace("{puerta}", data.contadorPuerta.ToString("F0"));
             texto = texto.Replace("{hora}", data.horaActual.ToString());
         }
 
@@ -315,4 +343,29 @@ public class DialogoManager : MonoBehaviour
 
 
     public bool HayDialogoActivo() => dialogoActual != null;
+
+    // Busca el retrato por el campo "imagen" de la línea y, si viene vacío, por el nombre de quien habla.
+    private void MostrarRetrato(LineaDialogo linea)
+    {
+        if (imagenRetrato == null) return;
+
+        Sprite sprite = BuscarRetrato(linea.imagen);
+        if (sprite == null) sprite = BuscarRetrato(linea.hablante);
+
+        imagenRetrato.sprite = sprite;
+        imagenRetrato.enabled = sprite != null;
+    }
+
+    private Sprite BuscarRetrato(string nombre)
+    {
+        if (string.IsNullOrWhiteSpace(nombre)) return null;
+
+        string buscado = nombre.Trim();
+        foreach (var r in retratos)
+        {
+            if (r != null && r.sprite != null && string.Equals(r.nombre?.Trim(), buscado, System.StringComparison.OrdinalIgnoreCase))
+                return r.sprite;
+        }
+        return null;
+    }
 }

@@ -141,10 +141,4 @@ public class PalancaController : MonoBehaviour
         transform.localRotation = rotacionFinal;
         enAnimacion = false;
     }
-
-    public void ResetearPalanca()
-    {
-        palancaADerecha = false;
-        transform.localRotation = Quaternion.Euler(0, anguloIzquierda, 0);
-    }
 }

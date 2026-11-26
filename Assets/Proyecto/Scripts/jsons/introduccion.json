@@ -13,23 +13,82 @@
       "id": "tutorial_controles",
       "lineas": [
         { "hablante": "Nota de papá", "texto": "Si estás leyendo esto, ya te tocó a ti. Perdona que no pueda explicártelo en persona.", "imagen": "" },
-        { "hablante": "Nota de papá", "texto": "Con W avisas a la cabina de abajo que ya puedes partir, y con ESPACIO el ascensor arranca. Con SHIFT lo frenas, y hay que hacerlo justo a tiempo.", "imagen": "" },
-        { "hablante": "Nota de papá", "texto": "ESC pausa el juego, y los menús se manejan con el mouse. Prueba ahora: presiona W y, cuando la TV diga que la cabina de abajo está lista, presiona ESPACIO.", "imagen": "" }
+        { "hablante": "Nota de papá", "texto": "Con ENTER pasas estos textos. Con ESC pausas el juego, y los menús se manejan con el mouse.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "La tecla W avisa a la cabina de abajo que ya vas a partir y cierra tu puerta, así que nadie más sube. Púlsala cuando quieras: con 1 pasajero o con 5.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Después de avisar, espera el mensaje de la tele: «Cabina de abajo lista». Recién ahí, ESPACIO hace partir el ascensor.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Si arrancas antes de tiempo, se activan los frenos de emergencia y la gente se enoja.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Y con SHIFT frenas. Al acercarte al andén hay que apretarlo justo a tiempo: si frenas mal, el cable se desgasta.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Prueba ahora: presiona W y, cuando la tele diga que la cabina de abajo está lista, presiona ESPACIO.", "imagen": "" }
       ]
     },
     {
       "id": "tutorial_viaje",
       "lineas": [
         { "hablante": "Tú", "texto": "Papá decía que primero se avisaba con W y que luego, con ESPACIO, el ascensor andaba... y tenía razón.", "imagen": "" },
-        { "hablante": "Tú", "texto": "Y a mitad de camino hay que frenar con SHIFT justo a tiempo.", "imagen": "" }
+        { "hablante": "Tú", "texto": "Mientras viajo, ya van llegando pasajeros al otro lado. Cada uno paga al bajar.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Y cuando me acerque al andén, a frenar con SHIFT justo a tiempo.", "imagen": "" }
       ]
     },
     {
       "id": "tutorial_puerta",
       "lineas": [
-
         { "hablante": "Tú", "texto": "Me decía que a veces pasan cosas inesperadas...", "imagen": "" },
-        { "hablante": "Tú", "texto": "Las puertas se atascaban. Papá las desatascaba presionando ESPACIO varias veces.", "imagen": "" }
+        { "hablante": "Tú", "texto": "Las puertas se atascaban al llegar. Papá las desatascaba presionando ESPACIO varias veces, rápido, hasta que cedían.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Si no alcanzo, los pasajeros se impacientan y el riel se desgasta más.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_pasajeros",
+      "lineas": [
+        { "hablante": "Tú", "texto": "Los pasajeros suben solos mientras la puerta está abierta, y pagan al bajar. Si el ascensor está limpio y bien cuidado, pagan mejor.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Y de vez en cuando se sube algún vecino que se queda a conversar y deja una propina para la mantención.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Voy a esperar a que suba el próximo pasajero antes de avisar con W.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_pestillo",
+      "lineas": [
+        { "hablante": "Tú", "texto": "Ahora hay que cerrar con W. Ojo: a veces el pestillo de la puerta no calza y el motor no arranca por seguridad.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Cuando pase, aparece un círculo con un anillo que se va achicando. Presiona ESPACIO justo cuando el anillo toque el círculo.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Si fallo, la puerta rebota y hay que repetirlo. Listo, pulso W.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_engrase",
+      "lineas": [
+        { "hablante": "Tú", "texto": "¡Espera! Papá decía que a veces, al arrancar, la polea estaba seca y el ascensor no partía.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Salta un aviso de sobrecalentamiento y hay que engrasar: mantén ESPACIO para subir el cuadrado y sigue la línea que se mueve.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Tengo que mantenerlos en contacto unos 10 segundos en total. No hace falta que sean seguidos.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_polea",
+      "lineas": [
+        { "hablante": "Tú", "texto": "¿Qué fue ese chirrido? A veces la polea se traba en pleno viaje y el ascensor frena de golpe.", "imagen": "" },
+        { "hablante": "Tú", "texto": "La pantalla se oscurece y brilla a un ritmo fijo. Hay que presionar ESPACIO justo cuando brilla, siguiendo el ritmo, hasta liberarla.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_propina",
+      "lineas": [
+        { "hablante": "Tú", "texto": "Eso fue amable de su parte. Hay vecinos así: conversan y dejan plata extra.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Esa propina ayuda a pagar la cuota del día y los repuestos de la tienda.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_basura",
+      "lineas": [
+        { "hablante": "Tú", "texto": "Cuando los pasajeros bajan, a veces dejan colillas y latas tiradas en la cabina.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Aparecen círculos con un anillo que se achica: haz clic con el mouse en cada uno justo cuando el anillo lo alcance.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Si dejo la cabina sucia, cada vez sube menos gente.", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_fin",
+      "lineas": [
+        { "hablante": "Nota de papá", "texto": "Eso es todo lo que sé. Lo demás lo vas a aprender en el camino, como yo.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Durante el día vas a atender pasajeros y arreglar lo que falle. Al terminar hay que pagar la cuota, y con lo que sobre puedes comprar repuestos en la tienda.", "imagen": "" },
+        { "hablante": "Tú", "texto": "Gracias, papá. Ahora sí, a seguir con el día.", "imagen": "" }
       ]
     }
   ]

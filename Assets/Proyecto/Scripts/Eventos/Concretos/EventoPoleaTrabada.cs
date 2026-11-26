@@ -51,7 +51,6 @@ public class EventoPoleaTrabada : EventoBase
     private int ultimoPulsoAcertado = -1;
     private bool minijuegoActivo = false;
     private bool yaResuelto = false;
-    private float timeScaleAnterior = 1f;
     private bool tiempoDetenido = false;
 
     private void Awake()
@@ -99,8 +98,7 @@ public class EventoPoleaTrabada : EventoBase
 
         if (detenerTiempo)
         {
-            timeScaleAnterior = Time.timeScale;
-            Time.timeScale = 0f;
+            PausaJuego.Pedir(this);
             tiempoDetenido = true;
         }
 
@@ -111,7 +109,7 @@ public class EventoPoleaTrabada : EventoBase
     {
         if (!tiempoDetenido) return;
         tiempoDetenido = false;
-        Time.timeScale = timeScaleAnterior;
+        PausaJuego.Liberar(this);
     }
 
     private void OnDestroy()

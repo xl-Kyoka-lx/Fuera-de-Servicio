@@ -41,9 +41,6 @@ public class TiendaManager : MonoBehaviour
     private List<ItemData> listaItems = new List<ItemData>();
     private ItemData itemSeleccionadoActual;
 
-  
-    private static HashSet<string> mejorasCompradas = new HashSet<string>();
-    private static Dictionary<string, int> consumibles = new Dictionary<string, int>();
 
     private void Awake()
     {
@@ -93,7 +90,7 @@ public class TiendaManager : MonoBehaviour
             if (textoDescripcion != null)
                 textoDescripcion.text = item.descripcion;
 
-            if (item.esMejoraUnica && mejorasCompradas.Contains(item.id))
+            if (item.esMejoraUnica && EfectosManager.TieneMejora(item.id.ToLower()))
             {
                 if (textoBotonComprar != null) textoBotonComprar.text = "Ya adquirido";
                 if (botonComprar != null) botonComprar.interactable = false;
@@ -125,26 +122,19 @@ public class TiendaManager : MonoBehaviour
             ActualizarTextoDinero();
 
           
+            // Guarda la compra en GameData y aplica su efecto
+            EfectosManager.AplicarEfecto(itemSeleccionadoActual.id, itemSeleccionadoActual.esMejoraUnica);
+
             if (itemSeleccionadoActual.esMejoraUnica)
             {
-                mejorasCompradas.Add(itemSeleccionadoActual.id);
                 if (textoBotonComprar != null) textoBotonComprar.text = "Ya adquirido";
                 if (botonComprar != null) botonComprar.interactable = false;
             }
             else
             {
-                if (!consumibles.ContainsKey(itemSeleccionadoActual.id))
-                    consumibles[itemSeleccionadoActual.id] = 0;
-
-                consumibles[itemSeleccionadoActual.id]++;
-                Debug.Log($"Tienes {consumibles[itemSeleccionadoActual.id]} unidades de {itemSeleccionadoActual.nombre}");
-
                 if (botonComprar != null)
                     botonComprar.interactable = (ObtenerDinero() >= itemSeleccionadoActual.precio);
             }
-
-          
-            EfectosManager.AplicarEfecto(itemSeleccionadoActual.id);
         }
         
     }

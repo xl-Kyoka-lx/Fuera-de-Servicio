@@ -69,9 +69,6 @@ public class DirectorEventos : MonoBehaviour
         if (procesoPartida == null) procesoPartida = ProcesoPartida.Instance;
         if (procesoPartida == null) procesoPartida = FindFirstObjectByType<ProcesoPartida>();
 
-        if (estadoManager != null)
-            estadoManager.modoDirector = true;
-
         if (procesoPartida != null)
         {
             procesoPartida.OnWPulsada += AlPulsarW;
@@ -305,6 +302,14 @@ public class DirectorEventos : MonoBehaviour
         {
             EventoProgramado p = new EventoProgramado();
             p.config = ElegirConfig(configs);
+
+            // Malla protectora (tienda): la basura cae menos en las poleas
+            if (p.config.prefab != null && p.config.prefab.GetComponent<EventoPoleaTrabada>() != null
+                && Random.value > EfectosManager.ProbabilidadBasuraPoleas)
+            {
+                if (debugLogs) Debug.Log("[Director] La malla protectora evitó una polea trabada");
+                continue;
+            }
             p.momento = MomentoDe(p.config);
             p.tiempo = inicio + tramo * i + Random.Range(0.15f, 0.85f) * tramo;
             programados.Add(p);

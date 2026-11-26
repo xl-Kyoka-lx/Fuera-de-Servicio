@@ -122,7 +122,7 @@ public class PaymentManager : MonoBehaviour
     {
       
         if (gameData != null)
-            gameData.horaActual = 8;
+            gameData.horaActual = 7;   // el ClockManager igual empieza en su horaInicio
 
        
         SceneManager.LoadScene(nombreEscenaDia);
@@ -135,7 +135,7 @@ public class PaymentManager : MonoBehaviour
         if (panelPago != null) panelPago.SetActive(false);
         if (panelDerrota != null) panelDerrota.SetActive(true);
 
-        Time.timeScale = 0f;
+        PausaJuego.Pedir(this);
         OnDerrota?.Invoke();
     }
 
@@ -144,5 +144,6 @@ public class PaymentManager : MonoBehaviour
         esperandoPago = false;
         if (panelPago != null) panelPago.SetActive(false);
         if (panelDerrota != null) panelDerrota.SetActive(false);
+        PausaJuego.Liberar(this);
     }
 }
