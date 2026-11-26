@@ -3,43 +3,43 @@
     {
       "id": "aceite",
       "nombre": "Aceite de engranajes",
-      "precio": 1350,
-      "descripcion": "Necesario cuando la suciedad o el uso forzado resecan las poleas. Evita que el motor se sobrecaliente el doble de rápido durante la subida.",
+      "precio": 30000,
+      "descripcion": "Contratas a un técnico especializado para reemplazar el aceite desgastado en los engranajes del ascensor y lo revise de forma completa.",
       "esMejoraUnica": false
     },
     {
       "id": "frenos",
       "nombre": "Freno Reforzado",
-      "precio": 1500,
+      "precio": 50000,
       "descripcion": "Mejora el sistema de detención mecánica. Facilita la sincronización con el andén inferior, dando un margen de tiempo más amplio para frenar.",
       "esMejoraUnica": true
     },
     {
       "id": "malla",
       "nombre": "Malla protectora de rieles",
-      "precio": 220,
+      "precio": 45000,
       "descripcion": "Reduce en un 70% la probabilidad de que la basura pesada arrojada desde la calle caiga directamente en las poleas motrices de la quebrada.",
       "esMejoraUnica": true
     },
     {
       "id": "cristal",
       "nombre": "Reemplazo de cristal",
-      "precio": 100,
+      "precio": 1000,
       "descripcion": "Repara ventanas trizadas por pedradas o ampolletas quemadas. Sin luz o con vidrios rotos, la gente siente peligro y baja drásticamente la afluencia de pasajeros.",
       "esMejoraUnica": false
     },
     {
       "id": "kit_limpieza",
       "nombre": "Kit de limpieza",
-      "precio": 150,
+      "precio": 1000,
       "descripcion": "Bolsas y artículos para barrer colillas, latas y papeles del piso antes de cerrar el turno. Evita que los pasajeros tiren más basura por imitación.",
       "esMejoraUnica": false
     },
     {
-      "id": "repuesto",
-      "nombre": "Repuesto de freno",
-      "precio": 150,
-      "descripcion": "Reemplaza la zapata desgastada por paradas de emergencia o frenados bruscos. Evita que la barra verde de frenado se vuelva diminuta y errática.",
+      "id": "mantenimiento_parcial",
+      "nombre": "Parche de mantenimiento",
+      "precio": 1500,
+      "descripcion": "Repara un +5% el mantenimiento del ascensor hasta el 60%, pero el límite máximo baja cada semana",
       "esMejoraUnica": false
     }
   ]

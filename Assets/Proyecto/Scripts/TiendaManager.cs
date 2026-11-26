@@ -93,7 +93,7 @@ public class TiendaManager : MonoBehaviour
                     textoBotonComprar.text = $"Comprar (${item.precio})";
 
                 if (botonComprar != null)
-                    botonComprar.interactable = (ObtenerDinero() >= item.precio);
+                    botonComprar.interactable = PuedePagar(item);
             }
         }
     }
@@ -103,9 +103,7 @@ public class TiendaManager : MonoBehaviour
         if (itemSeleccionadoActual == null) return;
         if (GameManager.Instance == null) return;
 
-        int dineroActual = ObtenerDinero();
-
-        if (dineroActual >= itemSeleccionadoActual.precio)
+        if (PuedePagar(itemSeleccionadoActual))
         {
             GameManager.Instance.gameData.dineroTotal -= itemSeleccionadoActual.precio;
             GameManager.Instance.gameData.RegistrarGasto(itemSeleccionadoActual.precio);
@@ -123,7 +121,7 @@ public class TiendaManager : MonoBehaviour
             else
             {
                 if (botonComprar != null)
-                    botonComprar.interactable = (ObtenerDinero() >= itemSeleccionadoActual.precio);
+                    botonComprar.interactable = PuedePagar(itemSeleccionadoActual);
             }
         }
     }
@@ -135,7 +133,21 @@ public class TiendaManager : MonoBehaviour
         string texto = itemSeleccionadoActual.descripcion;
         if (itemSeleccionadoActual.id.ToLower() == "kit_limpieza")
             texto += $"\n\nTienes: {EfectosManager.Stock("kit_limpieza")}";
+        if (itemSeleccionadoActual.id.ToLower() == "aceite" && EfectosManager.AceiteAgotado)
+            texto = "Ya no existen las piezas necesarias para la mantención.";
+        if (itemSeleccionadoActual.id.ToLower() == "mantenimiento_parcial" && GameManager.Instance != null)
+        {
+            float actual = GameManager.Instance.GameData.contadorGrasa;
+            texto += $"\n\nMantenimiento: {actual:F0}% / límite esta semana: {EfectosManager.LimiteParche:F0}%";
+            if (!EfectosManager.PuedeComprar("mantenimiento_parcial"))
+                texto += "\nYa no se puede parchar más.";
+        }
         textoDescripcion.text = texto;
+    }
+
+    private bool PuedePagar(ItemData item)
+    {
+        return ObtenerDinero() >= item.precio && EfectosManager.PuedeComprar(item.id);
     }
 
     private int ObtenerDinero()

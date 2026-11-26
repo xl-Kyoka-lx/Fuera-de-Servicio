@@ -6718,11 +6718,24 @@ MonoBehaviour:
   umbralPopularidad: 60
   popularidadPerdidaMediana: 8
   popularidadGanadaPequena: 3
+  economia:
+    subsidioPorDia: e8030000e8030000e8030000ee020000f4010000f4010000f4010000f4010000f4010000fa000000fa00000000000000i
+    semanaInicioCobros: 2
+    electricidadBase: 150
+    electricidadPorSemana: 75
+    electricidadPorDesgaste: 3
+    deudaBase: 120
+    interesSemanal: 0.2
+    permisoBase: 80
+    permisoPorSemana: 60
+    multaPorSuciedad: 2
+    multaPorQueja: 3
+    popularidadSinQuejas: 50
   actualMantenimiento: 0
   actualLimpieza: 0
   actualPopularidad: 0
-  aplicarValoresDePrueba: 0
-  pruebaMantenimiento: 2.6
+  aplicarValoresDePrueba: 1
+  pruebaMantenimiento: 1.9
   pruebaLimpieza: 2.2
   pruebaPopularidad: 4.1
 --- !u!1 &1410426923

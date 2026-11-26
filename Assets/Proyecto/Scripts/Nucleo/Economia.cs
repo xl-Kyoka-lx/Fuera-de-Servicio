@@ -13,25 +13,25 @@ public class ConfigEconomia
     public int semanaInicioCobros = 2;
 
     [Tooltip("Luz: cobro diario base")]
-    public int electricidadBase = 150;
+    public int electricidadBase = 1500;
     [Tooltip("Luz: cuánto sube por cada semana que pasa")]
-    public int electricidadPorSemana = 75;
+    public int electricidadPorSemana = 750;
     [Tooltip("Luz: cuánto se suma por cada punto de mantenimiento que falta (motor gastado consume más)")]
-    public float electricidadPorDesgaste = 3f;
+    public float electricidadPorDesgaste = 30f;
 
     [Tooltip("Deudas del padre: cobro diario de la primera semana de cobro")]
-    public int deudaBase = 120;
+    public int deudaBase = 1200;
     [Tooltip("Deudas del padre: interés por mora que se acumula cada semana (0.2 = 20%)")]
     public float interesSemanal = 0.2f;
 
     [Tooltip("Permiso provisorio de operación: cobro diario base")]
-    public int permisoBase = 80;
+    public int permisoBase = 800;
     [Tooltip("Permiso provisorio: cuánto sube cada semana")]
-    public int permisoPorSemana = 60;
+    public int permisoPorSemana = 600;
     [Tooltip("Multa por cada punto de limpieza que falta")]
-    public float multaPorSuciedad = 2f;
+    public float multaPorSuciedad = 20f;
     [Tooltip("Multa por cada punto de popularidad bajo el mínimo (quejas de pasajeros)")]
-    public float multaPorQueja = 3f;
+    public float multaPorQueja = 30f;
     [Tooltip("Bajo esta popularidad empiezan las quejas al inspector")]
     public float popularidadSinQuejas = 50f;
 }

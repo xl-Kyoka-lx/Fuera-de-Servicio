@@ -4,8 +4,47 @@ public static class EfectosManager
 {
     public static float multiplicadorFrenadoConFrenos = 1.5f;
     public static float probabilidadPoleaConMalla = 0.3f;
-    public static float reparacionAceite = 25f;
+    public static float topeAceiteInicial = 90f;
+    public static float bajaTopeAceitePorMes = 10f;
+    public static int semanasPorMes = 4;
     public static float limpiezaKit = 5f;
+    public static float reparacionParche = 5f;
+    public static float limiteParcheInicial = 60f;
+    public static float bajaLimiteParchePorSemana = 5f;
+    public static float limiteParcheMinimo = 30f;
+
+    public static float LimiteParche
+    {
+        get
+        {
+            var gm = GameManager.Instance;
+            int semana = gm != null && gm.GameData != null ? gm.GameData.Semana : 1;
+            return Mathf.Max(limiteParcheMinimo, limiteParcheInicial - bajaLimiteParchePorSemana * (semana - 1));
+        }
+    }
+
+    public static float TopeAceite
+    {
+        get
+        {
+            var gm = GameManager.Instance;
+            int semana = gm != null && gm.GameData != null ? gm.GameData.Semana : 1;
+            int mesesCumplidos = (semana - 1) / Mathf.Max(1, semanasPorMes);
+            return Mathf.Max(0f, topeAceiteInicial - bajaTopeAceitePorMes * mesesCumplidos);
+        }
+    }
+
+    public static bool AceiteAgotado => TopeAceite <= 0f;
+
+    public static bool PuedeComprar(string idItem)
+    {
+        var gm = GameManager.Instance;
+        if (idItem.ToLower() == "mantenimiento_parcial")
+            return gm != null && gm.GameData.contadorGrasa < LimiteParche;
+        if (idItem.ToLower() == "aceite")
+            return gm != null && gm.GameData.contadorGrasa < TopeAceite;
+        return true;
+    }
 
     private static EstadoTienda Estado
     {
@@ -67,13 +106,19 @@ public static class EfectosManager
         switch (id)
         {
             case "aceite":
-                gm.ModificarPolea(reparacionAceite);
-                Debug.Log($"[Tienda] Aceite: mantenimiento +{reparacionAceite} -> {gm.GameData.contadorGrasa:F0}%");
+                gm.ModificarPolea(Mathf.Max(0f, TopeAceite - gm.GameData.contadorGrasa));
+                Debug.Log($"[Tienda] Aceite: mantenimiento -> {gm.GameData.contadorGrasa:F0}% (tope {TopeAceite:F0}%)");
                 break;
 
             case "kit_limpieza":
                 e.SumarCantidad(id, 1);
                 Debug.Log($"[Tienda] Kit de limpieza comprado. Tienes {e.ObtenerCantidad(id)}");
+                break;
+
+            case "mantenimiento_parcial":
+                float subida = Mathf.Min(reparacionParche, LimiteParche - gm.GameData.contadorGrasa);
+                if (subida > 0f) gm.ModificarPolea(subida);
+                Debug.Log($"[Tienda] Parche: mantenimiento +{subida:F0} -> {gm.GameData.contadorGrasa:F0}% (límite {LimiteParche:F0}%)");
                 break;
 
             default:
