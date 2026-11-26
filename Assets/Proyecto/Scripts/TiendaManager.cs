@@ -80,8 +80,7 @@ public class TiendaManager : MonoBehaviour
             itemSeleccionadoActual = item;
             if (cuadroTexto != null) cuadroTexto.SetActive(true);
 
-            if (textoDescripcion != null)
-                textoDescripcion.text = item.descripcion;
+            ActualizarDescripcion();
 
             if (item.esMejoraUnica && EfectosManager.TieneMejora(item.id.ToLower()))
             {
@@ -109,10 +108,12 @@ public class TiendaManager : MonoBehaviour
         if (dineroActual >= itemSeleccionadoActual.precio)
         {
             GameManager.Instance.gameData.dineroTotal -= itemSeleccionadoActual.precio;
+            GameManager.Instance.gameData.RegistrarGasto(itemSeleccionadoActual.precio);
             GameManager.Instance.gameData.OnDataChanged?.Invoke();
             ActualizarTextoDinero();
 
             EfectosManager.AplicarEfecto(itemSeleccionadoActual.id, itemSeleccionadoActual.esMejoraUnica);
+            ActualizarDescripcion();
 
             if (itemSeleccionadoActual.esMejoraUnica)
             {
@@ -125,6 +126,16 @@ public class TiendaManager : MonoBehaviour
                     botonComprar.interactable = (ObtenerDinero() >= itemSeleccionadoActual.precio);
             }
         }
+    }
+
+    private void ActualizarDescripcion()
+    {
+        if (textoDescripcion == null || itemSeleccionadoActual == null) return;
+
+        string texto = itemSeleccionadoActual.descripcion;
+        if (itemSeleccionadoActual.id.ToLower() == "kit_limpieza")
+            texto += $"\n\nTienes: {EfectosManager.Stock("kit_limpieza")}";
+        textoDescripcion.text = texto;
     }
 
     private int ObtenerDinero()

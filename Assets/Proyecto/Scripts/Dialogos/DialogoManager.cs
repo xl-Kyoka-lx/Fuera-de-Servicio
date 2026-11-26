@@ -32,7 +32,8 @@ public class DialogoManager : MonoBehaviour
     [Tooltip("Retrato de cada personaje")]
     public List<Retrato> retratos = new List<Retrato>();
 
-    public float velocidadTipeo = 0.03f; 
+    [Tooltip("Ya no se usa: la velocidad sale de la barra Velocidad_Texto en Opciones")]
+    public float velocidadTipeo = 0.03f;
     public InputActionAsset inputActions;
     public string actionMapName = "Gameplay";
     public string actionName = "Avanzar texto";
@@ -71,7 +72,7 @@ public class DialogoManager : MonoBehaviour
     {
         string[] validos = {
         "dineroGanado", "pasajerosTransportados", "eventos",
-        "dineroTotal", "limpieza", "polea", "hora"
+        "dineroTotal", "limpieza", "polea", "hora", "dia", "semana"
     };
 
         foreach (var dialogo in dialogosCargados)
@@ -226,7 +227,7 @@ public class DialogoManager : MonoBehaviour
         for (int i = 0; i < textoCompleto.Length; i++)
         {
             textoContenido.text = textoCompleto.Substring(0, i + 1);
-            yield return new WaitForSecondsRealtime(velocidadTipeo);
+            yield return new WaitForSecondsRealtime(Configuracion.SegundosPorLetra);
         }
 
         textoContenido.text = textoCompleto;
@@ -318,6 +319,8 @@ public class DialogoManager : MonoBehaviour
             texto = texto.Replace("{limpieza}", data.contadorLimpieza.ToString("F0"));
             texto = texto.Replace("{polea}", data.contadorGrasa.ToString("F0"));
             texto = texto.Replace("{hora}", data.horaActual.ToString());
+            texto = texto.Replace("{dia}", data.diaActual.ToString());
+            texto = texto.Replace("{semana}", data.Semana.ToString());
         }
 
         return texto;

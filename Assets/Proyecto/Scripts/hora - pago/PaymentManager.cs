@@ -40,8 +40,21 @@ public class PaymentManager : MonoBehaviour
             gameData.OnDataChanged -= ActualizarTextosPanel;
     }
 
+    public int netoDelDia { get; private set; }
+
+    public string TextoCobro => netoDelDia <= 0 ? $"Recibes: ${-netoDelDia}" : $"Debes pagar: ${netoDelDia}";
+
     public void IniciarCobro()
     {
+        if (gameData == null && GameManager.Instance != null)
+            gameData = GameManager.Instance.gameData;
+
+        if (gameData != null)
+        {
+            netoDelDia = Economia.Calcular(gameData).Neto;
+            costoPago = Mathf.Max(0, netoDelDia);
+        }
+
         esperandoPago = true;
 
         if (panelPago != null)
@@ -57,7 +70,7 @@ public class PaymentManager : MonoBehaviour
         int dinero = gameData.dineroTotal;
 
         if (textoCosto != null)
-            textoCosto.text = $"Debes pagar: ${costoPago}";
+            textoCosto.text = TextoCobro;
 
         if (textoDineroActual != null)
         {
@@ -81,9 +94,12 @@ public class PaymentManager : MonoBehaviour
 
         int dinero = gameData.dineroTotal;
         
-        if (dinero >= costoPago)
+        if (dinero >= netoDelDia)
         {
-            gameData.dineroTotal -= costoPago;
+            gameData.dineroTotal -= netoDelDia;
+            gameData.RegistrarGasto(netoDelDia);
+            gameData.CerrarEstadisticasDelDia();
+            gameData.diaActual++;
 
             gameData.OnDataChanged?.Invoke();
 
@@ -112,9 +128,8 @@ public class PaymentManager : MonoBehaviour
     {
         esperandoPago = false;
         if (panelPago != null) panelPago.SetActive(false);
-        if (panelDerrota != null) panelDerrota.SetActive(true);
+        PantallaFueraDeServicio.Mostrar();
 
-        PausaJuego.Pedir(this);
         OnDerrota?.Invoke();
     }
 

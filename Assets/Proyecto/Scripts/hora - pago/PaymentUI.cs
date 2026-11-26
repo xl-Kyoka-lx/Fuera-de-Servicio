@@ -42,7 +42,7 @@ public class PaymentUI : MonoBehaviour
 
         if (textoCosto != null)
         {
-            textoCosto.text = $"¡Debes pagar ${costo}!";
+            textoCosto.text = paymentManager.TextoCobro;
         }
 
         if (textoDinero != null)

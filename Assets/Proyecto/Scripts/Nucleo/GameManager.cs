@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [Tooltip("Puntos de popularidad que se ganan por cada uno que quede sobre el umbral")]
     public float popularidadGanadaPequena = 3f;
 
+    [Header("Economía: subsidio y cobros diarios")]
+    public ConfigEconomia economia = new ConfigEconomia();
+
     [Header("Valores actuales (solo mirar, se actualizan solos)")]
     public float actualMantenimiento;
     public float actualLimpieza;
@@ -135,6 +138,7 @@ public class GameManager : MonoBehaviour
     public void SumarDinero(int cantidad)
     {
         gameData.dineroTotal += cantidad;
+        gameData.RegistrarIngreso(cantidad);
         gameData.OnDataChanged?.Invoke();
         Debug.Log($" Dinero total: {gameData.dineroTotal}");
     }
@@ -151,6 +155,7 @@ public class GameManager : MonoBehaviour
         actualMantenimiento = gameData.contadorGrasa;
         actualLimpieza = gameData.contadorLimpieza;
         actualPopularidad = gameData.contadorPopularidad;
+        gameData.RegistrarPopularidad();
     }
 
     private void OnValidate()

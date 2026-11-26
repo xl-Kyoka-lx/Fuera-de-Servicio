@@ -47,12 +47,29 @@ public class ResumenNocheTrigger : MonoBehaviour
        
         if (DialogoManager.Instance != null)
         {
+            DialogoManager.Instance.OnDialogoTerminado += AlTerminarResumen;
             DialogoManager.Instance.MostrarDialogo(idDialogo);
         }
         else
         {
             Debug.LogError("DialogoManager.Instance es null");
         }
+    }
+
+    private void AlTerminarResumen(string id)
+    {
+        if (id != idDialogo) return;
+
+        DialogoManager.Instance.OnDialogoTerminado -= AlTerminarResumen;
+
+        if (GameManager.Instance != null)
+            DialogoManager.Instance.MostrarDialogoDirecto("cartas_noche", Economia.LineasDeLaNoche(GameManager.Instance.GameData));
+    }
+
+    private void OnDestroy()
+    {
+        if (DialogoManager.Instance != null)
+            DialogoManager.Instance.OnDialogoTerminado -= AlTerminarResumen;
     }
 
     [ContextMenu("Resetear Flag (Debug)")]

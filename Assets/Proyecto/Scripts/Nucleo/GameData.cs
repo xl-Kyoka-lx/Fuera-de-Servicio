@@ -52,6 +52,50 @@ public class GameData : ScriptableObject
 
     public int horaActual = 7;
 
+    [Tooltip("Día de la partida, empieza en 1. Cada 7 días es una semana")]
+    public int diaActual = 1;
+    public int Semana => (diaActual - 1) / 7 + 1;
+    public int DiaDeLaSemana => (diaActual - 1) % 7 + 1;
+
+    [Header("Cobros de la semana (se calculan al empezar cada semana)")]
+    public int semanaCobrosCalculada = 0;
+    public int cobroElectricidad = 0;
+    public int cobroDeudas = 0;
+    public int cobroMultas = 0;
+
+    [Header("Estadísticas de la partida")]
+    public int dineroRecaudadoTotal = 0;
+    public float popularidadMinima = 50f;
+    public int maxGanadoEnUnDia = 0;
+    public int maxPerdidoEnUnDia = 0;
+    public int ganadoHoy = 0;
+    public int perdidoHoy = 0;
+
+    public void RegistrarIngreso(int cantidad)
+    {
+        if (cantidad <= 0) return;
+        ganadoHoy += cantidad;
+        dineroRecaudadoTotal += cantidad;
+    }
+
+    public void RegistrarGasto(int cantidad)
+    {
+        if (cantidad > 0) perdidoHoy += cantidad;
+    }
+
+    public void RegistrarPopularidad()
+    {
+        popularidadMinima = Mathf.Min(popularidadMinima, contadorPopularidad);
+    }
+
+    public void CerrarEstadisticasDelDia()
+    {
+        maxGanadoEnUnDia = Mathf.Max(maxGanadoEnUnDia, ganadoHoy);
+        maxPerdidoEnUnDia = Mathf.Max(maxPerdidoEnUnDia, perdidoHoy);
+        ganadoHoy = 0;
+        perdidoHoy = 0;
+    }
+
     public bool eventoOcurriendo = false;
     public bool ascensorEnMovimiento = false;
 
@@ -109,7 +153,12 @@ public class GameData : ScriptableObject
         contadorLimpieza = limpiezaPartidaNueva;
         contadorGrasa = mantenimientoPartidaNueva;
         horaActual = _horaInicial;
+        diaActual = 1;
+        semanaCobrosCalculada = 0;
+        cobroElectricidad = cobroDeudas = cobroMultas = 0;
+        dineroRecaudadoTotal = maxGanadoEnUnDia = maxPerdidoEnUnDia = ganadoHoy = perdidoHoy = 0;
         ActualizarPopularidad();
+        popularidadMinima = contadorPopularidad;
 
         eventoOcurriendo = false;
         ascensorEnMovimiento = false;

@@ -5,7 +5,7 @@ public static class EfectosManager
     public static float multiplicadorFrenadoConFrenos = 1.5f;
     public static float probabilidadPoleaConMalla = 0.3f;
     public static float reparacionAceite = 25f;
-    public static float limpiezaKit = 25f;
+    public static float limpiezaKit = 5f;
 
     private static EstadoTienda Estado
     {
@@ -38,6 +38,14 @@ public static class EfectosManager
         return true;
     }
 
+    public static bool UsarKitLimpieza()
+    {
+        var gm = GameManager.Instance;
+        if (gm == null || !Consumir("kit_limpieza")) return false;
+        gm.ModificarLimpieza(limpiezaKit);
+        return true;
+    }
+
     public static float MultiplicadorMargenFrenado => TieneMejora("frenos") ? multiplicadorFrenadoConFrenos : 1f;
     public static float ProbabilidadBasuraPoleas => TieneMejora("malla") ? probabilidadPoleaConMalla : 1f;
 
@@ -64,8 +72,8 @@ public static class EfectosManager
                 break;
 
             case "kit_limpieza":
-                gm.ModificarLimpieza(limpiezaKit);
-                Debug.Log($"[Tienda] Kit de limpieza: limpieza +{limpiezaKit} -> {gm.GameData.contadorLimpieza:F0}%");
+                e.SumarCantidad(id, 1);
+                Debug.Log($"[Tienda] Kit de limpieza comprado. Tienes {e.ObtenerCantidad(id)}");
                 break;
 
             default:

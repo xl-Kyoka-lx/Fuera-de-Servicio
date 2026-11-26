@@ -33,7 +33,7 @@ public class MenuPrincipal : MonoBehaviour
     public void NuevaPartida()
     {
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
+        Configuracion.Guardar();
 
         if (GameManager.Instance != null)
         {
