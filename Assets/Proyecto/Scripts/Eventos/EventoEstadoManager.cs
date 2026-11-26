@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System;
 
-// Lista de eventos (QTE) del día y quien los instancia.
-// Cuándo sale cada uno lo decide el DirectorEventos (o el tutorial con ForzarEvento).
 public class EventoEstadoManager : MonoBehaviour
 {
-    // Cuándo puede salir un evento según el estado del ascensor.
     public enum CondicionAscensor
     {
-        Cualquiera,         // en movimiento o detenido, arriba o abajo
-        SoloArribaQuieto    // solo cuando el ascensor llegó arriba y está detenido
+        Cualquiera,
+        SoloArribaQuieto
     }
 
     [System.Serializable]
@@ -42,11 +39,8 @@ public class EventoEstadoManager : MonoBehaviour
             ascensorManager = FindFirstObjectByType<AscensorManager>();
     }
 
-    // ---------- API para el DirectorEventos y el tutorial ----------
-
     public bool HayEventoEnCurso => eventoEnCurso;
 
-    // basura = true devuelve los eventos del sistema Limpieza; false, todos los demás
     public List<EventoEstadoConfig> ObtenerConfigs(bool basura)
     {
         List<EventoEstadoConfig> lista = new List<EventoEstadoConfig>();
@@ -76,7 +70,6 @@ public class EventoEstadoManager : MonoBehaviour
         return true;
     }
 
-    // Lanza el evento cuyo prefab tiene el componente T (lo usa el tutorial)
     public bool ForzarEvento<T>() where T : EventoBase
     {
         if (eventoEnCurso) return false;
@@ -93,12 +86,8 @@ public class EventoEstadoManager : MonoBehaviour
         if (e.condicionAscensor == CondicionAscensor.Cualquiera)
             return true;
 
-        // Con el ascensor detenido siempre hay una cabina arriba (las dos se turnan),
-        // así que "arriba y quieto" es simplemente "quieto". Sin referencia, no se bloquea nada.
         return ascensorManager == null || !ascensorManager.enMovimiento;
     }
-
-    // ---------- Instanciar y terminar ----------
 
     private void LanzarEvento(EventoEstadoConfig e)
     {
@@ -141,7 +130,6 @@ public class EventoEstadoManager : MonoBehaviour
 
     private void TerminarEvento()
     {
-        // Durante 1 segundo tras terminar un evento, Espacio no arranca el ascensor
         BloqueoEventos.BloquearArranque(1f);
 
         eventoEnCurso = false;

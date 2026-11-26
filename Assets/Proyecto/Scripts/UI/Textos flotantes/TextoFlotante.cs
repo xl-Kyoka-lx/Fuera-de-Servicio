@@ -1,8 +1,6 @@
 using UnityEngine;
 using TMPro;
 
-// Texto que sube y se desvanece en el mundo (por ejemplo "+$20" cuando un pasajero paga).
-// No necesita prefab: TextoFlotante.Mostrar(...) lo crea solo.
 public class TextoFlotante : MonoBehaviour
 {
     private TextMeshPro tmp;
@@ -12,7 +10,6 @@ public class TextoFlotante : MonoBehaviour
     private float tiempo;
     private Vector3 inicio;
 
-    // alturaReferencia: alto de quien lo muestra (el texto se escala con eso)
     public static void Mostrar(string texto, Vector3 posicion, Color color, float alturaReferencia, float duracion = 1.2f)
     {
         if (TMP_Settings.defaultFontAsset == null)
@@ -32,7 +29,7 @@ public class TextoFlotante : MonoBehaviour
         t.alignment = TextAlignmentOptions.Center;
         t.color = color;
         t.textWrappingMode = TextWrappingModes.NoWrap;
-        t.sortingOrder = 100;   // por encima de los sprites
+        t.sortingOrder = 100;
 
         var f = go.AddComponent<TextoFlotante>();
         f.tmp = t;
@@ -44,7 +41,6 @@ public class TextoFlotante : MonoBehaviour
 
     private void Update()
     {
-        // Tiempo real: desaparece aunque el juego esté congelado (diálogo de un bondadoso, por ejemplo)
         tiempo += Time.unscaledDeltaTime;
         float t = Mathf.Clamp01(tiempo / duracion);
 

@@ -5,11 +5,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-
     [SerializeField] public GameData gameData;   
     public GameData GameData => gameData;
 
-    // 🔑 Referencia al ScriptableObject del resumen
     [SerializeField] private ResumenDiaData resumenDia;
     public ResumenDiaData ResumenDia => resumenDia;
 
@@ -39,15 +37,9 @@ public class GameManager : MonoBehaviour
     [Range(0, 100)] public float pruebaLimpieza = 100f;
     [Range(0, 100)] public float pruebaPopularidad = 50f;
 
-    // Se avisa cuando el mantenimiento llega a 0 durante la partida
     public System.Action OnMantenimientoCero;
 
-    // Se avisa cada vez que un pasajero llega a su destino y paga
     public System.Action OnPasajeroCompleto;
-
-
-
-
 
     private void Awake()
     {
@@ -58,7 +50,6 @@ public class GameManager : MonoBehaviour
             transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
 
-            // Cada vez que se carga una escena se fijan los valores con los que se calcula el día
             SceneManager.sceneLoaded += AlCargarEscena;
             if (gameData != null)
                 gameData.FijarValoresDelDia();
@@ -72,7 +63,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning($"GameManager duplicado en {gameObject.name}. DESTRUYENDO.");
 
-            
             Destroy(gameObject);
         }
     }
@@ -81,7 +71,6 @@ public class GameManager : MonoBehaviour
         if (gameData != null)
             gameData.ResetData();
     }
-
 
     public void ModificarLimpieza(float cantidad)
     {
@@ -96,7 +85,6 @@ public class GameManager : MonoBehaviour
         gameData.ActualizarPopularidad();
         gameData.OnDataChanged?.Invoke();
 
-        // Mantenimiento en 0 jugando = el ascensor se averió y se pierde
         if (gameData.contadorGrasa <= 0f && !gameData.ascensorAveriado)
         {
             gameData.ascensorAveriado = true;
@@ -105,7 +93,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Sube (positivo) o baja (negativo) la popularidad
     public void ModificarPopularidad(float cantidad)
     {
         if (gameData == null) return;
@@ -114,8 +101,6 @@ public class GameManager : MonoBehaviour
         gameData.OnDataChanged?.Invoke();
     }
 
-    // Al darle a Continuar en la noche: el mantenimiento y la limpieza ajustan la popularidad.
-    // Cada uno, si está bajo el umbral resta una cantidad mediana; si no, suma una pequeña.
     public void AplicarPopularidadDelDia()
     {
         if (gameData == null) return;
@@ -135,8 +120,6 @@ public class GameManager : MonoBehaviour
             gameData.FijarValoresDelDia();
     }
 
-    // Se llama al terminar el día: el mantenimiento baja un valor fijo,
-    // pero este desgaste nunca lo deja en 0 (solo se pierde jugando).
     public void AplicarDesgasteDiario()
     {
         if (gameData == null) return;
@@ -149,8 +132,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Desgaste diario aplicado. Mantenimiento: {gameData.contadorGrasa:F0}%");
     }
 
-
-    
     public void SumarDinero(int cantidad)
     {
         gameData.dineroTotal += cantidad;
@@ -158,14 +139,10 @@ public class GameManager : MonoBehaviour
         Debug.Log($" Dinero total: {gameData.dineroTotal}");
     }
 
-
-  
-    // Un pasajero llegó a su destino. El pago lo hace el propio Pasajero (según su emoción).
     public void PasajeroCompleto()
     {
         OnPasajeroCompleto?.Invoke();
     }
-
 
     private void Update()
     {
@@ -176,7 +153,6 @@ public class GameManager : MonoBehaviour
         actualPopularidad = gameData.contadorPopularidad;
     }
 
-    // Se llama sola cuando cambias algo en el Inspector
     private void OnValidate()
     {
         if (!aplicarValoresDePrueba || gameData == null) return;
@@ -185,7 +161,6 @@ public class GameManager : MonoBehaviour
         gameData.contadorLimpieza = pruebaLimpieza;
         gameData.contadorPopularidad = pruebaPopularidad;
 
-        // Para que el cambio se note hoy mismo y no solo desde el día siguiente
         gameData.mantenimientoDelDia = Mathf.Clamp(pruebaMantenimiento, 1f, 100f);
         gameData.limpiezaDelDia = pruebaLimpieza;
 
@@ -206,10 +181,8 @@ public class GameManager : MonoBehaviour
             Instance = null;
         }
 
-        // Imprimir el stack trace para saber QUIÉN lo destruyó
         Debug.Log($" Stack: {System.Environment.StackTrace}");
     }
-
 }
 
 public enum TipoSistema

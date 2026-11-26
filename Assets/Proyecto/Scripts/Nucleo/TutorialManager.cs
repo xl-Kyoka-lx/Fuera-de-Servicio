@@ -1,24 +1,11 @@
 using UnityEngine;
 
-// Tutorial de "Nueva partida". Ocupa la primera parte del primer día y enseña todo en este orden:
-//
-//   Viaje 1 (sin eventos): controles (W, ESPACIO, SHIFT, ESC, ENTER, mouse)
-//   Llegada 1  -> Puerta atascada (ESPACIO repetido)
-//   Camila sube -> Pestillo (W, luego ESPACIO en el momento justo)
-//   Cabina lista -> ESPACIO -> Engrase (mantener ESPACIO)
-//   Viaje 2    -> Polea trabada (ESPACIO al ritmo del brillo)
-//   Llegada 2  -> Camila baja, conversa y deja propina -> Colillas y latas (mouse)
-//   Fin        -> se activan los eventos normales y el resto del día se juega normal
-//
-// Los diálogos pausan el reloj, así que solo cuenta el tiempo de juego real (≈ 2 a 3 minutos de los 10 del día).
 public class TutorialManager : MonoBehaviour
 {
     public static TutorialManager Instance { get; private set; }
 
-    // Mientras sea true, W y ESPACIO no hacen nada (lo leen ProcesoPartida y PalancaController)
     public static bool ViajeBloqueado = false;
 
-    // Verdadero mientras dura el tutorial (el proceso de partida no penaliza errores en este tiempo)
     public static bool EnCurso = false;
 
     [Header("Referencias")]
@@ -42,26 +29,26 @@ public class TutorialManager : MonoBehaviour
     private enum Paso
     {
         Inactivo,
-        Controles,          // diálogo con todas las teclas
-        EsperandoViaje1,    // el jugador hace W y ESPACIO
-        MensajeViaje,       // diálogo con el ascensor en marcha
+        Controles,
+        EsperandoViaje1,
+        MensajeViaje,
         Viaje1,
         MensajePuerta,
         EventoPuerta,
         MensajePasajeros,
-        EsperandoCamila,    // W y ESPACIO bloqueadas hasta que Camila esté dentro
+        EsperandoCamila,
         MensajePestillo,
-        EsperandoW,         // el jugador cierra con W y sale el pestillo
+        EsperandoW,
         EventoPestillo,
-        EsperandoEspacio,   // al pulsar ESPACIO sale el aviso del engrase
+        EsperandoEspacio,
         MensajeEngrase,
         EventoEngrase,
-        EsperandoPartida2,  // engrasado: ESPACIO de nuevo para partir
+        EsperandoPartida2,
         Viaje2,
         MensajePolea,
         EventoPolea,
         Viaje2Final,
-        Llegada2,           // se espera a que Camila baje y converse
+        Llegada2,
         MensajePropina,
         MensajeBasura,
         EventoBasura,
@@ -99,7 +86,7 @@ public class TutorialManager : MonoBehaviour
         ViajeBloqueado = true;
         EnCurso = true;
         if (eventManager != null) eventManager.eventosActivos = false;
-        if (estadoManager != null) estadoManager.enabled = false;   // se vuelve a activar al lanzar el primer evento
+        if (estadoManager != null) estadoManager.enabled = false;
 
         if (DialogoManager.Instance != null)
             DialogoManager.Instance.OnDialogoTerminado += AlTerminarDialogo;
@@ -163,7 +150,6 @@ public class TutorialManager : MonoBehaviour
             case Paso.Viaje1:
                 if (!ascensorManager.enMovimiento)
                 {
-                    // el primer viaje terminó: aviso de la puerta antes del primer evento
                     paso = Paso.MensajePuerta;
                     ViajeBloqueado = true;
                     Dialogo("tutorial_puerta");
@@ -174,7 +160,6 @@ public class TutorialManager : MonoBehaviour
                 esperaCamila += Time.deltaTime;
                 if (esperaCamila > esperaMaximaCamila)
                 {
-                    // No subió ningún pasajero: se sigue sin Camila
                     Debug.LogWarning("Tutorial: no subió ningún pasajero para ser Camila. Se sigue sin ella.");
                     if (bondadosos != null) bondadosos.CancelarCamila();
                     AlCamilaAsignada();
@@ -205,8 +190,6 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case Paso.Llegada2:
-                // Si Camila viene en el ascensor se espera su diálogo (AlTerminarEncuentro).
-                // Solo si no viene nadie (no subió ningún pasajero) se sigue tras un rato.
                 if (bondadosos != null && bondadosos.CamilaEnViaje) break;
                 if (Time.unscaledTime - horaLlegada2 > esperaMaximaDespedida && !HayDialogoActivo())
                     SeguirTrasDespedida();
@@ -214,15 +197,13 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    // ---------- Diálogos ----------
-
     private void AlTerminarDialogo(string id)
     {
         switch (id)
         {
             case "tutorial_controles":
                 paso = Paso.EsperandoViaje1;
-                ViajeBloqueado = false;          // ahora sí puede usar W y ESPACIO
+                ViajeBloqueado = false;
                 break;
 
             case "tutorial_viaje":
@@ -274,8 +255,6 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    // ---------- Eventos (QTE) ----------
-
     private void AlTerminarEvento(GameObject evento)
     {
         switch (paso)
@@ -287,12 +266,12 @@ public class TutorialManager : MonoBehaviour
                 break;
 
             case Paso.EventoPestillo:
-                paso = Paso.EsperandoEspacio;    // falta que la TV diga "cabina de abajo lista"
+                paso = Paso.EsperandoEspacio;
                 ViajeBloqueado = false;
                 break;
 
             case Paso.EventoEngrase:
-                paso = Paso.EsperandoPartida2;   // ESPACIO otra vez para partir
+                paso = Paso.EsperandoPartida2;
                 ViajeBloqueado = false;
                 break;
 
@@ -314,13 +293,10 @@ public class TutorialManager : MonoBehaviour
         if (estadoManager == null || !estadoManager.ForzarEvento<T>())
         {
             Debug.LogWarning($"Tutorial: no se pudo lanzar {typeof(T).Name}. Revisa que esté en la lista del EventoEstadoManager.");
-            AlTerminarEvento(null);   // se salta este paso para no dejar el tutorial colgado
+            AlTerminarEvento(null);
         }
     }
 
-    // ---------- Momentos del jugador ----------
-
-    // El jugador pulsó W (se acepta solo si no está bloqueada)
     private void AlPulsarW()
     {
         if (paso != Paso.EsperandoW) return;
@@ -329,8 +305,6 @@ public class TutorialManager : MonoBehaviour
         Lanzar<EventoPestillo>();
     }
 
-    // Lo llama ProcesoPartida cuando el jugador pulsa ESPACIO con la cabina lista.
-    // Devuelve true si el tutorial lo usa para mostrar el engrase (el ascensor no parte todavía).
     public bool IntentarEventoAlArrancar()
     {
         if (!EnCurso || paso != Paso.EsperandoEspacio) return false;
@@ -371,8 +345,6 @@ public class TutorialManager : MonoBehaviour
         Dialogo("tutorial_propina");
     }
 
-    // ---------- Fin ----------
-
     private void Terminar()
     {
         paso = Paso.Fin;
@@ -380,7 +352,7 @@ public class TutorialManager : MonoBehaviour
         EnCurso = false;
 
         if (estadoManager != null) estadoManager.enabled = true;
-        if (eventManager != null) eventManager.eventosActivos = true;   // el Director programa el resto del día
+        if (eventManager != null) eventManager.eventosActivos = true;
 
         PlayerPrefs.SetInt("TutorialHecho", 1);
         PlayerPrefs.Save();
@@ -388,19 +360,15 @@ public class TutorialManager : MonoBehaviour
 
     private void AlTerminarDia()
     {
-        // Por si el día se acabó antes de terminar el tutorial
         PlayerPrefs.SetInt("TutorialHecho", 1);
         PlayerPrefs.Save();
     }
-
-    // ---------- Utilidades ----------
 
     private bool HayDialogoActivo()
     {
         return DialogoManager.Instance != null && DialogoManager.Instance.HayDialogoActivo();
     }
 
-    // Muestra un diálogo. Si no existe en el JSON, se salta para no dejar el tutorial colgado.
     private void Dialogo(string id)
     {
         var dm = DialogoManager.Instance;

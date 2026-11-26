@@ -1,9 +1,5 @@
 ﻿using UnityEngine;
 
-// Desgaste del ascensor según los pasajeros transportados:
-//  - La limpieza baja un poco cada cierta cantidad de pasajeros.
-//  - El mantenimiento baja un poco cada cierta cantidad de pasajeros.
-// Ya no hay desgaste por tiempo ni por cada vez que el ascensor arranca o se detiene.
 public class StatusManager : MonoBehaviour
 {
     [Header("Limpieza")]

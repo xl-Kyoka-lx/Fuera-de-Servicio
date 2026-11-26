@@ -5,12 +5,6 @@ using UnityEditor;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
-// Ventana para reemplazar el arte placeholder sin romper referencias.
-// Menú: Herramientas > Inventario de Arte
-//
-// Clave: Unity enlaza escenas y prefabs al arte por el GUID del .meta, no por el nombre.
-// Esta herramienta sobrescribe el contenido de la imagen manteniendo su .meta, así que
-// todo lo que usaba el placeholder pasa a usar el arte nuevo automáticamente.
 public class InventarioArte : EditorWindow
 {
     private static readonly string[] Carpetas = { "Assets/Proyecto", "Assets/Scenes" };
@@ -48,7 +42,6 @@ public class InventarioArte : EditorWindow
     {
         entradas.Clear();
 
-        // Quién usa cada imagen (escenas y prefabs, referencias directas).
         var usosPorRuta = new Dictionary<string, List<string>>();
         var usuarios = AssetDatabase.FindAssets("t:Scene t:Prefab t:AnimationClip t:ScriptableObject", Carpetas)
             .Select(AssetDatabase.GUIDToAssetPath).Distinct();
@@ -149,13 +142,11 @@ public class InventarioArte : EditorWindow
         var imp = (TextureImporter)AssetImporter.GetAtPath(ruta);
         imp.GetSourceTextureWidthAndHeight(out int anchoViejo, out int altoViejo);
 
-        // Respaldo del placeholder (fuera de Assets, git no lo sube).
         Directory.CreateDirectory(CarpetaRespaldo);
         string respaldo = Path.Combine(CarpetaRespaldo,
             $"{System.DateTime.Now:yyyyMMdd_HHmmss}_{Path.GetFileName(ruta)}");
         File.Copy(ruta, respaldo, true);
 
-        // Si cambia la extensión (p. ej. .jpg -> .png) se renombra con AssetDatabase, que conserva el GUID.
         string extNueva = Path.GetExtension(nuevo).ToLowerInvariant();
         if (extNueva != Path.GetExtension(ruta).ToLowerInvariant())
         {
@@ -177,14 +168,11 @@ public class InventarioArte : EditorWindow
         float fx = (float)anchoNuevo / anchoViejo;
         float fy = (float)altoNuevo / altoViejo;
 
-        // Que Unity no reduzca la imagen si es más grande que el límite por defecto (2048).
         int lado = Mathf.Max(anchoNuevo, altoNuevo);
         while (imp.maxTextureSize < lado && imp.maxTextureSize < 8192) imp.maxTextureSize *= 2;
 
         if (mantenerTamano && anchoViejo > 0) imp.spritePixelsPerUnit = e.ppu * fx;
 
-        // Ajusta los cortes del sprite a la resolución nueva. Se editan los cortes existentes
-        // (no se crean nuevos) para que conserven su ID y no se pierdan las referencias.
         if (imp.spriteImportMode == SpriteImportMode.Multiple)
         {
             var fabricas = new SpriteDataProviderFactories();

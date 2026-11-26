@@ -1,29 +1,12 @@
 using UnityEngine;
 
-// Efectos de los ítems de la tienda.
-//
-// Las compras se guardan en GameData.estadoTienda (no en variables static), así que:
-//  - duran entre escenas y días, igual que el dinero,
-//  - se borran al empezar una partida nueva (GameData.ResetData).
-//
-// Mejoras únicas (efecto permanente, lo leen los sistemas del día):
-//   frenos  -> EventoFrenado: más tiempo para frenar (ventana ×1.5)
-//   malla   -> DirectorEventos: menos eventos de polea trabada por basura
-//
-// Consumibles (se aplican al comprarlos, en la noche):
-//   aceite       -> repara el mantenimiento (poleas)
-//   kit_limpieza -> sube la limpieza (menos eventos de basura al día siguiente)
-//
-// Pendientes (su mecánica aún no existe en el juego): cristal, repuesto.
 public static class EfectosManager
 {
-    // ---------- Ajustes ----------
     public static float multiplicadorFrenadoConFrenos = 1.5f;
-    public static float probabilidadPoleaConMalla = 0.3f;     // -70%
+    public static float probabilidadPoleaConMalla = 0.3f;
     public static float reparacionAceite = 25f;
     public static float limpiezaKit = 25f;
 
-    // ---------- Estado ----------
     private static EstadoTienda Estado
     {
         get
@@ -55,11 +38,9 @@ public static class EfectosManager
         return true;
     }
 
-    // ---------- Valores que leen los sistemas del juego ----------
     public static float MultiplicadorMargenFrenado => TieneMejora("frenos") ? multiplicadorFrenadoConFrenos : 1f;
     public static float ProbabilidadBasuraPoleas => TieneMejora("malla") ? probabilidadPoleaConMalla : 1f;
 
-    // ---------- Compra ----------
     public static void AplicarEfecto(string idItem, bool esMejoraUnica)
     {
         var e = Estado;
@@ -88,7 +69,6 @@ public static class EfectosManager
                 break;
 
             default:
-                // cristal, repuesto: se guardan, pero todavía no hay mecánica que los use
                 e.SumarCantidad(id, 1);
                 Debug.LogWarning($"[Tienda] '{id}' comprado, pero aún no tiene efecto en el juego");
                 break;

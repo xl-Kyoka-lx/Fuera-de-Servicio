@@ -4,12 +4,10 @@ using UnityEngine.UI;
 
 public class MenuPrincipal : MonoBehaviour
 {
-    
     public GameObject contenidoPrincipal;
     public GameObject panelOpciones;
     public GameObject panelConfirmacionNuevaPartida; 
 
-   
     public Button botonContinuar;
     public Button botonNuevaPartida;
 
@@ -18,23 +16,18 @@ public class MenuPrincipal : MonoBehaviour
 
     private void Start()
     {
-        
         if (panelConfirmacionNuevaPartida != null)
             panelConfirmacionNuevaPartida.SetActive(false);
 
-       
         ActualizarBotones();
     }
 
     private void ActualizarBotones()
     {
-        
         bool hayPartidaGuardada = PlayerPrefs.HasKey(clavePartidaGuardada);
 
-      
         if (botonContinuar != null)
             botonContinuar.interactable = hayPartidaGuardada;
-
     }
 
     public void NuevaPartida()
@@ -47,7 +40,6 @@ public class MenuPrincipal : MonoBehaviour
             if (GameManager.Instance.GameData != null)
                 GameManager.Instance.GameData.ResetData();
 
-            // 🔑 Resetear el resumen también
             if (GameManager.Instance.ResumenDia != null)
                 GameManager.Instance.ResumenDia.Resetear();
         }
@@ -57,8 +49,6 @@ public class MenuPrincipal : MonoBehaviour
 
     public void ContinuarPartida()
     {
-       
-
         if (!PlayerPrefs.HasKey(clavePartidaGuardada))
         {
             Debug.LogWarning("No hay partida guardada. Iniciando nueva.");
@@ -69,7 +59,6 @@ public class MenuPrincipal : MonoBehaviour
         SceneManager.LoadScene(nombreEscenaDia);
     }
 
-  
     public void MostrarConfirmacionNuevaPartida()
     {
         if (panelConfirmacionNuevaPartida != null)
@@ -103,7 +92,6 @@ public class MenuPrincipal : MonoBehaviour
 
         ActualizarBotones();
     }
-
 
     public void Salir()
     {

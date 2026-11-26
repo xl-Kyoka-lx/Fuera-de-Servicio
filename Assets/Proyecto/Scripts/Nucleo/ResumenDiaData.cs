@@ -19,7 +19,6 @@ public class ResumenDiaData : ScriptableObject
     public int DineroGanado => dineroFinDia - dineroInicioDia;
     public int PasajerosTransportados => pasajerosTotalesTransportados;
 
-    // === MÉTODOS ===
     public void IniciarDia(int dineroActual, float limpieza, float polea)
     {
         dineroInicioDia = dineroActual;
@@ -44,7 +43,6 @@ public class ResumenDiaData : ScriptableObject
     public void RegistrarEvento() { eventosOcurridos++; }
     public void RegistrarPasajeroTransportado() { pasajerosTotalesTransportados++; }
 
-    // 🔑 Reset completo (para nueva partida)
     public void Resetear()
     {
         dineroInicioDia = 0;

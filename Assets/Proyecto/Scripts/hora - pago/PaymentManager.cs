@@ -5,7 +5,6 @@ using System;
 
 public class PaymentManager : MonoBehaviour
 {
-    
     public int costoPago = 100;
     public string nombreEscenaDia = "Escena_Dia";
     public GameObject panelPago;
@@ -20,12 +19,10 @@ public class PaymentManager : MonoBehaviour
 
     private void Start()
     {
-
         if (GameManager.Instance != null)
         {
             gameData = GameManager.Instance.gameData;
             
-            // Suscribirse a cambios de datos
             gameData.OnDataChanged += ActualizarTextosPanel;
         }
         else
@@ -39,26 +36,20 @@ public class PaymentManager : MonoBehaviour
 
     private void OnDestroy()
     {
-     
         if (gameData != null)
             gameData.OnDataChanged -= ActualizarTextosPanel;
     }
 
- 
     public void IniciarCobro()
     {
-    
-
         esperandoPago = true;
 
         if (panelPago != null)
             panelPago.SetActive(true);
 
         ActualizarTextosPanel();
-
     }
 
- 
     private void ActualizarTextosPanel()
     {
         if (gameData == null) return;
@@ -73,12 +64,9 @@ public class PaymentManager : MonoBehaviour
             textoDineroActual.text = $"Tu dinero: ${dinero}";
             textoDineroActual.color = dinero >= costoPago ? Color.green : Color.red;
         }
-
     }
     public void IntentarPagar()
     {
-      
-
         if (!esperandoPago)
         {
             Debug.LogWarning("esperandoPago es false");
@@ -93,22 +81,17 @@ public class PaymentManager : MonoBehaviour
 
         int dinero = gameData.dineroTotal;
         
-
         if (dinero >= costoPago)
         {
-          
             gameData.dineroTotal -= costoPago;
 
-           
             gameData.OnDataChanged?.Invoke();
 
-            
             esperandoPago = false;
             if (panelPago != null) panelPago.SetActive(false);
 
             OnPagoExitoso?.Invoke();
 
-          
             IrAEscenaDia();
         }
         else
@@ -117,17 +100,13 @@ public class PaymentManager : MonoBehaviour
         }
     }
 
-  
     private void IrAEscenaDia()
     {
-      
         if (gameData != null)
-            gameData.horaActual = 7;   // el ClockManager igual empieza en su horaInicio
+            gameData.horaActual = 7;
 
-       
         SceneManager.LoadScene(nombreEscenaDia);
     }
-
 
     private void Derrota()
     {

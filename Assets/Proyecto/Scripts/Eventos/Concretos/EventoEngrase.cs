@@ -132,7 +132,6 @@ public class EventoEngrase : EventoBase
     {
         if (!minijuegoActivo) return;
 
-        // unscaled: el evento sigue corriendo aunque el juego esté congelado
         float dt = Time.unscaledDeltaTime;
 
         tiempoRestante -= dt;

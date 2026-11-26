@@ -9,9 +9,7 @@ public class DialogoManager : MonoBehaviour
 {
     public static DialogoManager Instance { get; private set; }
 
-    
     public event System.Action<string> OnDialogoTerminado;
-
 
     public TextAsset archivoJson;
 
@@ -34,7 +32,6 @@ public class DialogoManager : MonoBehaviour
     [Tooltip("Retrato de cada personaje")]
     public List<Retrato> retratos = new List<Retrato>();
 
-   
     public float velocidadTipeo = 0.03f; 
     public InputActionAsset inputActions;
     public string actionMapName = "Gameplay";
@@ -42,7 +39,6 @@ public class DialogoManager : MonoBehaviour
 
     private InputAction inputContinuar;
 
-    
     private List<Dialogo> dialogosCargados = new List<Dialogo>();
     private Dialogo dialogoActual;
     private int indiceLineaActual = 0;
@@ -50,13 +46,10 @@ public class DialogoManager : MonoBehaviour
     private bool esperandoInput = false;
     private Coroutine corrutinaTipeo;
 
-
     public GameData gameDataFallback;
 
     private void Awake()
     {
-        
-
         Instance = this; 
 
         CargarDialogos();
@@ -103,7 +96,6 @@ public class DialogoManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        
         if (Instance == this)
             Instance = null;
     }
@@ -125,8 +117,6 @@ public class DialogoManager : MonoBehaviour
             inputContinuar.Disable();
         }
     }
-
-    
 
     private void CargarDialogos()
     {
@@ -150,7 +140,6 @@ public class DialogoManager : MonoBehaviour
 
     public void MostrarDialogo(string id)
     {
-        
         Dialogo dialogo = dialogosCargados.Find(d => d.id == id);
 
         if (dialogo == null)
@@ -250,13 +239,10 @@ public class DialogoManager : MonoBehaviour
         corrutinaTipeo = null;
     }
 
- 
     private void OnContinuarPerformed(InputAction.CallbackContext context)
     {
-       
         if (dialogoActual == null) return;
 
-    
         if (escribiendo)
         {
             if (corrutinaTipeo != null) StopCoroutine(corrutinaTipeo);
@@ -273,7 +259,6 @@ public class DialogoManager : MonoBehaviour
             return;
         }
 
-        
         if (esperandoInput)
         {
             SiguienteLinea();
@@ -314,7 +299,6 @@ public class DialogoManager : MonoBehaviour
 
     private string ReemplazarPlaceholders(string texto)
     {
-        // 🔑 Usar el ResumenDiaData del GameManager
         if (GameManager.Instance == null || GameManager.Instance.ResumenDia == null)
         {
             Debug.LogWarning("⚠️ No hay ResumenDiaData disponible");
@@ -324,12 +308,10 @@ public class DialogoManager : MonoBehaviour
         var data = GameManager.Instance.GameData;
         var resumen = GameManager.Instance.ResumenDia;
 
-        // 🔑 Datos del resumen
         texto = texto.Replace("{dineroGanado}", resumen.DineroGanado.ToString());
         texto = texto.Replace("{pasajerosTransportados}", resumen.PasajerosTransportados.ToString());
         texto = texto.Replace("{eventos}", resumen.eventosOcurridos.ToString());
 
-        // 🔑 Datos generales (con verificación de null)
         if (data != null)
         {
             texto = texto.Replace("{dineroTotal}", data.dineroTotal.ToString());
@@ -341,10 +323,8 @@ public class DialogoManager : MonoBehaviour
         return texto;
     }
 
-
     public bool HayDialogoActivo() => dialogoActual != null;
 
-    // Busca el retrato por el campo "imagen" de la línea y, si viene vacío, por el nombre de quien habla.
     private void MostrarRetrato(LineaDialogo linea)
     {
         if (imagenRetrato == null) return;

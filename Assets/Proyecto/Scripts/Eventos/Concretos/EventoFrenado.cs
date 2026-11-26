@@ -4,19 +4,16 @@ using System.Collections;
 
 public class EventoFrenado : MonoBehaviour
 {
-   
     public float ventanaTiempo = 1.5f;
     public float rangoPerfecto = 0.05f;
     public float rangoBueno = 0.15f;
 
-   
     [Tooltip("Segundos sin eventos después de la ventana de frenado")]
     public float segundosSinEventosTrasFrenar = 2f;
 
     public float dañoFallo = 10f;
     public float dañoBueno = 3f;
 
-   
     public AscensorManager ascensorManager;
     public InputActionAsset inputActions;
     public string actionMapName = "Gameplay";
@@ -27,7 +24,6 @@ public class EventoFrenado : MonoBehaviour
     private bool yaPresiono = false;
     private float progresoAlPresionar = -1f;
 
-    // Freno reforzado (tienda): más tiempo para frenar
     private float VentanaActual => ventanaTiempo * EfectosManager.MultiplicadorMargenFrenado;
 
     private void Awake()
@@ -68,19 +64,14 @@ public class EventoFrenado : MonoBehaviour
 
     private void IniciarEvento()
     {
-
-        
-
         if (eventoActivo) return;
         
         eventoActivo = true;
 
-        // Mientras se frena, y 2 s después, no ocurren eventos
         BloqueoEventos.BloquearEventos(VentanaActual + segundosSinEventosTrasFrenar);
         yaPresiono = false;
         progresoAlPresionar = -1f;
 
-       
         if (PanelAccion.Instance != null)
         {
             PanelAccion.Instance.MostrarAccion("¡FRENA! [ESPACIO]", VentanaActual);
@@ -95,7 +86,6 @@ public class EventoFrenado : MonoBehaviour
 
         yaPresiono = true;
         progresoAlPresionar = ascensorManager.ascensores[0].progreso;
-
     }
 
     private IEnumerator EsperarFrenado()
@@ -115,7 +105,6 @@ public class EventoFrenado : MonoBehaviour
 
         if (!yaPresiono)
         {
-            
             AplicarResultado(ResultadoFrenado.Malo, "¡No frenaste a tiempo!");
             return;
         }
@@ -172,6 +161,5 @@ public class EventoFrenado : MonoBehaviour
         {
             GameManager.Instance.ModificarPolea(-daño);
         }
-
     }
 }

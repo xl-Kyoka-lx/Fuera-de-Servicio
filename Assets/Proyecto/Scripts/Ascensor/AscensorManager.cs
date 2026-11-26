@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class AscensorManager : MonoBehaviour
 {
-  
     [System.Serializable]
     public class AscensorData
     {
@@ -35,42 +34,31 @@ public class AscensorManager : MonoBehaviour
         [HideInInspector] public bool estaAbajo = true;
         [HideInInspector] public bool enMovimiento = false;
 
-        // 🔑 NUEVO: Lista de pasajeros dentro (invisibles pero existentes)
         [HideInInspector] public List<Pasajero> pasajerosDentro = new List<Pasajero>();
 
-        // Máximo de pasajeros por cabina: con 5/5 nadie más sube
         public int CapacidadMaxima => 5;
         public bool HayEspacio => pasajerosDentro.Count < CapacidadMaxima;
         public int PasajerosTotales => pasajerosDentro.Count;
     }
 
-
     public float umbralFrenado = 0.8f;
-
 
     public bool frenadoDisparado = false;
 
-    
     public event Action OnPuntoDeFrenado;
 
-
-  
     public List<AscensorData> ascensores = new List<AscensorData>();
 
-    
     public float duracionViaje = 30f;
 
     [Tooltip("Segundos entre un pasajero y el siguiente al bajar de la cabina")]
     public float separacionAlBajar = 0.4f;
 
-  
     public event Action OnLlegoAlInicio;
     public event Action OnLlegoAlFinal;
     public event Action OnSalioDelPunto;
 
-    // Cambió la cantidad de pasajeros dentro de alguna cabina (subió o bajaron)
     public event Action OnPasajerosCambiados;
-
 
     public bool enMovimiento
     {
@@ -166,11 +154,6 @@ public class AscensorManager : MonoBehaviour
         return ascensores[ascensorIndex].PasajerosTotales;
     }
 
-    
-
-    // 🔑 Bajar todos los pasajeros de un ascensor (devuelve cuántos bajaron)
-
-
     private void VerificarUmbralFrenado()
     {
         if (frenadoDisparado) return;
@@ -187,7 +170,6 @@ public class AscensorManager : MonoBehaviour
         }
         else if (!asc.estaAbajo && asc.progreso <= (1f - umbralFrenado))
         {
-
             pasoElUmbral = true;
         }
 
@@ -217,7 +199,6 @@ public class AscensorManager : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.Instance.GameData.ascensorEnMovimiento = false;
 
-        // 🔑 Para cada ascensor, hacer bajar a sus pasajeros
         for (int i = 0; i < ascensores.Count; i++)
         {
             BajarPasajerosDelAscensor(i);
@@ -234,12 +215,10 @@ public class AscensorManager : MonoBehaviour
 
         if (todosAbajo)
         {
-          
             OnLlegoAlInicio?.Invoke();
         }
         else if (todosArriba)
         {
-         
             OnLlegoAlFinal?.Invoke();
         }
         else
@@ -248,11 +227,9 @@ public class AscensorManager : MonoBehaviour
         }
     }
 
-
     public void IniciarViaje()
     {
         if (enMovimiento) return;
-
 
         frenadoDisparado = false;
 
@@ -265,8 +242,6 @@ public class AscensorManager : MonoBehaviour
 
         if (GameManager.Instance != null)
             GameManager.Instance.GameData.ascensorEnMovimiento = true;
-
-      
     }
 
     public bool EstaEnPuntoInicio() => !enMovimiento && TodosAbajo();
@@ -286,7 +261,6 @@ public class AscensorManager : MonoBehaviour
         return true;
     }
 
- 
     public bool EstaAbajo(int index)
     {
         if (index < 0 || index >= ascensores.Count) return false;
@@ -299,9 +273,6 @@ public class AscensorManager : MonoBehaviour
         return ascensores[index].progreso;
     }
 
- 
-
-
     private void BajarPasajerosDelAscensor(int ascensorIndex)
     {
         var asc = ascensores[ascensorIndex];
@@ -313,12 +284,10 @@ public class AscensorManager : MonoBehaviour
         Transform puntoSalida = asc.estaAbajo ? asc.puntoSalidaLejos : asc.puntoSalidaCerca;
         if (puntoSalida == null) return;
 
-        // 🔑 Copiar la lista para iterar mientras se modifican
         var pasajerosACopiar = new List<Pasajero>(asc.pasajerosDentro);
         asc.pasajerosDentro.Clear();
         OnPasajerosCambiados?.Invoke();
 
-        // Salen por la puerta de la cabina, uno detrás del otro
         Vector3 puerta = asc.ascensorTransform != null ? asc.ascensorTransform.position : puntoSalida.position;
         int orden = 0;
         foreach (var pasajero in pasajerosACopiar)

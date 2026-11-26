@@ -2,13 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-// Evento: Pestillo trabado.
-// Aparece un círculo grande con un anillo que se va achicando. Hay que presionar
-// Espacio justo cuando el anillo llega al borde del círculo. Es más lento y con
-// más margen de error que el de las colillas.
-//
-// Igual que EventoColillasLatas, crea toda su UI por código: el prefab solo
-// necesita este componente en un objeto vacío.
 public class EventoPestillo : EventoBase
 {
     [Header("Mensajes (salen en la TV)")]
@@ -155,14 +148,10 @@ public class EventoPestillo : EventoBase
     {
         RestaurarTiempo();
 
-        // Solo se destruye lo creado por código; los sprites de arte son assets del proyecto.
         if (texDisco != null) { Destroy(spriteDisco); Destroy(texDisco); }
         if (texAnillo != null) { Destroy(spriteAnillo); Destroy(texAnillo); }
     }
 
-    // ---------- Visuales por código (sin arte externo) ----------
-
-    // radioInterno01: 0 = círculo lleno; 0.95 = anillo delgado.
     private Sprite CrearSprite(int tam, float radioInterno01, out Texture2D tex)
     {
         tex = new Texture2D(tam, tam, TextureFormat.RGBA32, false);
@@ -201,7 +190,6 @@ public class EventoPestillo : EventoBase
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = ordenCanvas;
 
-        // Fondo: oscurece un poco y absorbe los clics para no tocar otros botones
         GameObject fondoGO = new GameObject("Fondo", typeof(RectTransform), typeof(Image));
         fondoGO.transform.SetParent(canvasGO.transform, false);
         RectTransform fondoRT = fondoGO.GetComponent<RectTransform>();
@@ -214,7 +202,6 @@ public class EventoPestillo : EventoBase
         fondo.color = new Color(0f, 0f, 0f, oscurecerFondo);
         fondo.raycastTarget = true;
 
-        // Círculo en el centro de la pantalla
         float diametro = radioPx * 2f;
 
         GameObject raizGO = new GameObject("Pestillo", typeof(RectTransform), typeof(CanvasGroup));
@@ -254,13 +241,10 @@ public class EventoPestillo : EventoBase
         return img;
     }
 
-    // ---------- Lógica ----------
-
     protected override void Update()
     {
         if (!minijuegoActivo) return;
 
-        // unscaled: el evento sigue corriendo aunque el juego esté congelado
         t += Time.unscaledDeltaTime;
 
         switch (estado)
@@ -317,10 +301,8 @@ public class EventoPestillo : EventoBase
                 ResolverCiclo(false);
                 return;
             }
-            // Más temprano que eso: se ignora
         }
 
-        // Se pasó el momento sin presionar
         if (t > llegada + ventanaAcierto)
             ResolverCiclo(false);
     }

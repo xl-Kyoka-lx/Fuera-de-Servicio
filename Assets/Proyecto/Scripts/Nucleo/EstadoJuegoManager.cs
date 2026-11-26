@@ -31,7 +31,6 @@ public class EstadoJuegoManager : MonoBehaviour
         }
     }
 
-  
     private void OnEnable()
     {
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += AlCargarEscena;
@@ -42,8 +41,6 @@ public class EstadoJuegoManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.sceneLoaded -= AlCargarEscena;
     }
 
-    // Este objeto sobrevive entre escenas: si se cambió de escena con un diálogo abierto,
-    // el estado quedaba en EnDialogo y el siguiente diálogo ya no pausaba el juego.
     private void AlCargarEscena(UnityEngine.SceneManagement.Scene escena, UnityEngine.SceneManagement.LoadSceneMode modo)
     {
         if (modo == UnityEngine.SceneManagement.LoadSceneMode.Single)
@@ -57,8 +54,6 @@ public class EstadoJuegoManager : MonoBehaviour
         EstadoJuego anterior = estadoActual;
         estadoActual = nuevoEstado;
 
-       
-        // Diálogos, menús y game over congelan el juego; el resto de las pausas lo decide PausaJuego
         if (nuevoEstado == EstadoJuego.Jugando) PausaJuego.Liberar(this);
         else PausaJuego.Pedir(this);
 
@@ -66,7 +61,6 @@ public class EstadoJuegoManager : MonoBehaviour
         OnEstadoCambio?.Invoke(anterior, nuevoEstado);
     }
 
-    
     public bool EstaJugando() => estadoActual == EstadoJuego.Jugando;
     public bool EstaEnDialogo() => estadoActual == EstadoJuego.EnDialogo;
     public bool EstaPausado() => estadoActual != EstadoJuego.Jugando;

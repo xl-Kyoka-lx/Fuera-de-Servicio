@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-// Este script crea toda su UI por código (canvas, círculos y anillos), así que
-// el prefab solo necesita este componente en un objeto vacío.
 public class EventoColillasLatas : EventoBase
 {
     [Header("Mensajes (salen en la TV)")]
@@ -140,12 +138,9 @@ public class EventoColillasLatas : EventoBase
     {
         RestaurarTiempo();
 
-        // Solo se destruye lo creado por código; los sprites de arte son assets del proyecto.
         if (texDisco != null) { Destroy(spriteDisco); Destroy(texDisco); }
         if (texAnillo != null) { Destroy(spriteAnillo); Destroy(texAnillo); }
     }
-
-    // ---------- Creación de visuales por código (sin arte externo) ----------
 
     private void CrearSprites()
     {
@@ -153,7 +148,6 @@ public class EventoColillasLatas : EventoBase
         spriteAnillo = spriteAnilloArte != null ? spriteAnilloArte : CrearSprite(256, 0.93f, out texAnillo);
     }
 
-    // radioInterno01: 0 = círculo lleno; 0.93 = anillo delgado.
     private Sprite CrearSprite(int tam, float radioInterno01, out Texture2D tex)
     {
         tex = new Texture2D(tam, tam, TextureFormat.RGBA32, false);
@@ -185,7 +179,6 @@ public class EventoColillasLatas : EventoBase
 
     private void CrearUI()
     {
-        // Canvas propio, por encima de todo
         GameObject canvasGO = new GameObject("CanvasColillas", typeof(Canvas), typeof(GraphicRaycaster));
         canvasGO.transform.SetParent(transform, false);
 
@@ -193,7 +186,6 @@ public class EventoColillasLatas : EventoBase
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = ordenCanvas;
 
-        // Fondo: oscurece un poco y también absorbe los clics para no tocar otros botones
         GameObject fondoGO = new GameObject("Fondo", typeof(RectTransform), typeof(Image));
         fondoGO.transform.SetParent(canvasGO.transform, false);
         EstirarAPantalla(fondoGO.GetComponent<RectTransform>());
@@ -202,7 +194,6 @@ public class EventoColillasLatas : EventoBase
         fondo.color = new Color(0f, 0f, 0f, oscurecerFondo);
         fondo.raycastTarget = true;
 
-        // Contenedor de los círculos
         GameObject contGO = new GameObject("Circulos", typeof(RectTransform));
         contGO.transform.SetParent(canvasGO.transform, false);
         contenedor = contGO.GetComponent<RectTransform>();
@@ -239,14 +230,11 @@ public class EventoColillasLatas : EventoBase
         c.grupo.blocksRaycasts = false;
         c.grupo.interactable = false;
 
-        // Disco
         Image disco = CrearImagen("Disco", c.raiz, spriteDisco, colorDisco, diametro);
         c.disco = disco;
 
-        // Borde fijo (marca dónde debe llegar el anillo)
         CrearImagen("Borde", c.raiz, spriteAnillo, colorBorde, diametro);
 
-        // Anillo que se achica
         Image anillo = CrearImagen("Anillo", c.raiz, spriteAnillo, colorAnillo, diametro * escalaInicialAnillo);
         c.anillo = anillo.rectTransform;
 
@@ -306,13 +294,10 @@ public class EventoColillasLatas : EventoBase
         return candidata;
     }
 
-    // ---------- Lógica ----------
-
     protected override void Update()
     {
         if (!minijuegoActivo) return;
 
-        // unscaled: el evento sigue corriendo aunque el juego esté congelado
         t += Time.unscaledDeltaTime;
 
         if (terminando)
@@ -351,7 +336,6 @@ public class EventoColillasLatas : EventoBase
                 c.anillo.sizeDelta = new Vector2(diametro * escala, diametro * escala);
                 c.grupo.alpha = Mathf.Clamp01(edad / DURACION_FADE_IN);
 
-                // No hizo clic a tiempo
                 if (!terminando && t > c.llegada + ventanaAcierto)
                     Resolver(c, false);
             }
@@ -374,7 +358,6 @@ public class EventoColillasLatas : EventoBase
         Vector2 pantalla = Mouse.current.position.ReadValue();
         RectTransformUtility.ScreenPointToLocalPointInRectangle(contenedor, pantalla, null, out Vector2 local);
 
-        // Si el clic cae sobre varios círculos, se toma el que llega primero
         CirculoOsu elegido = null;
         foreach (CirculoOsu c in circulos)
         {
@@ -393,7 +376,6 @@ public class EventoColillasLatas : EventoBase
             Resolver(elegido, true);
         else if (diferencia < -ventanaAcierto && diferencia >= -ventanaFallo)
             Resolver(elegido, false);
-        // Más temprano que eso: se ignora el clic
     }
 
     private void Resolver(CirculoOsu c, bool acierto)

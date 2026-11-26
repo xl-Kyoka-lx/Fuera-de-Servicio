@@ -2,15 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Proceso de partida de cada viaje:
-//
-//   Cargando --(W)--> EsperandoCabinaAbajo --(espera)--> Lista --(ESPACIO)--> viaje --(llegada)--> Cargando
-//
-// - W cierra la puerta de la cabina que está ARRIBA (nadie más sube en ella) y avisa a la cabina de abajo.
-// - Pasado un rato, la TV dice "Cabina de abajo lista" y esa cabina también deja de cargar gente.
-// - Solo entonces ESPACIO arranca el ascensor. Si se pulsa antes: frenos de emergencia y comentarios negativos.
-//
-// Poner este componente en el mismo objeto que AscensorManager (o en cualquiera de la escena del día).
 public class ProcesoPartida : MonoBehaviour
 {
     public static ProcesoPartida Instance { get; private set; }
@@ -49,12 +40,10 @@ public class ProcesoPartida : MonoBehaviour
     [Header("Estado (solo lectura)")]
     public Fase fase = Fase.Cargando;
 
-    // Eventos para enlazar el resto del juego (los eventos del Director, la popularidad, etc.)
-    public event Action OnWPulsada;      // el jugador pulsó W y se aceptó
-    public event Action OnCabinaLista;   // salió el mensaje "cabina de abajo lista"
-    public event Action OnLlegada;       // el ascensor terminó el viaje y se vuelve a cargar
+    public event Action OnWPulsada;
+    public event Action OnCabinaLista;
+    public event Action OnLlegada;
 
-    // Error de procedimiento (por ahora solo "arranque"). La popularidad se conectará aquí.
     public static event Action<string> OnErrorDeProcedimiento;
 
     private AscensorControls controls;
@@ -116,13 +105,11 @@ public class ProcesoPartida : MonoBehaviour
 
         bool enMovimiento = ascensorManager.enMovimiento;
 
-        // Salió el ascensor: se limpia el aviso de la TV
         if (enMovimiento && !estabaEnMovimiento)
         {
             LimpiarMensajePropio();
         }
 
-        // Llegó el ascensor: empieza a cargarse el siguiente viaje
         if (!enMovimiento && estabaEnMovimiento)
         {
             RecuperarPopularidadSiViajeLimpio();
@@ -140,7 +127,6 @@ public class ProcesoPartida : MonoBehaviour
 
         bool hayEvento = GameManager.Instance != null && GameManager.Instance.GameData.eventoOcurriendo;
 
-        // La cabina de abajo tarda un rato, pero la espera se detiene mientras hay un evento
         if (fase == Fase.EsperandoCabinaAbajo && !hayEvento && Time.timeScale > 0f)
         {
             esperaRestante -= Time.deltaTime;
@@ -152,14 +138,12 @@ public class ProcesoPartida : MonoBehaviour
             }
         }
 
-        // Terminó un evento: se vuelve a mostrar el aviso en la TV
         if (habiaEventoEnCurso && !hayEvento)
         {
             MostrarMensajeDeFase(false);
         }
         habiaEventoEnCurso = hayEvento;
 
-        // Terminó el mensaje de error: se vuelve al aviso de la fase actual
         if (mensajeTemporalHasta > 0f && Time.unscaledTime >= mensajeTemporalHasta)
         {
             mensajeTemporalHasta = 0f;
@@ -167,11 +151,10 @@ public class ProcesoPartida : MonoBehaviour
         }
     }
 
-    // === W ===
     public void PulsarW()
     {
         if (ascensorManager == null) return;
-        if (fase != Fase.Cargando) return;                 // ya se avisó
+        if (fase != Fase.Cargando) return;
         if (ascensorManager.enMovimiento) return;
         if (Time.timeScale == 0f) return;
         if (TutorialManager.ViajeBloqueado) return;
@@ -201,13 +184,10 @@ public class ProcesoPartida : MonoBehaviour
         OnWPulsada?.Invoke();
     }
 
-    // === ESPACIO ===
-    // La palanca lo llama antes de arrancar. Devuelve true si el ascensor puede partir.
     public bool IntentarPartir()
     {
         if (fase == Fase.Lista)
         {
-            // Tutorial: el primer ESPACIO con la cabina lista muestra el engrase
             if (TutorialManager.Instance != null && TutorialManager.Instance.IntentarEventoAlArrancar()) return false;
 
             if (director != null && director.IntentarEventoAlArrancar()) return false;
@@ -218,12 +198,10 @@ public class ProcesoPartida : MonoBehaviour
         string motivo = fase == Fase.Cargando ? mensajeSinW : mensajeNoLista;
         MostrarTemporal(motivo, colorError);
 
-        // Que no se pueda repetir el error pulsando ESPACIO muchas veces seguidas
         BloqueoEventos.BloquearArranque(duracionMensajeError);
 
         huboErrorEnEsteCiclo = true;
 
-        // En el tutorial el error enseña, pero no cuenta contra la popularidad
         if (!TutorialManager.EnCurso)
         {
             if (GameManager.Instance != null)
@@ -235,7 +213,6 @@ public class ProcesoPartida : MonoBehaviour
         return false;
     }
 
-    // Un viaje sin errores sube de a poco la popularidad
     private void RecuperarPopularidadSiViajeLimpio()
     {
         if (huboErrorEnEsteCiclo || TutorialManager.EnCurso) return;
@@ -244,19 +221,15 @@ public class ProcesoPartida : MonoBehaviour
         GameManager.Instance.ModificarPopularidad(recuperacionPorViajeLimpio);
     }
 
-    // === PUERTAS ===
-    // Los pasajeros preguntan esto antes de subir a una cabina.
     public bool PuertaCerrada(int ascensorIndex)
     {
         if (ascensorManager == null) return false;
         if (fase == Fase.Cargando) return false;
 
-        // La W cierra la cabina de arriba; la de abajo cierra cuando ya está lista
         if (ascensorIndex == IndiceCabinaArriba()) return true;
         return fase == Fase.Lista;
     }
 
-    // La cabina que está arriba es la que tiene estaAbajo en falso (siempre una de las dos)
     public int IndiceCabinaArriba()
     {
         if (ascensorManager == null) return -1;
@@ -268,7 +241,6 @@ public class ProcesoPartida : MonoBehaviour
         return -1;
     }
 
-    // === TV ===
     private void MostrarMensajeDeFase(bool limpiarSiCargando)
     {
         switch (fase)

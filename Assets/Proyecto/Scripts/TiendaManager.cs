@@ -26,21 +26,17 @@ public class TiendaManager : MonoBehaviour
 
     public TextAsset archivoJson;
 
-   
     public GameObject cuadroTexto;
     public TextMeshProUGUI textoDescripcion;
     public TextMeshProUGUI textoBotonComprar;
     public Button botonComprar;
     public TextMeshProUGUI textoDineroDisponible;
 
-   
     [Tooltip("Escena a la que vuelve al salir de la tienda")]
     public string nombreEscenaNoche = "EscenaNoche";
 
-
     private List<ItemData> listaItems = new List<ItemData>();
     private ItemData itemSeleccionadoActual;
-
 
     private void Awake()
     {
@@ -52,7 +48,6 @@ public class TiendaManager : MonoBehaviour
         if (cuadroTexto != null) cuadroTexto.SetActive(false);
         ActualizarTextoDinero();
 
-        
         if (GameManager.Instance != null && GameManager.Instance.gameData != null)
         {
             GameManager.Instance.gameData.OnDataChanged += ActualizarTextoDinero;
@@ -73,9 +68,7 @@ public class TiendaManager : MonoBehaviour
         {
             CatalogoWrapper catalogo = JsonUtility.FromJson<CatalogoWrapper>(archivoJson.text);
             listaItems = catalogo.items;
-           
         }
-        
     }
 
     public void SeleccionarItem(string itemId)
@@ -100,12 +93,10 @@ public class TiendaManager : MonoBehaviour
                 if (textoBotonComprar != null)
                     textoBotonComprar.text = $"Comprar (${item.precio})";
 
-                
                 if (botonComprar != null)
                     botonComprar.interactable = (ObtenerDinero() >= item.precio);
             }
         }
-        
     }
 
     public void ComprarItemActual()
@@ -121,8 +112,6 @@ public class TiendaManager : MonoBehaviour
             GameManager.Instance.gameData.OnDataChanged?.Invoke();
             ActualizarTextoDinero();
 
-          
-            // Guarda la compra en GameData y aplica su efecto
             EfectosManager.AplicarEfecto(itemSeleccionadoActual.id, itemSeleccionadoActual.esMejoraUnica);
 
             if (itemSeleccionadoActual.esMejoraUnica)
@@ -136,7 +125,6 @@ public class TiendaManager : MonoBehaviour
                     botonComprar.interactable = (ObtenerDinero() >= itemSeleccionadoActual.precio);
             }
         }
-        
     }
 
     private int ObtenerDinero()

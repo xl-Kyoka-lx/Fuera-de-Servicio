@@ -1,10 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-// Evento: Polea trabada.
-// La pantalla se oscurece y brilla a un ritmo fijo. El jugador debe presionar
-// la tecla justo cuando brilla. Aciertos suficientes = polea liberada.
-// Demasiados errores o se acaba el tiempo = falla.
 public class EventoPoleaTrabada : EventoBase
 {
     [Header("Mensajes (salen en la TV)")]
@@ -121,7 +117,6 @@ public class EventoPoleaTrabada : EventoBase
     {
         if (!minijuegoActivo) return;
 
-        // unscaled: el evento sigue corriendo aunque el juego esté congelado
         tiempo += Time.unscaledDeltaTime;
         tiempoRestante -= Time.unscaledDeltaTime;
 
@@ -132,7 +127,6 @@ public class EventoPoleaTrabada : EventoBase
             FallarMinijuego();
     }
 
-    // El primer pulso ocurre en t = periodo, para dar tiempo a ver el ritmo.
     private int PulsoMasCercano()
     {
         return Mathf.Max(1, Mathf.RoundToInt(tiempo / periodo));
@@ -158,7 +152,6 @@ public class EventoPoleaTrabada : EventoBase
 
         if (distancia <= tolerancia)
         {
-            // Evita contar dos veces el mismo pulso.
             if (pulso == ultimoPulsoAcertado) return;
 
             ultimoPulsoAcertado = pulso;

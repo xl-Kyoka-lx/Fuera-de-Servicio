@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Datos de un pasajero bondadoso (vienen de Dialogo_Personajes_Buenos.json)
 [Serializable]
 public class PasajeroBondadosoData
 {
@@ -11,7 +10,7 @@ public class PasajeroBondadosoData
     public string nombre;
     public List<string> dialogos;
     public int dineroExtra;
-    public bool soloTutorial;   // true = no sale en las partidas normales (Camila)
+    public bool soloTutorial;
 }
 
 [Serializable]
@@ -20,13 +19,6 @@ public class PasajerosBondadososWrapper
     public List<PasajeroBondadosoData> pasajerosBondadosos;
 }
 
-// Pasajeros bondadosos: de vez en cuando uno de los que suben es "bondadoso".
-// Cuando baja del ascensor se acerca a conversar (diálogo) y deja una propina.
-//
-// - En el tutorial, el TutorialManager pide a Camila con PedirCamila().
-// - En las partidas normales sale uno cada cierto tiempo, sin repetirse en el mismo día.
-//
-// Poner este componente en un objeto de la escena del día.
 public class BondadososManager : MonoBehaviour
 {
     public static BondadososManager Instance { get; private set; }
@@ -52,18 +44,16 @@ public class BondadososManager : MonoBehaviour
     [Header("Tutorial")]
     public string idCamila = "camila_vecina";
 
-    // El tutorial lo usa para saber cuándo seguir
     public event Action OnCamilaAsignada;
-    public event Action<string> OnEncuentroTerminado;   // id del bondadoso que terminó de conversar
+    public event Action<string> OnEncuentroTerminado;
 
-    // true desde que Camila quedó asignada a un pasajero hasta que termina de conversar
     public bool CamilaEnViaje { get; private set; }
 
     private PasajeroBondadosoData camila;
     private readonly List<PasajeroBondadosoData> pool = new List<PasajeroBondadosoData>();
 
     private float timer;
-    private bool pendienteAleatorio = false;   // le toca a uno: será el próximo que suba
+    private bool pendienteAleatorio = false;
     private bool camilaPendiente = false;
     private int apariciones = 0;
 
@@ -116,7 +106,6 @@ public class BondadososManager : MonoBehaviour
 
     private void Update()
     {
-        // En el tutorial solo aparece Camila, cuando el tutorial la pide
         if (TutorialManager.EnCurso) return;
         if (pendienteAleatorio || apariciones >= maximoPorDia || pool.Count == 0) return;
         if (Time.timeScale <= 0f) return;
@@ -126,9 +115,6 @@ public class BondadososManager : MonoBehaviour
             pendienteAleatorio = true;
     }
 
-    // ---------- Quién es bondadoso ----------
-
-    // Lo llama Pasajero cada vez que sube a una cabina
     public void AlSubirPasajero(Pasajero p)
     {
         if (p == null || p.EsBondadoso) return;
@@ -158,11 +144,10 @@ public class BondadososManager : MonoBehaviour
 
         int i = UnityEngine.Random.Range(0, pool.Count);
         var d = pool[i];
-        pool.RemoveAt(i);   // no se repite en el mismo día
+        pool.RemoveAt(i);
         return d;
     }
 
-    // El tutorial pide a Camila: será un pasajero que ya esté dentro o, si no hay, el próximo que suba
     public void PedirCamila()
     {
         if (camila == null)
@@ -189,7 +174,6 @@ public class BondadososManager : MonoBehaviour
         }
     }
 
-    // El tutorial se cansó de esperar (no subió nadie): Camila ya no se asigna a destiempo
     public void CancelarCamila()
     {
         camilaPendiente = false;
@@ -203,21 +187,16 @@ public class BondadososManager : MonoBehaviour
         OnCamilaAsignada?.Invoke();
     }
 
-    // ---------- El encuentro (cuando baja del ascensor) ----------
-
-    // Lo ejecuta el Pasajero al bajar: conversa y deja la propina
     public IEnumerator Encuentro(Pasajero p, PasajeroBondadosoData d)
     {
         var dialogos = DialogoManager.Instance;
 
-        // Esperar a que no haya otro diálogo ni un evento en curso (un evento congela el tiempo y no se puede mezclar)
         float limite = Time.unscaledTime + 30f;
         while ((HayDialogo() || HayEvento()) && Time.unscaledTime < limite)
             yield return null;
 
         if (dialogos == null || HayDialogo() || HayEvento())
         {
-            // No se pudo conversar: igual deja la propina
             Pagar(d);
             TerminarEncuentro(d);
             yield break;
@@ -226,7 +205,6 @@ public class BondadososManager : MonoBehaviour
         var lineas = CrearLineas(d);
         if (lineas.Count == 0)
         {
-            // Sin textos no hay nada que mostrar (y esperar el diálogo dejaría al pasajero colgado)
             Pagar(d);
             TerminarEncuentro(d);
             yield break;
@@ -239,7 +217,6 @@ public class BondadososManager : MonoBehaviour
         dialogos.OnDialogoTerminado += alTerminar;
         dialogos.MostrarDialogoDirecto(idDialogo, lineas);
 
-        // El diálogo pausa el juego (timeScale 0): se espera por frames, no por tiempo
         while (!terminado)
             yield return null;
 
@@ -276,8 +253,6 @@ public class BondadososManager : MonoBehaviour
         return GameManager.Instance != null && GameManager.Instance.GameData.eventoOcurriendo;
     }
 
-    // Convierte los textos del JSON en líneas de diálogo.
-    // Si un texto empieza con "Nombre: " (como en Delilah y su papá), ese nombre es el que habla.
     private static List<LineaDialogo> CrearLineas(PasajeroBondadosoData d)
     {
         var lineas = new List<LineaDialogo>();

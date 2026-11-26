@@ -17,7 +17,6 @@ public class FloatingEmoji : MonoBehaviour
 
     private IEnumerator AnimarEmoji()
     {
-        // 🔑 Pop inicial (mantener proporción de la escala)
         transform.localScale = Vector3.zero;
         float timer = 0f;
         while (timer < 0.2f)
@@ -29,7 +28,6 @@ public class FloatingEmoji : MonoBehaviour
         }
         transform.localScale = escalaBase;
 
-        // 🔑 Subir
         timer = 0f;
         while (timer < duracion)
         {

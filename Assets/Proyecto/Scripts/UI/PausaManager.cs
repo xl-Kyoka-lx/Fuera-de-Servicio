@@ -15,13 +15,11 @@ public class PausaManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Es estática: si se cambia de escena con la pausa abierta no debe quedar marcada
         juegoPausado = false;
     }
 
     void Update()
     {
-
         if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (juegoPausado)
@@ -41,7 +39,6 @@ public class PausaManager : MonoBehaviour
         PausaJuego.Pedir(this);
         juegoPausado = true;
 
-        
         if (inputActionsAsset != null)
         {
             inputActionsAsset.FindActionMap("Ascensor")?.Disable();
@@ -54,7 +51,6 @@ public class PausaManager : MonoBehaviour
         PausaJuego.Liberar(this);
         juegoPausado = false;
 
-        
         if (inputActionsAsset != null)
         {
             inputActionsAsset.FindActionMap("Ascensor")?.Enable();

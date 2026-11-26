@@ -14,7 +14,6 @@ public class DiaInicioManager : MonoBehaviour
 
         var data = GameManager.Instance.GameData;
 
-        // Al empezar el día no hay evento ni viaje en curso (evita valores viejos del asset)
         data.eventoOcurriendo = false;
         data.ascensorEnMovimiento = false;
 

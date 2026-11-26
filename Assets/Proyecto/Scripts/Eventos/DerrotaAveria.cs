@@ -4,8 +4,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-// Pantalla de derrota cuando el mantenimiento llega a 0 durante el día.
-// Crea su propia UI por código: solo hay que ponerlo en un objeto de la escena del día.
 public class DerrotaAveria : MonoBehaviour
 {
     public string titulo = "El ascensor se averió";
@@ -59,7 +57,6 @@ public class DerrotaAveria : MonoBehaviour
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = ordenCanvas;
 
-        // Fondo oscuro que absorbe los clics
         GameObject fondoGO = new GameObject("Fondo", typeof(RectTransform), typeof(Image));
         fondoGO.transform.SetParent(canvasGO.transform, false);
         RectTransform fondoRT = fondoGO.GetComponent<RectTransform>();
@@ -74,7 +71,6 @@ public class DerrotaAveria : MonoBehaviour
         CrearTexto(canvasGO.transform, titulo, 72f * escala, new Vector2(0f, 150f * escala), new Vector2(1400f * escala, 120f * escala), Color.red);
         CrearTexto(canvasGO.transform, mensaje, 36f * escala, new Vector2(0f, 20f * escala), new Vector2(1200f * escala, 160f * escala), Color.white);
 
-        // Botón
         GameObject botonGO = new GameObject("Boton", typeof(RectTransform), typeof(Image), typeof(Button));
         botonGO.transform.SetParent(canvasGO.transform, false);
         RectTransform botonRT = botonGO.GetComponent<RectTransform>();

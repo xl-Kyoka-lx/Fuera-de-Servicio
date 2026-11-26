@@ -3,8 +3,6 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "Datos", menuName = "GameData")]
 
-
-
 [System.Serializable]
 public class EstadoTienda
 {
@@ -23,7 +21,6 @@ public class EstadoTienda
         int i = consumiblesIds.IndexOf(id);
         if (i < 0 || i >= consumiblesCantidades.Count)
         {
-            // Listas desparejas (datos viejos): se reparan antes de agregar
             while (consumiblesCantidades.Count < consumiblesIds.Count) consumiblesCantidades.Add(0);
             if (i < 0)
             {
@@ -50,33 +47,24 @@ public class GameData : ScriptableObject
     [Range(0, 100)] public float mantenimientoPartidaNueva = 100f;
     [Range(0, 100)] public float limpiezaPartidaNueva = 100f;
 
-   
     [Tooltip("Pago base de cada pasajero (feliz puede pagar el doble, enojado la mitad o nada)")]
     public int pagoPorPasajero = 10;
 
-   
     public int horaActual = 7;
-
 
     public bool eventoOcurriendo = false;
     public bool ascensorEnMovimiento = false;
 
     public bool resumenNocheMostrado = false;
 
-    // Valores con los que se calculan los efectos del día. Se fijan al cargar la escena:
-    // los cambios que ocurran durante el día solo cuentan para el día siguiente.
     [System.NonSerialized] public float mantenimientoDelDia = 100f;
     [System.NonSerialized] public float limpiezaDelDia = 100f;
 
-    // Verdadero cuando el mantenimiento llegó a 0 jugando: el ascensor ya no arranca
     [System.NonSerialized] public bool ascensorAveriado = false;
 
-    // Pasajeros transportados desde el último descuento de limpieza y de mantenimiento
     [System.NonSerialized] public int pasajerosParaLimpieza = 0;
     [System.NonSerialized] public int pasajerosParaMantenimiento = 0;
 
-    // La popularidad ya no se calcula: se mueve con GameManager.ModificarPopularidad.
-    // Aquí solo se mantiene entre 0 y 100.
     public void ActualizarPopularidad()
     {
         contadorPopularidad = Mathf.Clamp(contadorPopularidad, 0f, 100f);
@@ -89,11 +77,7 @@ public class GameData : ScriptableObject
         limpiezaDelDia = Mathf.Clamp(contadorLimpieza, 0f, 100f);
     }
 
-
-    
-
     public EstadoTienda estadoTienda = new EstadoTienda();
-
 
     public System.Action OnDataChanged;
 
@@ -104,7 +88,6 @@ public class GameData : ScriptableObject
     [System.NonSerialized] private float _poleaInicial;
     [System.NonSerialized] private int _horaInicial;
 
-  
     public void CapturarValoresIniciales()
     {
         _dineroTotalInicial = dineroTotal;
@@ -114,7 +97,6 @@ public class GameData : ScriptableObject
         _horaInicial = horaActual;
 
         valoresInicialesCapturados = true;
-
     }
 
     public void ResetData()
@@ -135,12 +117,8 @@ public class GameData : ScriptableObject
         pasajerosParaLimpieza = 0;
         pasajerosParaMantenimiento = 0;
 
-        // Partida nueva: sin mejoras ni consumibles de la tienda
         estadoTienda = new EstadoTienda();
 
         OnDataChanged?.Invoke();
-
-        
     }
 }
-

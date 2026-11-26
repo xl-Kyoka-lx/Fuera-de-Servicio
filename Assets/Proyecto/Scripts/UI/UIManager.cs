@@ -60,7 +60,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // "Pasajeros: 3/5" = cuántos van dentro de la cabina / cuántos caben
     private string TextoPasajeros()
     {
         if (ascensorManager == null || indiceCabina < 0 || indiceCabina >= ascensorManager.ascensores.Count)

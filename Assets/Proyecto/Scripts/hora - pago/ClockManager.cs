@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System;
 
-// Reloj del día. Corre a un ritmo fijo: no se detiene por eventos ni por viajes,
-// así todos los días duran lo mismo. Solo espera cuando el juego está en pausa o en un diálogo.
 public class ClockManager : MonoBehaviour
 {
     [Tooltip("Duración real de un día completo, en segundos (600 = 10 minutos)")]
@@ -16,23 +14,18 @@ public class ClockManager : MonoBehaviour
     public event Action<int> OnHoraCambio;
     public event Action OnDiaTerminado;
 
-    // Llegó la hora de cierre. El día termina un poco después (cuando acaba el viaje o el evento en curso)
     public event Action OnCierreDelDia;
 
     private float timer = 0f;
 
-    // Llegó la hora de cierre: el día termina cuando acaba el evento o el viaje en curso
     private bool terminandoDia = false;
 
-    // Segundos reales que dura cada hora del juego
     public float SegundosPorHora => duracionDiaSegundos / Mathf.Max(1, horaFin - horaInicio);
 
-    // Segundos del día que ya pasaron (lo usa el Director para repartir los eventos)
     public float SegundosTranscurridos => (horaActual - horaInicio) * SegundosPorHora + timer;
 
     private void Start()
     {
-        // Cada día empieza a la hora de apertura
         horaActual = horaInicio;
         timer = 0f;
         if (GameManager.Instance != null)
@@ -47,12 +40,10 @@ public class ClockManager : MonoBehaviour
 
         var data = GameManager.Instance != null ? GameManager.Instance.GameData : null;
 
-        // Pausa, diálogos y averías: el reloj espera
         if (PausaManager.juegoPausado) return;
         if (EstadoJuegoManager.Instance != null && EstadoJuegoManager.Instance.EstaPausado()) return;
         if (data != null && data.ascensorAveriado) return;
 
-        // Los eventos congelan el tiempo del juego (timeScale 0), pero el reloj sigue corriendo
         float dt;
         if (Time.timeScale > 0f) dt = Time.deltaTime;
         else if (data != null && data.eventoOcurriendo) dt = Time.unscaledDeltaTime;
@@ -84,16 +75,13 @@ public class ClockManager : MonoBehaviour
         {
             var data = GameManager.Instance.GameData;
 
-            // Cerrar el resumen
             if (GameManager.Instance.ResumenDia != null)
             {
                 GameManager.Instance.ResumenDia.TerminarDia(data.dineroTotal);
             }
 
-            // Resetear el flag de resumen mostrado
             data.resumenNocheMostrado = false;
 
-            // Desgaste fijo del ascensor al terminar cada día
             if (!data.ascensorAveriado)
                 GameManager.Instance.AplicarDesgasteDiario();
         }
@@ -116,7 +104,6 @@ public class ClockManager : MonoBehaviour
 
         if (horaActual >= horaFin)
         {
-            // No se corta en medio de un evento o de un viaje: se espera a que terminen
             if (!terminandoDia)
             {
                 terminandoDia = true;
@@ -127,7 +114,6 @@ public class ClockManager : MonoBehaviour
 
     public int GetHoraActual() => horaActual;
 
-    // Hora con decimales (7.5 = 07:30). La usa el horario de pasajeros
     public float HoraDecimal => horaActual + Mathf.Clamp01(timer / SegundosPorHora);
 
     public void ReiniciarDia()

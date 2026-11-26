@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class NocheManager : MonoBehaviour
 {
-    
     public DayNightController dayNightController;
     public GameObject panelPago;        
     public GameObject panelNoche;       
@@ -12,25 +11,20 @@ public class NocheManager : MonoBehaviour
     public Button botonLimpiar;
     public Button botonContinuar;
 
-  
     public int costoPago = 100;
 
- 
     public string nombreEscenaTienda = "Tienda";
 
     public void IrATienda()
     {
-       
         SceneManager.LoadScene(nombreEscenaTienda);
     }
 
     private void Start()
     {
-  
         if (panelPago != null)
             panelPago.SetActive(false);
 
-        // Conectar botones
         if (botonTienda != null)
             botonTienda.onClick.AddListener(OnTienda);
 
@@ -41,23 +35,18 @@ public class NocheManager : MonoBehaviour
             botonContinuar.onClick.AddListener(OnContinuar);
     }
 
-
     public void OnTienda()
     {
         Debug.Log("Abriendo tienda...");
-        
     }
 
- 
     public void OnLimpiar()
     {
         Debug.Log(" Iniciando limpieza...");
-        
     }
 
     public void OnContinuar()
     {
-        // El mantenimiento y la limpieza con los que termina la noche ajustan la popularidad
         if (GameManager.Instance != null)
             GameManager.Instance.AplicarPopularidadDelDia();
 
@@ -68,10 +57,8 @@ public class NocheManager : MonoBehaviour
             panelNoche.SetActive(false);
     }
 
-    
     public void OnPagoExitoso()
     {
-
         if (dayNightController != null)
             dayNightController.IrAEscenaDia();
     }
@@ -79,7 +66,5 @@ public class NocheManager : MonoBehaviour
     public void OnPagoFallido()
     {
         Debug.Log("No pudo pagar. Game Over.");
-
-        
     }
 }

@@ -1,26 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-// Crea a los pasajeros y los ordena en filas en los andenes.
-//
-// Cada estación (abajo = inicio, arriba = final) tiene un andén por cabina. En cada momento
-// una sola cabina "atiende" la estación:
-//   - la que está ahí con la puerta abierta, o
-//   - si ya cerró (W o "cabina de abajo lista") o se está yendo, la otra, que es la próxima en llegar.
-//
-// - Los pasajeros nuevos entran deslizándose desde afuera hasta el final de la fila del andén que atiende.
-// - La fila empieza en el spawnPoint y crece alejándose de la cabina (máximo maxEsperandoPorAnden).
-// - Suben en orden: los primeros de la fila que caben en la cabina.
-// - Los que no alcanzaron a subir se dan vuelta y salen por atrás de su fila (por donde llegaron),
-//   esperan afuera unos segundos y entran por atrás de la fila de la otra cabina (si no hay lugar, no vuelven).
-// - Al llegar la hora de cierre ya no entra nadie, y los que esperaban se van caminando.
-// - Cuántos llegan y a qué estación depende del horario (franjas de la hora punta).
 public class PasajeroSpawner : MonoBehaviour
 {
     public static PasajeroSpawner Instance { get; private set; }
 
-    // Bajada = del cerro al plan (suben arriba, en el andén "final").
-    // Subida = del plan al cerro (suben abajo, en el andén "inicio").
     public enum DireccionFlujo { Mixta, Bajada, Subida }
 
     [System.Serializable]
@@ -110,18 +94,16 @@ public class PasajeroSpawner : MonoBehaviour
 
     private float timer = 0f;
     private bool diaCerrado = false;
-    private float anchoPasajeroBase = 1f;   // ancho del sprite con escala 1
+    private float anchoPasajeroBase = 1f;
 
-    // Fila de cada andén (el índice 0 es el primero, junto a la cabina)
     private readonly Dictionary<SpawnConfig, List<Pasajero>> filas = new Dictionary<SpawnConfig, List<Pasajero>>();
     private readonly List<Pasajero> aMover = new List<Pasajero>();
 
-    // Pasajeros que salieron de su fila y van a entrar a la de la otra cabina
     private class Transito
     {
         public Pasajero pasajero;
-        public bool afuera;      // ya llegó a la salida (fuera de pantalla)
-        public float espera;     // segundos que faltan para entrar al otro andén
+        public bool afuera;
+        public float espera;
     }
     private readonly List<Transito> enTransito = new List<Transito>();
 
@@ -173,7 +155,6 @@ public class PasajeroSpawner : MonoBehaviour
 
         if (!spawnAutomatico) return;
 
-        // En hora punta el tiempo entre grupos se acorta
         timer += Time.deltaTime * Mathf.Max(0f, FranjaActual(out _));
         if (timer >= intervaloSpawn)
         {
@@ -182,9 +163,6 @@ public class PasajeroSpawner : MonoBehaviour
         }
     }
 
-    // ---------- Horario ----------
-
-    // Intensidad de la hora actual y la dirección dominante
     private float FranjaActual(out DireccionFlujo direccion)
     {
         direccion = DireccionFlujo.Mixta;
@@ -202,21 +180,16 @@ public class PasajeroSpawner : MonoBehaviour
         return intensidadFueraDeFranja;
     }
 
-    // Peso de un andén según la dirección dominante de la franja
     private float PesoDireccion(SpawnConfig c, DireccionFlujo direccion)
     {
         if (direccion == DireccionFlujo.Mixta) return 1f;
 
-        // Bajada: la gente sube arriba (cerro). Subida: sube abajo (plan).
         bool esDominante = (direccion == DireccionFlujo.Bajada) == !EstacionAbajo(c.rol);
         return esDominante ? pesoDireccionDominante : 1f - pesoDireccionDominante;
     }
 
-    // ---------- Qué cabina atiende cada estación ----------
-
     private static bool EstacionAbajo(RolPasajero rol) => rol == RolPasajero.SubeEnInicio;
 
-    // Índice de la cabina que atiende la estación de ese rol, o -1 si no hay ninguna
     private int CabinaQueAtiende(RolPasajero rol)
     {
         bool abajo = EstacionAbajo(rol);
@@ -226,19 +199,16 @@ public class PasajeroSpawner : MonoBehaviour
         {
             var asc = ascensorManager.ascensores[i];
 
-            // estaAbajo solo cambia al llegar, así que en viaje el destino es el lado contrario
             bool ladoAbajo = asc.enMovimiento ? !asc.estaAbajo : asc.estaAbajo;
 
             if (ladoAbajo != abajo)
             {
-                // Detenida en la otra estación: será la próxima en venir
                 if (!asc.enMovimiento && laOtra < 0) laOtra = i;
                 continue;
             }
 
-            if (asc.enMovimiento) return i;           // viene hacia esta estación
-            if (!PuertaCerrada(i)) return i;          // está aquí y todavía se puede subir
-            // está aquí pero ya cerró: atiende la otra
+            if (asc.enMovimiento) return i;
+            if (!PuertaCerrada(i)) return i;
         }
 
         return laOtra;
@@ -273,15 +243,12 @@ public class PasajeroSpawner : MonoBehaviour
         return null;
     }
 
-    // ---------- Geometría de la fila ----------
-
     private float Espacio(SpawnConfig c)
     {
         if (c.espacioEnFila > 0f) return c.espacioEnFila;
         return Mathf.Max(0.01f, anchoPasajeroBase * c.escalaEnSpawn * separacionRelativa);
     }
 
-    // Hacia dónde crece la fila: alejándose de la cabina en esa estación
     private Vector3 Direccion(SpawnConfig c)
     {
         float xCabina = c.spawnPoint.position.x;
@@ -303,7 +270,6 @@ public class PasajeroSpawner : MonoBehaviour
         return c.spawnPoint.position + Direccion(c) * (Espacio(c) * indice);
     }
 
-    // Afuera de la fila, por el lado de atrás: por ahí entran y se van
     private Vector3 Entrada(SpawnConfig c)
     {
         return Puesto(c, maxEsperandoPorAnden - 1 + puestosDeEntrada);
@@ -311,16 +277,12 @@ public class PasajeroSpawner : MonoBehaviour
 
     private float Velocidad(SpawnConfig c) => Espacio(c) * puestosPorSegundo;
 
-    // ---------- Mantener las filas ----------
-
-    // Quita a los que ya subieron, se fueron o se destruyeron
     private void LimpiarFilas()
     {
         foreach (var fila in filas.Values)
             fila.RemoveAll(p => p == null || !p.EstaAfuera);
     }
 
-    // Cada uno camina a su puesto: si alguien sale de la fila, los de atrás avanzan
     private void OrdenarFilas()
     {
         foreach (var par in filas)
@@ -331,14 +293,13 @@ public class PasajeroSpawner : MonoBehaviour
             for (int i = 0; i < fila.Count; i++)
             {
                 var p = fila[i];
-                if (p.estado == EstadoPasajero.Subiendo) continue;   // ya está subiendo, no se mueve
+                if (p.estado == EstadoPasajero.Subiendo) continue;
 
                 p.IrA(Puesto(c, i), Velocidad(c));
             }
         }
     }
 
-    // Sube solo si está entre los primeros de la fila que caben en la cabina
     private bool PuedeSubir(Pasajero p)
     {
         var c = AndenDelPasajero(p);
@@ -349,20 +310,16 @@ public class PasajeroSpawner : MonoBehaviour
         return indice >= 0 && indice < asc.CapacidadMaxima - asc.PasajerosTotales;
     }
 
-    // ---------- Aparecer ----------
-
     private void SpawnearCumulo()
     {
         if (pasajeroPrefab == null) return;
 
-        // 🔑 La limpieza del día define cuántos pasajeros suben (100% = varios, 0% = nadie)
         float factorLimpieza = 1f;
         if (GameManager.Instance != null)
             factorLimpieza = Mathf.Clamp01(GameManager.Instance.GameData.limpiezaDelDia / 100f);
 
         if (factorLimpieza <= 0f || Random.value > factorLimpieza) return;
 
-        // 🔑 Solo los andenes de las cabinas que atienden cada estación, y con lugar en la fila
         List<SpawnConfig> validos = new List<SpawnConfig>();
         foreach (var c in spawns)
         {
@@ -373,11 +330,9 @@ public class PasajeroSpawner : MonoBehaviour
 
         if (validos.Count == 0) return;
 
-        // 🔑 La estación dominante del horario recibe la mayoría de los grupos
         float intensidad = FranjaActual(out var direccion);
         SpawnConfig config = ElegirPorDireccion(validos, direccion);
 
-        // 🔑 Un grupo que llega junto (más chico en horas valle, sin pasarse del máximo de la fila)
         float factorGrupo = factorLimpieza * Mathf.Clamp(intensidad, 0.3f, 1f);
         int maxCumuloHoy = Mathf.Max(1, Mathf.RoundToInt(maxPasajerosPorCumulo * factorGrupo));
         int cantidad = Random.Range(1, maxCumuloHoy + 1);
@@ -388,7 +343,6 @@ public class PasajeroSpawner : MonoBehaviour
 
         for (int i = 0; i < cantidad; i++)
         {
-            // Entran uno detrás del otro, separados como en la fila
             CrearPasajero(config, i);
         }
     }
@@ -407,9 +361,6 @@ public class PasajeroSpawner : MonoBehaviour
         return validos[validos.Count - 1];
     }
 
-    // ---------- Llegada a la otra estación (la usa el Pasajero al bajar) ----------
-
-    // Andén donde se baja un pasajero de esa cabina al llegar a esa estación: su padre, escala y velocidad
     public bool DatosDeLlegada(int ascensorIndex, bool estacionAbajo, out Transform padre, out float escala, out float velocidad)
     {
         var c = AndenDe(ascensorIndex, estacionAbajo ? RolPasajero.SubeEnInicio : RolPasajero.SubeEnFinal);
@@ -435,7 +386,6 @@ public class PasajeroSpawner : MonoBehaviour
         var asc = ascensorManager.ascensores[config.ascensorIndex];
         if (asc.enMovimiento && !spawnMientrasViaja) return false;
 
-        // Si la cabina está aquí y ya está llena, no tiene sentido que llegue más gente
         bool estaAqui = !asc.enMovimiento && asc.estaAbajo == EstacionAbajo(config.rol);
         if (estaAqui && !asc.HayEspacio) return false;
 
@@ -467,10 +417,6 @@ public class PasajeroSpawner : MonoBehaviour
         p.IrA(Puesto(config, fila.Count - 1), Velocidad(config));
     }
 
-    // ---------- Cambiar de andén ----------
-
-    // Los que esperan una cabina que ya no atiende su estación se dan vuelta y salen
-    // por atrás de su fila (por donde llegaron)
     private void ReubicarPasajeros()
     {
         foreach (var origen in spawns)
@@ -494,7 +440,6 @@ public class PasajeroSpawner : MonoBehaviour
         }
     }
 
-    // Cuando ya están afuera esperan unos segundos y entran por atrás de la fila de la cabina que atiende ahora
     private void ProcesarTransito()
     {
         for (int i = enTransito.Count - 1; i >= 0; i--)
@@ -510,20 +455,18 @@ public class PasajeroSpawner : MonoBehaviour
 
             if (!t.afuera)
             {
-                if (p.Deslizando) continue;   // todavía caminando hacia la salida
+                if (p.Deslizando) continue;
                 t.afuera = true;
             }
 
             t.espera -= Time.deltaTime;
             if (t.espera > 0f) continue;
 
-            // Se decide al entrar: puede que en estos segundos haya cambiado la cabina que atiende
             var destino = AndenDe(CabinaQueAtiende(p.rol), p.rol);
             enTransito.RemoveAt(i);
 
             if (destino == null || FilaDe(destino).Count >= maxEsperandoPorAnden)
             {
-                // No hay lugar: ya está fuera de pantalla, simplemente no vuelve
                 p.Retirarse(p.transform.position, 1f);
                 continue;
             }
@@ -535,9 +478,6 @@ public class PasajeroSpawner : MonoBehaviour
         }
     }
 
-    // ---------- Fin del día ----------
-
-    // Hora de cierre: ya no llega nadie más y los que esperaban se van caminando
     private void CerrarDia()
     {
         if (diaCerrado) return;
@@ -555,7 +495,6 @@ public class PasajeroSpawner : MonoBehaviour
             par.Value.Clear();
         }
 
-        // Los que estaban afuera esperando para cambiar de andén simplemente no vuelven
         foreach (var t in enTransito)
             if (t.pasajero != null) t.pasajero.Retirarse(t.pasajero.transform.position, 1f);
         enTransito.Clear();
