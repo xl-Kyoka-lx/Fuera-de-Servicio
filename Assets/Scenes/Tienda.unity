@@ -291,8 +291,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 841.57, y: 347}
-  m_SizeDelta: {x: 398.4243, y: 193.32}
+  m_AnchoredPosition: {x: 885.8499, y: 347}
+  m_SizeDelta: {x: 486.97, y: 193.32}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &153238788
 MonoBehaviour:
@@ -370,7 +370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Aceite de engranajes
+  m_text: Mantenimiento Profesional
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afb24a3358fe0144395ab4b4763c94cd, type: 2}
   m_sharedMaterial: {fileID: -1864591928679710755, guid: afb24a3358fe0144395ab4b4763c94cd, type: 2}
@@ -1970,7 +1970,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Mantenimiento parcial
+  m_text: Mantenimiento Parcial
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: afb24a3358fe0144395ab4b4763c94cd, type: 2}
   m_sharedMaterial: {fileID: -1864591928679710755, guid: afb24a3358fe0144395ab4b4763c94cd, type: 2}
