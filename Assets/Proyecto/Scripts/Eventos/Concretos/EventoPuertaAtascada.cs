@@ -148,6 +148,8 @@ public class EventoPuertaAtascada : EventoBase
             GameManager.Instance.ModificarPolea(5f);
         }
 
+        Sonidos.ReproducirQte(b => b.puertaDestrabada);
+
         if (PanelMensajesMonitor.Instance != null)
         {
             PanelMensajesMonitor.Instance.MostrarMensaje("¡Puerta desatascada!", Color.green, 2f);

@@ -296,11 +296,13 @@ public class EventoPestillo : EventoBase
 
             if (Mathf.Abs(diferencia) <= ventanaAcierto)
             {
+                Sonidos.ReproducirQte(b => b.pestilloAcierto);
                 ResolverCiclo(true);
                 return;
             }
             else if (diferencia < -ventanaAcierto && diferencia >= -ventanaFallo)
             {
+                Sonidos.ReproducirQte(b => b.pestilloFallo);
                 ResolverCiclo(false);
                 return;
             }

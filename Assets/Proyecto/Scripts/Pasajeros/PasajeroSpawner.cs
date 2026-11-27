@@ -502,6 +502,22 @@ public class PasajeroSpawner : MonoBehaviour
         Debug.Log($"🕔 Cierre del día: se retiran {total} pasajeros que esperaban");
     }
 
+    public void Despedir(Pasajero p)
+    {
+        if (p == null) return;
+
+        foreach (var par in filas)
+        {
+            if (par.Value.Remove(p))
+            {
+                p.Retirarse(Entrada(par.Key), Velocidad(par.Key));
+                return;
+            }
+        }
+
+        p.Retirarse(p.transform.position, 1f);
+    }
+
     private void CuandoPasajeroTermina(Pasajero p)
     {
         if (p == null) return;

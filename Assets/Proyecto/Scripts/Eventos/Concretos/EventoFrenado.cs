@@ -279,8 +279,12 @@ public class EventoFrenado : MonoBehaviour
                 PanelAccion.Instance.MostrarResultado(mensaje, color, 2f);
         }
 
-        if (resultado == ResultadoFrenado.Malo && temblarEnFrenadoBrusco)
-            TemblorPantalla.Temblar(duracionTemblor, intensidadTemblor);
+        if (resultado == ResultadoFrenado.Malo)
+        {
+            Sonidos.ReproducirQte(b => b.ascensorDetenido);
+            if (temblarEnFrenadoBrusco)
+                TemblorPantalla.Temblar(duracionTemblor, intensidadTemblor);
+        }
 
         if (GameManager.Instance == null) return;
 

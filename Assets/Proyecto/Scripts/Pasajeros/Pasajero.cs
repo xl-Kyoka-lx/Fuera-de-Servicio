@@ -59,6 +59,9 @@ public class Pasajero : MonoBehaviour
     [NonSerialized] public PasajeroBondadosoData datosBondadoso;
     public bool EsBondadoso => datosBondadoso != null && !string.IsNullOrEmpty(datosBondadoso.id);
 
+    [HideInInspector] public bool viajaGratis = false;
+    private bool yaSePreguntoSiTienePlata = false;
+
     private AscensorManager ascensorManager;
     private int ascensorIndex = 0;
     private bool inicializado = false;
@@ -284,6 +287,38 @@ public class Pasajero : MonoBehaviour
             yield break;
         }
 
+        if (!yaSePreguntoSiTienePlata)
+        {
+            yaSePreguntoSiTienePlata = true;
+
+            var decisiones = DecisionesManager.Instance;
+            if (decisiones != null && decisiones.QuierePreguntarSinPlata(this))
+            {
+                bool respondio = false;
+                bool dejarSubir = false;
+                decisiones.PreguntarSinPlata(r => { dejarSubir = r; respondio = true; });
+
+                while (!respondio) yield return null;
+
+                if (!dejarSubir)
+                {
+                    estado = EstadoPasajero.EsperandoEnAnden;
+                    if (PasajeroSpawner.Instance != null) PasajeroSpawner.Instance.Despedir(this);
+                    else Retirarse(transform.position, 1f);
+                    yield break;
+                }
+
+                viajaGratis = true;
+
+                puertaCerrada = ProcesoPartida.Instance != null && ProcesoPartida.Instance.PuertaCerrada(ascensorIndex);
+                if (puertaCerrada || !ascensorManager.HayEspacioEn(ascensorIndex))
+                {
+                    estado = EstadoPasajero.EsperandoEnAnden;
+                    yield break;
+                }
+            }
+        }
+
         yield return StartCoroutine(PopYDesaparecer());
 
         puertaCerrada = ProcesoPartida.Instance != null && ProcesoPartida.Instance.PuertaCerrada(ascensorIndex);
@@ -441,13 +476,16 @@ public class Pasajero : MonoBehaviour
 
         Vector3 cabeza = transform.position + Vector3.up * (alto * 0.6f);
 
-        if (pago > 0) TextoFlotante.Mostrar($"+${pago}", cabeza, colorPago, alto);
+        if (viajaGratis) TextoFlotante.Mostrar("Gratis", cabeza, colorPago, alto);
+        else if (pago > 0) TextoFlotante.Mostrar($"+${pago}", cabeza, colorPago, alto);
         else TextoFlotante.Mostrar("$0", cabeza, colorSinPago, alto);
     }
 
     public int CalcularPago()
     {
         RefrescarEmocionPorPopularidad();
+
+        if (viajaGratis) return 0;
 
         int pagoBase = 10;
         if (GameManager.Instance != null && GameManager.Instance.GameData != null)

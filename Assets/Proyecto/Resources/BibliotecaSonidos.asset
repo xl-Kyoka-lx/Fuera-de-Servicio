@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34812d4f83d444cdb060504c9c92f073, type: 3}
+  m_Name: BibliotecaSonidos
+  m_EditorClassIdentifier: Assembly-CSharp::BibliotecaSonidos
+  clicBoton: {fileID: 8300000, guid: f813187b37d1b744aa1caec585bc87cf, type: 3}
+  volumenClic: 0.6
+  agarrarBasura: {fileID: 8300000, guid: 5640b3b984cad8c4982dc7d0ab8441ec, type: 3}
+  basura: {fileID: 8300000, guid: 7f10fe6d0befe0547899661e40b76176, type: 3}
+  ascensorDetenido: {fileID: 8300000, guid: 0c381098479e92d44ae53ca1d19f92eb, type: 3}
+  poleaDestrabada: {fileID: 8300000, guid: 91643cec6d16c4f4db202628cb3b09c3, type: 3}
+  puertaDestrabada: {fileID: 8300000, guid: 561e807dce9de1d4aa66f9784e56172d, type: 3}
+  engrasadoPolea: {fileID: 8300000, guid: ccea855c5617f8a428df8f284d6bf0bf, type: 3}
+  pestilloAcierto: {fileID: 8300000, guid: c203289e820aec645a1f1c6acc163f0b, type: 3}
+  pestilloFallo: {fileID: 8300000, guid: e181cca09e8a5e548874a21a1f3437b1, type: 3}
+  volumenQte: 0.8
+  genteNormal:
+  - {fileID: 8300000, guid: d1194228f27d4b943bc28faf0c06d3d2, type: 3}
+  - {fileID: 8300000, guid: 75015cd40cf1c3345b31780a6049454f, type: 3}
+  - {fileID: 8300000, guid: 4462d47a299783a43b8ca769baac7504, type: 3}
+  genteEnojada:
+  - {fileID: 8300000, guid: 155a8927035d31b4ab2dcf33e0841df7, type: 3}
+  - {fileID: 8300000, guid: b7a3c203c8889f0448a29a0f0dd6bcef, type: 3}
+  genteFeliz:
+  - {fileID: 8300000, guid: 918707b0c0899d9429772251c0a6ee39, type: 3}
+  - {fileID: 8300000, guid: faa8a405fc6f7ac4a8ebcbe4b5b935a1, type: 3}
+  volumenGente: 0.6
+  segundosSinPasajeros: 5
+  popularidadFeliz: 80
+  popularidadEnojada: 40

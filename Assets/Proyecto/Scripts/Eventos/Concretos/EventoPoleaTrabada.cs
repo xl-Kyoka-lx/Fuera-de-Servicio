@@ -83,6 +83,9 @@ public class EventoPoleaTrabada : EventoBase
 
         Debug.Log("EventoPoleaTrabada iniciado");
 
+        if (GameManager.Instance != null && GameManager.Instance.GameData.ascensorEnMovimiento)
+            Sonidos.ReproducirQte(b => b.ascensorDetenido);
+
         if (PanelMensajesMonitor.Instance != null)
             PanelMensajesMonitor.Instance.MostrarMensajeInmediato(mensajeInicial, colorMensaje);
 
@@ -192,6 +195,8 @@ public class EventoPoleaTrabada : EventoBase
 
         if (GameManager.Instance != null)
             GameManager.Instance.ModificarPolea(bonoSiResuelve);
+
+        Sonidos.ReproducirQte(b => b.poleaDestrabada);
 
         if (PanelMensajesMonitor.Instance != null)
             PanelMensajesMonitor.Instance.MostrarMensaje("¡Polea liberada!", Color.green, 2f);

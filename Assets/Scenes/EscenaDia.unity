@@ -1396,7 +1396,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &288974261
 Transform:
   m_ObjectHideFlags: 0
@@ -5146,7 +5146,7 @@ MonoBehaviour:
   retrasoSonidoAscensor: 1
   indicadorArranque: '*el motor del ascensor arranca*'
   indicadorDetencion: '*el ascensor se detiene*'
-  fundidoSalida: 0.5
+  fundidoSalida: 3
   tonoAlFrenar: 0.8
 --- !u!82 &1019637884
 AudioSource:

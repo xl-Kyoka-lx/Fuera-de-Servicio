@@ -391,6 +391,12 @@ public class EventoColillasLatas : EventoBase
         if (acierto) aciertos++;
         else fallos++;
 
+        if (acierto)
+        {
+            if (resueltos >= numeroCirculos) Sonidos.ReproducirQte(b => b.basura);
+            else Sonidos.ReproducirQte(b => b.agarrarBasura);
+        }
+
         ActualizarTextoProgreso();
 
         if (resueltos >= numeroCirculos)

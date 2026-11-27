@@ -158,6 +158,7 @@ public class EventoEngrase : EventoBase
     private void MoverCuadrado(float dt)
     {
         bool presionando = inputSubir != null && inputSubir.IsPressed();
+        SonidoEngrase(true);
 
         velCuadrado += (presionando ? aceleracionSubida : -gravedad) * dt;
         velCuadrado = Mathf.Clamp(velCuadrado, -velocidadMaxima, velocidadMaxima);
@@ -213,10 +214,37 @@ public class EventoEngrase : EventoBase
         PanelMensajesMonitor.Instance.MostrarMensajeInmediato(texto, colorMensaje);
     }
 
+    private AudioSource fuenteEngrase;
+
+    private void SonidoEngrase(bool sonar)
+    {
+        if (fuenteEngrase == null)
+        {
+            var b = Sonidos.Biblioteca;
+            if (b == null || b.engrasadoPolea == null || !sonar) return;
+            fuenteEngrase = gameObject.AddComponent<AudioSource>();
+            fuenteEngrase.clip = b.engrasadoPolea;
+            fuenteEngrase.loop = true;
+            fuenteEngrase.volume = b.volumenQte;
+            fuenteEngrase.playOnAwake = false;
+        }
+
+        if (sonar && !fuenteEngrase.isPlaying)
+        {
+            if (fuenteEngrase.time > 0f) fuenteEngrase.UnPause();
+            else fuenteEngrase.Play();
+        }
+        else if (!sonar && fuenteEngrase.isPlaying)
+        {
+            fuenteEngrase.Pause();
+        }
+    }
+
     private void ResolverMinijuego()
     {
         if (yaResuelto) return;
         yaResuelto = true;
+        SonidoEngrase(false);
         minijuegoActivo = false;
         RestaurarTiempo();
 
@@ -233,6 +261,7 @@ public class EventoEngrase : EventoBase
     {
         if (yaResuelto) return;
         yaResuelto = true;
+        SonidoEngrase(false);
         minijuegoActivo = false;
         RestaurarTiempo();
 
