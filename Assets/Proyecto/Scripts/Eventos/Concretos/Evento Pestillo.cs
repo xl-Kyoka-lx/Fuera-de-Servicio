@@ -28,7 +28,9 @@ public class EventoPestillo : EventoBase
     public float ventanaFallo = 0.9f;
 
     [Header("Intentos")]
-    [Tooltip("1 = solo un intento. Si pones 2 o más, el círculo vuelve a aparecer tras fallar")]
+    [Tooltip("Marcado: tras fallar el círculo vuelve a aparecer hasta que el jugador acierte")]
+    public bool repetirHastaAcertar = true;
+    [Tooltip("Solo si no se repite hasta acertar: 1 = un intento. Con 2 o más, el círculo vuelve a aparecer tras fallar")]
     public int intentosMaximos = 1;
 
     [Header("Arte (opcional)")]
@@ -51,6 +53,7 @@ public class EventoPestillo : EventoBase
 
     [Header("Resultado sobre el mantenimiento")]
     public float bonoSiResuelve = 5f;
+    [Tooltip("Mantenimiento que se pierde en cada intento fallido")]
     public float dañoSiFalla = 10f;
 
     [Header("UI")]
@@ -310,6 +313,10 @@ public class EventoPestillo : EventoBase
     private void ResolverCiclo(bool acierto)
     {
         ultimoAcierto = acierto;
+
+        if (!acierto && GameManager.Instance != null)
+            GameManager.Instance.ModificarPolea(-dañoSiFalla);
+
         disco.color = acierto ? colorAcierto : colorFallo;
         anillo.gameObject.SetActive(false);
         grupo.alpha = 1f;
@@ -325,7 +332,10 @@ public class EventoPestillo : EventoBase
 
         if (restante > 0f) return;
 
-        if (ultimoAcierto || intentoActual >= intentosMaximos)
+        bool averiado = GameManager.Instance != null && GameManager.Instance.GameData.ascensorAveriado;
+        bool otroIntento = repetirHastaAcertar || intentoActual < intentosMaximos;
+
+        if (ultimoAcierto || averiado || !otroIntento)
         {
             FinalizarEvento();
         }
@@ -344,7 +354,11 @@ public class EventoPestillo : EventoBase
         if (PanelMensajesMonitor.Instance == null) return;
 
         string texto = $"{mensajeInstruccion}\n";
-        if (intentosMaximos > 1)
+        if (repetirHastaAcertar)
+        {
+            if (intentoActual > 1) texto += $"Intento: {intentoActual}";
+        }
+        else if (intentosMaximos > 1)
             texto += $"Intento: {intentoActual}/{intentosMaximos}";
 
         PanelMensajesMonitor.Instance.MostrarMensajeInmediato(texto, colorMensaje);
@@ -356,8 +370,8 @@ public class EventoPestillo : EventoBase
         minijuegoActivo = false;
         RestaurarTiempo();
 
-        if (GameManager.Instance != null)
-            GameManager.Instance.ModificarPolea(ultimoAcierto ? bonoSiResuelve : -dañoSiFalla);
+        if (ultimoAcierto && GameManager.Instance != null)
+            GameManager.Instance.ModificarPolea(bonoSiResuelve);
 
         if (PanelMensajesMonitor.Instance != null)
         {

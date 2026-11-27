@@ -58,6 +58,22 @@ public class AscensorManager : MonoBehaviour
     public event Action OnLlegoAlFinal;
     public event Action OnSalioDelPunto;
 
+    public event Action OnArranque;
+    public event Action OnFreno;
+    public event Action OnDetenidoEnRuta;
+
+    public bool DetenidoEnRuta { get; private set; }
+
+    [Header("Freno manual (Shift mantenido fuera de la ventana de frenado)")]
+    [Tooltip("Segundos manteniendo Shift hasta que el ascensor se detiene por completo")]
+    public float segundosParaDetenerse = 2f;
+    [Tooltip("Segundos que tarda en recuperar la velocidad normal al soltar Shift")]
+    public float segundosParaRecuperar = 1.5f;
+
+    [HideInInspector] public bool frenoManual = false;
+
+    public float FactorVelocidad { get; private set; } = 1f;
+
     public event Action OnPasajerosCambiados;
 
     public bool enMovimiento
@@ -92,8 +108,23 @@ public class AscensorManager : MonoBehaviour
     private void Update()
     {
         if (!enMovimiento) return;
+        if (DetenidoEnRuta) return;
 
-        float delta = Time.deltaTime / duracionViaje;
+        if (frenoManual)
+        {
+            FactorVelocidad = Mathf.MoveTowards(FactorVelocidad, 0f, Time.deltaTime / Mathf.Max(0.01f, segundosParaDetenerse));
+            if (FactorVelocidad <= 0f)
+            {
+                DetenerEnRuta();
+                return;
+            }
+        }
+        else
+        {
+            FactorVelocidad = Mathf.MoveTowards(FactorVelocidad, 1f, Time.deltaTime / Mathf.Max(0.01f, segundosParaRecuperar));
+        }
+
+        float delta = Time.deltaTime / duracionViaje * FactorVelocidad;
         foreach (var asc in ascensores)
         {
             if (!asc.enMovimiento) continue;
@@ -232,6 +263,9 @@ public class AscensorManager : MonoBehaviour
         if (enMovimiento) return;
 
         frenadoDisparado = false;
+        DetenidoEnRuta = false;
+        frenoManual = false;
+        FactorVelocidad = 1f;
 
         OnSalioDelPunto?.Invoke();
 
@@ -242,6 +276,35 @@ public class AscensorManager : MonoBehaviour
 
         if (GameManager.Instance != null)
             GameManager.Instance.GameData.ascensorEnMovimiento = true;
+
+        OnArranque?.Invoke();
+    }
+
+    public bool DetenerEnRuta()
+    {
+        if (!enMovimiento || DetenidoEnRuta) return false;
+
+        DetenidoEnRuta = true;
+        frenoManual = false;
+        FactorVelocidad = 0f;
+        OnDetenidoEnRuta?.Invoke();
+        OnFreno?.Invoke();
+        return true;
+    }
+
+    public void Reanudar()
+    {
+        if (!DetenidoEnRuta) return;
+
+        DetenidoEnRuta = false;
+        frenoManual = false;
+        FactorVelocidad = 1f;
+        OnArranque?.Invoke();
+    }
+
+    public void NotificarFreno()
+    {
+        OnFreno?.Invoke();
     }
 
     public bool EstaEnPuntoInicio() => !enMovimiento && TodosAbajo();

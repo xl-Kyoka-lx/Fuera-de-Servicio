@@ -78,6 +78,29 @@ public static class Economia
         return cobro;
     }
 
+    public static CobroDelDia Vistazo(GameData data)
+    {
+        var cobro = new CobroDelDia { subsidio = SubsidioDelDia(data.diaActual) };
+        if (!HayCobros(data)) return cobro;
+
+        if (data.semanaCobrosCalculada == data.Semana)
+        {
+            cobro.electricidad = data.cobroElectricidad;
+            cobro.deudas = data.cobroDeudas;
+            cobro.multas = data.cobroMultas;
+        }
+        else
+        {
+            var c = Config;
+            int semanasDeCobro = data.Semana - c.semanaInicioCobros;
+            float quejas = Mathf.Max(0f, c.popularidadSinQuejas - data.contadorPopularidad);
+            cobro.electricidad = Mathf.RoundToInt(c.electricidadBase + c.electricidadPorSemana * semanasDeCobro + (100f - data.contadorGrasa) * c.electricidadPorDesgaste);
+            cobro.deudas = Mathf.RoundToInt(c.deudaBase * Mathf.Pow(1f + c.interesSemanal, semanasDeCobro));
+            cobro.multas = Mathf.RoundToInt(c.permisoBase + c.permisoPorSemana * semanasDeCobro + (100f - data.contadorLimpieza) * c.multaPorSuciedad + quejas * c.multaPorQueja);
+        }
+        return cobro;
+    }
+
     private static void CalcularCobrosDeLaSemana(GameData data)
     {
         if (data.semanaCobrosCalculada == data.Semana) return;

@@ -35,13 +35,18 @@ public class PanelAccion : MonoBehaviour
 
     public void MostrarAccion(string texto, float duracion)
     {
+        MostrarAccion(texto, duracion, duracion);
+    }
+
+    public void MostrarAccion(string texto, float duracion, float duracionMostrada)
+    {
         if (corrutinaActual != null)
             StopCoroutine(corrutinaActual);
 
-        corrutinaActual = StartCoroutine(MostrarAccionCorrutina(texto, duracion));
+        corrutinaActual = StartCoroutine(MostrarAccionCorrutina(texto, duracion, duracionMostrada));
     }
 
-    private IEnumerator MostrarAccionCorrutina(string texto, float duracion)
+    private IEnumerator MostrarAccionCorrutina(string texto, float duracion, float duracionMostrada)
     {
         if (panelContenedor != null)
             panelContenedor.SetActive(true);
@@ -62,7 +67,7 @@ public class PanelAccion : MonoBehaviour
 
            
             if (textoTiempo != null)
-                textoTiempo.text = restante.ToString("F1") + "s";
+                textoTiempo.text = (restante * duracionMostrada / duracion).ToString("F1") + "s";
 
             if (barraTiempo != null)
                 barraTiempo.fillAmount = porcentaje;

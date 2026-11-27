@@ -33,13 +33,6 @@ public class GameManager : MonoBehaviour
     public float actualLimpieza;
     public float actualPopularidad;
 
-    [Header("Pruebas: marca la casilla y mueve los deslizadores")]
-    [Tooltip("Marcada: cada cambio que hagas aquí se aplica al instante")]
-    public bool aplicarValoresDePrueba = false;
-    [Range(0, 100)] public float pruebaMantenimiento = 100f;
-    [Range(0, 100)] public float pruebaLimpieza = 100f;
-    [Range(0, 100)] public float pruebaPopularidad = 50f;
-
     public System.Action OnMantenimientoCero;
 
     public System.Action OnPasajeroCompleto;
@@ -156,20 +149,6 @@ public class GameManager : MonoBehaviour
         actualLimpieza = gameData.contadorLimpieza;
         actualPopularidad = gameData.contadorPopularidad;
         gameData.RegistrarPopularidad();
-    }
-
-    private void OnValidate()
-    {
-        if (!aplicarValoresDePrueba || gameData == null) return;
-
-        gameData.contadorGrasa = pruebaMantenimiento;
-        gameData.contadorLimpieza = pruebaLimpieza;
-        gameData.contadorPopularidad = pruebaPopularidad;
-
-        gameData.mantenimientoDelDia = Mathf.Clamp(pruebaMantenimiento, 1f, 100f);
-        gameData.limpiezaDelDia = pruebaLimpieza;
-
-        gameData.OnDataChanged?.Invoke();
     }
 
     private void OnDestroy()

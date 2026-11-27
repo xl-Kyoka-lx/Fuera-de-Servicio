@@ -58,6 +58,16 @@ public class PalancaController : MonoBehaviour
         return;
     }
 
+    if (ascensorManager != null && ascensorManager.DetenidoEnRuta)
+    {
+        if (PausaJuego.Pausado) return;
+        if (DialogoManager.Instance != null && DialogoManager.Instance.HayDialogoActivo()) return;
+        if (GameManager.Instance != null && GameManager.Instance.GameData.eventoOcurriendo) return;
+
+        ascensorManager.Reanudar();
+        return;
+    }
+
     if (BloqueoEventos.ArranqueBloqueado)
     {
         Debug.LogWarning("PALANCA: bloqueado, acaba de terminar un evento");

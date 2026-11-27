@@ -417,6 +417,118 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 52068125}
   m_CullTransparentMesh: 1
+--- !u!1 &63191881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 63191882}
+  - component: {fileID: 63191883}
+  m_Layer: 0
+  m_Name: Ambiente
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &63191882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63191881}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 560.9429, y: 296.81384, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &63191883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63191881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cda7c4b55f7b3d48a2f6a2cbda258b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmbienteAves
+  rangoTono: {x: 0.92, y: 1.08}
+  corteLejano: 2500
+  chincol:
+    nombre: Chincol
+    sonidos:
+    - {fileID: 8300000, guid: 2f728a9252a26bc4d84a6de9b8f541c8, type: 3}
+    tramos:
+    - nombre: "Ma\xF1ana"
+      desde: 7
+      hasta: 11.5
+      intervaloMin: 12
+      intervaloMax: 25
+      volumen: 0.8
+      lejano: 0
+    - nombre: "Mediod\xEDa y tarde"
+      desde: 11.5
+      hasta: 17.5
+      intervaloMin: 45
+      intervaloMax: 90
+      volumen: 0.5
+      lejano: 0
+    - nombre: Atardecer
+      desde: 17.5
+      hasta: 19.5
+      intervaloMin: 12
+      intervaloMax: 25
+      volumen: 0.8
+      lejano: 0
+    - nombre: Anochecer
+      desde: 19.5
+      hasta: 20.25
+      intervaloMin: 120
+      intervaloMax: 180
+      volumen: 0.4
+      lejano: 0
+  gaviota:
+    nombre: Gaviota
+    sonidos:
+    - {fileID: 8300000, guid: 6e1d803f667c9a44db90afc2751ea5f3, type: 3}
+    tramos:
+    - nombre: "Ma\xF1ana"
+      desde: 7
+      hasta: 11.5
+      intervaloMin: 15
+      intervaloMax: 30
+      volumen: 0.6
+      lejano: 0
+    - nombre: "Mediod\xEDa y tarde"
+      desde: 11.5
+      hasta: 17.5
+      intervaloMin: 25
+      intervaloMax: 50
+      volumen: 0.45
+      lejano: 0
+    - nombre: Atardecer
+      desde: 17.5
+      hasta: 19.5
+      intervaloMin: 12
+      intervaloMax: 22
+      volumen: 0.65
+      lejano: 0
+    - nombre: Anochecer
+      desde: 19.5
+      hasta: 21
+      intervaloMin: 45
+      intervaloMax: 90
+      volumen: 0.35
+      lejano: 1
 --- !u!1 &94475789
 GameObject:
   m_ObjectHideFlags: 0
@@ -4982,6 +5094,157 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007697284}
   m_CullTransparentMesh: 1
+--- !u!1 &1019637881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1019637882}
+  - component: {fileID: 1019637884}
+  - component: {fileID: 1019637883}
+  m_Layer: 0
+  m_Name: Sonido ascensor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1019637882
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019637881}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.34, y: 1.91, z: -9.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1019637883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019637881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7b19b45c582d3642ba711c3a22af752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonidoAscensor
+  ascensorManager: {fileID: 1164373271}
+  sonidoMotor: {fileID: 8300000, guid: b88ce7ec639752744991434c3688b372, type: 3}
+  volumenMotor: 0.7
+  motorEnBucle: 1
+  sonido: {fileID: 8300000, guid: 67892043483cb294696c1f997d549fea, type: 3}
+  volumen: 1
+  retrasoSonidoAscensor: 1
+  fundidoSalida: 0.5
+  tonoAlFrenar: 0.8
+--- !u!82 &1019637884
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019637881}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1020033380
 GameObject:
   m_ObjectHideFlags: 0
@@ -6209,6 +6472,9 @@ MonoBehaviour:
     pasajerosDentro: []
   duracionViaje: 10
   separacionAlBajar: 0.4
+  segundosParaDetenerse: 2
+  segundosParaRecuperar: 1.5
+  frenoManual: 0
 --- !u!114 &1164373272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6734,10 +7000,6 @@ MonoBehaviour:
   actualMantenimiento: 0
   actualLimpieza: 0
   actualPopularidad: 0
-  aplicarValoresDePrueba: 1
-  pruebaMantenimiento: 1.9
-  pruebaLimpieza: 2.2
-  pruebaPopularidad: 4.1
 --- !u!1 &1410426923
 GameObject:
   m_ObjectHideFlags: 0
@@ -7283,12 +7545,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96e5a7053eec46d44b09975bee5a61f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventoFrenado
-  ventanaTiempo: 1.5
-  rangoPerfecto: 0.05
-  rangoBueno: 0.15
-  segundosSinEventosTrasFrenar: 2
+  segundosEnPantalla: 1.5
+  ventanaReal: 3
+  sincronizarLlegada: 1
+  perfectoHasta: 1
+  aceptableHasta: 1.5
+  popularidadAceptable: 3
+  popularidadBrusco: 8
   "da\xF1oFallo": 10
-  "da\xF1oBueno": 3
+  segundosSinEventosTrasFrenar: 2
+  penalizacionFrenoEnRuta: 15
+  mensajeFrenoEnRuta: "\xA1Frenaste a mitad del viaje! Presiona ESPACIO para continuar"
+  frenazosParaQueja: 3
+  penalizacionFrenazos: 8
+  mensajeFrenazos: Los pasajeros se quejan de tantos frenazos
+  colorFrenoEnRuta: {r: 1, g: 0.35, b: 0.35, a: 1}
   ascensorManager: {fileID: 1164373271}
   inputActions: {fileID: -944628639613478452, guid: fdbfd515e0b7b6248865016c5937f77a, type: 3}
   actionMapName: Gameplay
@@ -7911,6 +8182,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625200851}
   m_CullTransparentMesh: 1
+--- !u!1 &1658957765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1658957766}
+  - component: {fileID: 1658957767}
+  m_Layer: 0
+  m_Name: pruebas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1658957766
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658957765}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 412.34702, y: 80.8969, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1658957767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658957765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0708dd9161791b4798955ee12501894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EstadisticasDePrueba
+  establecerEstadisticasDePrueba: 0
+  dineroActual: 0
+  popularidadActual: 0
+  mantenimientoActual: 0
+  limpiezaActual: 0
+  horaActual: 0
+  diaActual: 0
+  semanaActual: 0
+  kitsDeLimpiezaActuales: 0
+  tieneFrenoReforzadoActual: 0
+  tieneMallaProtectoraActual: 0
+  cobroDeHoy: 0
+  dineroRecaudadoTotalActual: 0
+  popularidadMinimaActual: 0
+  maxGanadoEnUnDiaActual: 0
+  maxPerdidoEnUnDiaActual: 0
+  dinero: 10000
+  popularidad: 50
+  mantenimiento: 100
+  limpieza: 100
+  hora: 7
+  dia: 1
+  kitsDeLimpieza: 0
+  tieneFrenoReforzado: 0
+  tieneMallaProtectora: 0
+  dineroRecaudadoTotal: 0
+  popularidadMinima: 50
+  maxGanadoEnUnDia: 0
+  maxPerdidoEnUnDia: 0
 --- !u!1 &1660451676
 GameObject:
   m_ObjectHideFlags: 0
@@ -9288,6 +9632,8 @@ SceneRoots:
   - {fileID: 1722636720}
   - {fileID: 1590695592}
   - {fileID: 576202726}
+  - {fileID: 1658957766}
+  - {fileID: 1019637882}
   - {fileID: 150734798}
   - {fileID: 726788793}
   - {fileID: 415908853}
@@ -9295,5 +9641,6 @@ SceneRoots:
   - {fileID: 529247611}
   - {fileID: 2003216405}
   - {fileID: 1847579408}
+  - {fileID: 63191882}
   - {fileID: 1517004199}
   - {fileID: 133869399}
