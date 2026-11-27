@@ -55,6 +55,7 @@ public class EventoFrenado : MonoBehaviour
     private bool eventoActivo = false;
     private bool yaPresiono = false;
     private float segundosAlPresionar = -1f;
+    private bool frenoAutomatico = false;
     private float inicioVentana;
 
     private bool mensajeFrenoEnPantalla = false;
@@ -122,6 +123,7 @@ public class EventoFrenado : MonoBehaviour
         BloqueoEventos.BloquearEventos(VentanaActual + segundosSinEventosTrasFrenar);
         yaPresiono = false;
         segundosAlPresionar = -1f;
+        frenoAutomatico = false;
         inicioVentana = Time.unscaledTime;
         SoltarFrenoManual(false);
 
@@ -150,6 +152,13 @@ public class EventoFrenado : MonoBehaviour
     private void Update()
     {
         if (ascensorManager == null) return;
+
+        if (eventoActivo && !yaPresiono && DialogoManager.Instance != null && DialogoManager.Instance.HayDialogoActivo())
+        {
+            RegistrarFrenoEnVentana();
+            segundosAlPresionar = 0f;
+            frenoAutomatico = true;
+        }
 
         bool puedeFrenar = !eventoActivo
             && ascensorManager.enMovimiento
@@ -242,7 +251,9 @@ public class EventoFrenado : MonoBehaviour
             return;
         }
 
-        if (segundosAlPresionar < perfectoHasta * Margen)
+        if (frenoAutomatico)
+            AplicarResultado(ResultadoFrenado.Perfecto, "Frenado automático");
+        else if (segundosAlPresionar < perfectoHasta * Margen)
             AplicarResultado(ResultadoFrenado.Perfecto, "¡Frenado perfecto!");
         else if (segundosAlPresionar < aceptableHasta * Margen)
             AplicarResultado(ResultadoFrenado.Bueno, "Frenado aceptable");

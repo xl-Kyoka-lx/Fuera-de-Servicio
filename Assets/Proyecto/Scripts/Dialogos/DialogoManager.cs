@@ -240,7 +240,20 @@ public class DialogoManager : MonoBehaviour
         corrutinaTipeo = null;
     }
 
+    private void Update()
+    {
+        if (dialogoActual == null || PausaManager.juegoPausado) return;
+
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+            Continuar();
+    }
+
     private void OnContinuarPerformed(InputAction.CallbackContext context)
+    {
+        Continuar();
+    }
+
+    private void Continuar()
     {
         if (dialogoActual == null) return;
 
@@ -250,7 +263,7 @@ public class DialogoManager : MonoBehaviour
             corrutinaTipeo = null;
 
             LineaDialogo linea = dialogoActual.lineas[indiceLineaActual];
-            textoContenido.text = linea.texto;
+            textoContenido.text = ReemplazarPlaceholders(linea.texto);
 
             escribiendo = false;
             esperandoInput = true;
