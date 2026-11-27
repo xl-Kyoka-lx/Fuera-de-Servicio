@@ -463,8 +463,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AmbienteAves
   rangoTono: {x: 0.92, y: 1.08}
   corteLejano: 2500
+  repartoEstereo: 0.8
   chincol:
     nombre: Chincol
+    textoIndicador: '*canto de chincol {distancia}*'
     sonidos:
     - {fileID: 8300000, guid: 2f728a9252a26bc4d84a6de9b8f541c8, type: 3}
     tramos:
@@ -498,6 +500,7 @@ MonoBehaviour:
       lejano: 0
   gaviota:
     nombre: Gaviota
+    textoIndicador: '*gaviotas {distancia}*'
     sonidos:
     - {fileID: 8300000, guid: 6e1d803f667c9a44db90afc2751ea5f3, type: 3}
     tramos:
@@ -1430,6 +1433,10 @@ MonoBehaviour:
   segundosAntesDePolea: 8
   esperaMaximaDespedida: 6
   esperaMaximaCamila: 15
+  segundosPorIndicador: 2.5
+  demoIzquierda: "Te hablo por aqu\xED"
+  demoDerecha: "Y ahora por aqu\xED"
+  demoFrente: Y ahora de frente
 --- !u!1 &292878863
 GameObject:
   m_ObjectHideFlags: 0
@@ -5137,6 +5144,8 @@ MonoBehaviour:
   sonido: {fileID: 8300000, guid: 67892043483cb294696c1f997d549fea, type: 3}
   volumen: 1
   retrasoSonidoAscensor: 1
+  indicadorArranque: '*el motor del ascensor arranca*'
+  indicadorDetencion: '*el ascensor se detiene*'
   fundidoSalida: 0.5
   tonoAlFrenar: 0.8
 --- !u!82 &1019637884
@@ -7339,7 +7348,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461942827}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7348,7 +7357,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 321, y: -53.59857}
+  m_AnchoredPosition: {x: 321, y: -53.598557}
   m_SizeDelta: {x: 30.9124, y: 29.6632}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461942829
@@ -8240,7 +8249,7 @@ MonoBehaviour:
   popularidad: 50
   mantenimiento: 100
   limpieza: 100
-  hora: 7
+  hora: 21
   dia: 1
   kitsDeLimpieza: 0
   tieneFrenoReforzado: 0
@@ -9463,7 +9472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2092573352
 RectTransform:
   m_ObjectHideFlags: 0

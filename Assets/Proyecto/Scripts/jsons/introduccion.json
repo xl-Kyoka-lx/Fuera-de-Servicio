@@ -10,14 +10,26 @@
       ]
     },
     {
-      "id": "tutorial_controles",
+      "id": "tutorial_inicio",
       "lineas": [
         { "hablante": "Nota de papá", "texto": "Si estás leyendo esto, ya te tocó a ti. Perdona que no pueda explicártelo en persona.", "imagen": "" },
         { "hablante": "Nota de papá", "texto": "Primero te explicaré qué debes hacer.", "imagen": "" },
         { "hablante": "Nota de papá", "texto": "Debes mantener el funcionamiento del ascensor (MANTENIMIENTO). Es importante: si lo dejas estar, el ascensor ya no va a arrancar.", "imagen": "icono_mantenimiento" },
         { "hablante": "Nota de papá", "texto": "También debes mantenerlo limpio (LIMPIEZA). Si no, la gente lo ve como un basurero y empieza a ensuciar más.", "imagen": "icono_limpieza" },
-        { "hablante": "Nota de papá", "texto": "Pero recuerda usar bien el ascensor (POPULARIDAD). Si juegas con él, la gente ya no lo va a tomar, se empieza a correr la voz de que es un mal ascensor y al final nadie viene a tomarlo.", "imagen": "icono_popularidad" },
-        { "hablante": "Nota de papá", "texto": "Ahora sí, los controles.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Pero recuerda usar bien el ascensor (POPULARIDAD). Si juegas con él, la gente ya no lo va a tomar, se empieza a correr la voz de que es un mal ascensor y al final nadie viene a tomarlo.", "imagen": "icono_popularidad" }
+      ]
+    },
+    {
+      "id": "tutorial_indicadores",
+      "lineas": [
+        { "hablante": "Nota de papá", "texto": "Sé que eres sordo, por eso añadí indicadores de sonido para ayudarte a manejar mejor el ascensor.", "imagen": "" },
+        { "hablante": "Nota de papá", "texto": "Aparecen dependiendo de dónde provenga el sonido. Mira:", "imagen": "" }
+      ]
+    },
+    {
+      "id": "tutorial_controles",
+      "lineas": [
+        { "hablante": "Nota de papá", "texto": "Ahora vamos a los controles.", "imagen": "" },
         { "hablante": "Nota de papá", "texto": "Con ENTER pasas estos textos. Con ESC pausas el juego, y los menús se manejan con el mouse.", "imagen": "" },
         { "hablante": "Nota de papá", "texto": "La tecla W avisa a la cabina de abajo que ya vas a partir y cierra tu puerta, así que nadie más sube. Púlsala cuando quieras: con 1 pasajero o con 5.", "imagen": "" },
         { "hablante": "Nota de papá", "texto": "Después de avisar, espera el mensaje de la tele: «Cabina de abajo lista». Recién ahí, ESPACIO hace partir el ascensor.", "imagen": "" },

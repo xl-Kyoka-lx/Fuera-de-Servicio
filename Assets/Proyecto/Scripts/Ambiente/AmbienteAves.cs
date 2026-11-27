@@ -34,6 +34,8 @@ public class AmbienteAves : MonoBehaviour
     public class Ave
     {
         public string nombre;
+        [Tooltip("Texto del indicador de sonido. {distancia} se cambia por a lo lejos / a media distancia / cerca")]
+        public string textoIndicador;
         [Tooltip("Uno o más sonidos; se elige uno al azar cada vez")]
         public AudioClip[] sonidos;
         public Tramo[] tramos;
@@ -48,10 +50,13 @@ public class AmbienteAves : MonoBehaviour
     public Vector2 rangoTono = new Vector2(0.92f, 1.08f);
     [Tooltip("Frecuencia de corte del filtro cuando el sonido es lejano")]
     public float corteLejano = 2500f;
+    [Tooltip("Cuánto se reparten los cantos entre izquierda y derecha (0 = siempre al frente, 1 = totalmente a un lado)")]
+    [Range(0f, 1f)] public float repartoEstereo = 0.8f;
 
     public Ave chincol = new Ave
     {
         nombre = "Chincol",
+        textoIndicador = "*canto de chincol {distancia}*",
         tramos = new[]
         {
             new Tramo("Mañana", 7f, 11.5f, 12f, 25f, 0.8f),
@@ -64,6 +69,7 @@ public class AmbienteAves : MonoBehaviour
     public Ave gaviota = new Ave
     {
         nombre = "Gaviota",
+        textoIndicador = "*gaviotas {distancia}*",
         tramos = new[]
         {
             new Tramo("Mañana", 7f, 11.5f, 15f, 30f, 0.6f),
@@ -143,8 +149,21 @@ public class AmbienteAves : MonoBehaviour
         AudioClip clip = ave.sonidos[Random.Range(0, ave.sonidos.Length)];
         if (clip == null) return;
 
+        float pan = Random.Range(-repartoEstereo, repartoEstereo);
+        ave.fuente.panStereo = pan;
         ave.fuente.pitch = Random.Range(rangoTono.x, rangoTono.y);
         ave.filtro.cutoffFrequency = tramo.lejano ? corteLejano : 22000f;
         ave.fuente.PlayOneShot(clip, tramo.volumen);
+
+        string plantilla = string.IsNullOrEmpty(ave.textoIndicador)
+            ? (ave.nombre == "Gaviota" ? "*gaviotas {distancia}*" : $"*canto de {ave.nombre.ToLower()} {{distancia}}*")
+            : ave.textoIndicador;
+
+        {
+            string distancia = tramo.lejano || tramo.volumen < 0.45f ? "a lo lejos"
+                : tramo.volumen < 0.7f ? "a media distancia" : "cerca";
+            IndicadoresSonido.Mostrar(plantilla.Replace("{distancia}", distancia),
+                IndicadoresSonido.LadoDesdePan(pan), true);
+        }
     }
 }

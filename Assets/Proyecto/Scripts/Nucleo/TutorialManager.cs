@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TutorialManager : MonoBehaviour
@@ -25,6 +26,13 @@ public class TutorialManager : MonoBehaviour
     public float esperaMaximaDespedida = 6f;
     [Tooltip("Segundos máximos esperando a que suba un pasajero para ser Camila (solo si no sube nadie)")]
     public float esperaMaximaCamila = 15f;
+
+    [Header("Demostración de indicadores de sonido")]
+    [Tooltip("Segundos que se ve cada cuadro de la demostración")]
+    public float segundosPorIndicador = 2.5f;
+    public string demoIzquierda = "Te hablo por aquí";
+    public string demoDerecha = "Y ahora por aquí";
+    public string demoFrente = "Y ahora de frente";
 
     private enum Paso
     {
@@ -130,7 +138,7 @@ public class TutorialManager : MonoBehaviour
     private void Empezar()
     {
         paso = Paso.Controles;
-        Dialogo("tutorial_controles");
+        Dialogo("tutorial_inicio");
     }
 
     private void Update()
@@ -201,6 +209,15 @@ public class TutorialManager : MonoBehaviour
     {
         switch (id)
         {
+            case "tutorial_inicio":
+                if (IndicadoresSonido.Activos) Dialogo("tutorial_indicadores");
+                else Dialogo("tutorial_controles");
+                break;
+
+            case "tutorial_indicadores":
+                StartCoroutine(DemostrarIndicadores());
+                break;
+
             case "tutorial_controles":
                 paso = Paso.EsperandoViaje1;
                 ViajeBloqueado = false;
@@ -367,6 +384,21 @@ public class TutorialManager : MonoBehaviour
     private bool HayDialogoActivo()
     {
         return DialogoManager.Instance != null && DialogoManager.Instance.HayDialogoActivo();
+    }
+
+    private IEnumerator DemostrarIndicadores()
+    {
+        yield return new WaitForSecondsRealtime(0.4f);
+
+        float espera = segundosPorIndicador + 0.4f;
+        IndicadoresSonido.Mostrar(demoIzquierda, IndicadoresSonido.Lado.Izquierda, true, segundosPorIndicador, true);
+        yield return new WaitForSecondsRealtime(espera);
+        IndicadoresSonido.Mostrar(demoDerecha, IndicadoresSonido.Lado.Derecha, true, segundosPorIndicador, true);
+        yield return new WaitForSecondsRealtime(espera);
+        IndicadoresSonido.Mostrar(demoFrente, IndicadoresSonido.Lado.Frente, true, segundosPorIndicador, true);
+        yield return new WaitForSecondsRealtime(espera);
+
+        Dialogo("tutorial_controles");
     }
 
     private void Dialogo(string id)

@@ -18,6 +18,10 @@ public class SonidoAscensor : MonoBehaviour
     [Tooltip("Segundos entre el motor y el sonido del ascensor")]
     public float retrasoSonidoAscensor = 1f;
 
+    [Header("Indicadores de sonido (accesibilidad)")]
+    public string indicadorArranque = "*el motor del ascensor arranca*";
+    public string indicadorDetencion = "*el ascensor se detiene*";
+
     [Header("Al frenar o llegar")]
     [Tooltip("Segundos que tardan los dos sonidos en apagarse")]
     public float fundidoSalida = 1f;
@@ -69,6 +73,7 @@ public class SonidoAscensor : MonoBehaviour
     private void Arrancar()
     {
         apagando = false;
+        IndicadoresSonido.Mostrar(indicadorArranque, IndicadoresSonido.Lado.Frente, false);
 
         if (fuenteMotor.clip != null)
         {
@@ -84,7 +89,11 @@ public class SonidoAscensor : MonoBehaviour
     private void Apagar()
     {
         esperaAscensor = -1f;
-        if (fuenteMotor.isPlaying || fuenteAscensor.isPlaying) apagando = true;
+        if ((fuenteMotor.isPlaying || fuenteAscensor.isPlaying) && !apagando)
+        {
+            apagando = true;
+            IndicadoresSonido.Mostrar(indicadorDetencion, IndicadoresSonido.Lado.Frente, false);
+        }
     }
 
     private void Update()
