@@ -18,11 +18,15 @@ public class MenuPrincipal : MonoBehaviour
     {
         if (panelConfirmacionNuevaPartida != null)
             panelConfirmacionNuevaPartida.SetActive(false);
+        if (panelOpciones != null)
+            panelOpciones.SetActive(false);
+        if (contenidoPrincipal != null)
+            contenidoPrincipal.SetActive(true);
 
         ActualizarBotones();
     }
 
-    private void ActualizarBotones()
+    public void ActualizarBotones()
     {
         bool hayPartidaGuardada = PlayerPrefs.HasKey(clavePartidaGuardada);
 
@@ -33,6 +37,7 @@ public class MenuPrincipal : MonoBehaviour
     public void NuevaPartida()
     {
         PlayerPrefs.DeleteAll();
+        PlayerPrefs.SetInt(clavePartidaGuardada, 1);
         Configuracion.Guardar();
 
         if (GameManager.Instance != null)
@@ -62,7 +67,18 @@ public class MenuPrincipal : MonoBehaviour
     public void MostrarConfirmacionNuevaPartida()
     {
         if (panelConfirmacionNuevaPartida != null)
+        {
             panelConfirmacionNuevaPartida.SetActive(true);
+            return;
+        }
+
+        if (!PlayerPrefs.HasKey(clavePartidaGuardada))
+        {
+            NuevaPartida();
+            return;
+        }
+
+        ConfirmacionUI.Preguntar("¿Empezar una partida nueva?\nSe perderá la partida guardada.", NuevaPartida, "Sí", "No");
     }
 
     public void CancelarNuevaPartida()

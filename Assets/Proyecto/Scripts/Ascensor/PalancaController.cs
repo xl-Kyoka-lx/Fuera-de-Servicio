@@ -22,12 +22,9 @@ public class PalancaController : MonoBehaviour
 
     private void Awake()
     {
-    Debug.LogWarning("PALANCA TEST: Awake. inputActions = " + (inputActions == null ? "NULL" : "ok"));
-
     if (inputActions != null)
     {
         accionMoverAscensor = inputActions.FindActionMap("Gameplay")?.FindAction("MoverAscensor");
-        Debug.LogWarning("PALANCA TEST: accion MoverAscensor = " + (accionMoverAscensor == null ? "NO ENCONTRADA" : "encontrada"));
     }
     }
     private void OnEnable()
@@ -36,7 +33,6 @@ public class PalancaController : MonoBehaviour
     {
         accionMoverAscensor.Enable();
         accionMoverAscensor.performed += OnMoverAscensorPerformed;
-        Debug.LogWarning("PALANCA TEST: OnEnable, accion habilitada = " + accionMoverAscensor.enabled);
     }
     }
 
@@ -98,14 +94,6 @@ public class PalancaController : MonoBehaviour
 
     MoverPalanca();
 }
-    private void Update()
-    {
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            string estado = accionMoverAscensor == null ? "NULL" : accionMoverAscensor.enabled.ToString();
-            Debug.LogWarning("PALANCA TEST: espacio detectado. Accion habilitada = " + estado);
-        }
-    }
 
     private void MoverPalanca()
     {

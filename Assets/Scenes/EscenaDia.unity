@@ -997,7 +997,6 @@ GameObject:
   m_Component:
   - component: {fileID: 195385696}
   - component: {fileID: 195385695}
-  - component: {fileID: 195385694}
   - component: {fileID: 195385693}
   - component: {fileID: 195385697}
   m_Layer: 0
@@ -1051,14 +1050,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!81 &195385694
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 195385692}
-  m_Enabled: 1
 --- !u!20 &195385695
 Camera:
   m_ObjectHideFlags: 0
@@ -5920,8 +5911,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: afb24a3358fe0144395ab4b4763c94cd, type: 2}
+  m_sharedMaterial: {fileID: -1864591928679710755, guid: afb24a3358fe0144395ab4b4763c94cd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6258,7 +6249,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -6839,8 +6830,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.7542, y: -10.792}
-  m_SizeDelta: {x: 811.51, y: 177.81}
+  m_AnchoredPosition: {x: -11.676492, y: -10.792}
+  m_SizeDelta: {x: 823.3546, y: 177.81}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1331997843
 MonoBehaviour:
@@ -7348,17 +7339,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1461942827}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2092573352}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 321, y: -51}
-  m_SizeDelta: {x: 30.9124, y: 34.8603}
+  m_AnchoredPosition: {x: 321, y: -53.59857}
+  m_SizeDelta: {x: 30.9124, y: 29.6632}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461942829
 MonoBehaviour:
@@ -7380,7 +7371,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: 368dac9f4bf8d0041bc18c9003ed1c5f, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -7553,6 +7544,9 @@ MonoBehaviour:
   popularidadAceptable: 3
   popularidadBrusco: 8
   "da\xF1oFallo": 10
+  temblarEnFrenadoBrusco: 1
+  duracionTemblor: 0.5
+  intensidadTemblor: 1
   segundosSinEventosTrasFrenar: 2
   penalizacionFrenoEnRuta: 15
   mensajeFrenoEnRuta: "\xA1Frenaste a mitad del viaje! Presiona ESPACIO para continuar"
@@ -9469,7 +9463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2092573352
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9482,17 +9476,17 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 292878864}
   - {fileID: 1331997842}
   - {fileID: 1120524495}
   - {fileID: 1068838463}
   - {fileID: 1461942828}
-  - {fileID: 292878864}
   m_Father: {fileID: 1669031110}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00015258789, y: -131.99998}
-  m_SizeDelta: {x: 0.00030518, y: -294.1158}
+  m_AnchoredPosition: {x: 3.5534973, y: -131.99998}
+  m_SizeDelta: {x: 23.6895, y: -294.1158}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2092573353
 MonoBehaviour:

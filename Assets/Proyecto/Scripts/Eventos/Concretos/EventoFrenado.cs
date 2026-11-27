@@ -26,6 +26,12 @@ public class EventoFrenado : MonoBehaviour
     [Tooltip("Mantenimiento que se pierde con un frenado brusco o si no frena")]
     public float dañoFallo = 10f;
 
+    [Header("Temblor de pantalla (frenado brusco o sin frenar)")]
+    public bool temblarEnFrenadoBrusco = true;
+    public float duracionTemblor = 0.5f;
+    [Tooltip("1 = normal, 2 = el doble de fuerte")]
+    public float intensidadTemblor = 1f;
+
     [Tooltip("Segundos sin eventos después de la ventana de frenado")]
     public float segundosSinEventosTrasFrenar = 2f;
 
@@ -261,6 +267,9 @@ public class EventoFrenado : MonoBehaviour
             if (PanelAccion.Instance != null)
                 PanelAccion.Instance.MostrarResultado(mensaje, color, 2f);
         }
+
+        if (resultado == ResultadoFrenado.Malo && temblarEnFrenadoBrusco)
+            TemblorPantalla.Temblar(duracionTemblor, intensidadTemblor);
 
         if (GameManager.Instance == null) return;
 
