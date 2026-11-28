@@ -5,19 +5,22 @@
       "nombre": "Camila",
       "variantesDialogo": [
         [
-          "Hola... Me alegra tanto verte aquí arriba. Tenía miedo de que el carro cerrara tras lo de tu papá.",
-          "Se nota que le estás poniendo empeño. Tu viejo estaría orgulloso de verte sostener el puesto.",
-          "Ten esto, te va a ayudar a empezar. No es mucho, pero es algo."
+          "¡Hola, vecino! Qué alegría verte aquí arriba. Pensé que el ascensor iba a cerrar después de lo de tu papá.",
+          "Tú: Alguien tenía que hacerse cargo.",
+          "Y se nota, le estás poniendo empeño. Tu viejo estaría orgulloso, de verdad.",
+          "Toma, pa que partas con algo. No es mucho, pero te va a ayudar de algo."
         ],
         [
-          "¡Hola! Qué bueno verte firme en el turno, hoy el cerro se ve súper tranquilo desde acá arriba.",
-          "A veces cuesta creer que esto siga andando con lo difícil que está todo, pero se nota que lo cuidas.",
-          "Toma, guárdate esto para el día. No lo ocupes en tonteras, ¿sí?"
+          "Oye, qué lindo se ve el cerro hoy. Ni una nube.",
+          "Tú: Sí, está tranquilo. Ojalá dure.",
+          "Con lo difícil que está todo, no sé cómo mantienes esto andando.",
+          "Toma, pal día. Pero no te lo gastí en tonteras, ¿ya?"
         ],
         [
-          "Hola de nuevo. Pasaba a saludar y a darme una vuelta antes de seguir con mis cosas.",
-          "Tu papá siempre decía que un ascensor no es cualquier cosa, es punto de encuentro para los vecinos.",
-          "Ten esto, te va a servir para algún gasto del carro. ¡Mucho ánimo hoy!"
+          "Vengo de la feria y ando con las bolsas, ya no doy más.",
+          "Tu papá decía que el ascensor no era solo un fierro que sube y baja... que acá se encontraban los vecinos.",
+          "Tú: Me lo decía a mí también. Como mil veces.",
+          "Jaja, típico de él. Toma, pa algún gasto del carro."
         ],
         [
           "¡Buu!",
@@ -37,19 +40,23 @@
       "nombre": "Jordan (YouTuber)",
       "variantesDialogo": [
         [
-          "¡Qué tal, mi gente! Estamos subiendo por una de las joyas patrimoniales más auténticas de todo el puerto.",
-          "Oye, hermano, qué tremenda máquina... y qué pega te mandas cuidándola tú solo acá arriba.",
-          "Toma, déjate esto para la mantención de parte de la comunidad del canal. ¡El patrimonio no se cae!"
+          "¡Qué onda, cabros! Aquí andamos en Valpo, arriba de uno de los ascensores más viejos del puerto.",
+          "Tú: ¿Me está grabando?",
+          "Tranqui, salí bacán. Oye, qué máquina más brígida... ¿y la cuidai tú solo?",
+          "La comunidad del canal puso. Toma, pa la mantención. ¡El patrimonio no se cae!"
         ],
         [
-          "¡Volvimos a subirnos al carro, gente! La vista hacia el plan y el mar sigue siendo una locura.",
-          "En el canal siempre les digo que cuidar lo patrimonial es cuidar la identidad del lugar, no puro postureo.",
-          "Esto va directo pa' engrasar poleas o tapar rayones. ¡Siga dándole, compa!"
+          "¡Volvimos! Miren esa vista al mar... no me digan que no es lo más lindo que han visto.",
+          "Oye, ¿puedes frenar un poquito aquí arriba? Pa' la toma nomás.",
+          "Tú: No po, hay gente esperando.",
+          "Jaja, chaa, no seai así. Ya, igual toma, esto lo pongo yo pa' las poleas."
         ],
         [
-          "¡Qué onda, hermano! Hoy andamos grabando cortito para mostrar cómo late el cerro desde adentro.",
-          "Se nota caleta cuando alguien le pone cariño real a su pega y no lo hace solo por cumplir.",
-          "Déjate esto de aporte de los suscriptores. ¡Aguante el ascensor!"
+          "Cabros, hoy el video es cortito porque se me está acabando la batería.",
+          "Tú: ¿Y el cargador?",
+          "Quedó en la casa... Oye, pero se nota cuando alguien le pone cariño de verdad a la pega.",
+          "Toma, aporte de los suscriptores. Te voy a nombrar en la descripción, compa.",
+          "Tú: Ni siquiera te dije cómo me llamo..."
         ]
       ],
       "dineroExtra": 3650,
@@ -60,19 +67,21 @@
       "nombre": "Don Luis",
       "variantesDialogo": [
         [
-          "Buenas tardes, muchacho. Estaba escuchando el motor mientras subíamos; suena bien afinado.",
-          "Conocí a tu viejo en la maestranza. Él sabía sacarle lustre a estas poleas cuando nadie daba un peso por ellas.",
-          "Guárdate esto para un tarro de grasa o un juego de zapatas. La sal marina no perdona en este puerto."
+          "Buenas tardes, muchacho. Venía escuchando el motor; suena bien afinado.",
+          "Conocí a tu viejo en la maestranza. Le sacaba lustre a estas poleas cuando nadie daba un peso por ellas.",
+          "Guárdate esto para un tarro de grasa."
         ],
         [
-          "Qué tal, joven. Hoy el carro subió bien, casi sin tirones raros ni chirridos de más.",
-          "Tu padre tenía mano firme y paciencia de oro, esos fierros viejos agradecen cuando uno no los apura a la mala.",
-          "Toma esto para tus repuestos. Mientras haya quien los cuide, estos todavía pueden."
+          "Qué tal, joven. Hoy subió suavecito, casi sin tirones.",
+          "En mis tiempos estos carros chirriaban como gallina clueca. Tu padre era el único que los hacía callar.",
+          "Tú: ¿Y cómo lo hacía?",
+          "Paciencia, muchacho. Los fierros viejos no se apuran a la mala. Toma, pa' tus repuestos... y no le digai a mi señora."
         ],
         [
-          "Buenas, muchacho. Da gusto ver que el puesto sigue en pie a pesar de los años y el descuido.",
-          "La calle está dura y a veces la gente no mide lo que rompe, pero el buen trabajo siempre se nota.",
-          "Guárdate estas monedas para lo que necesite el ascensor. Cuídate el cuerpo también."
+          "Buenas, muchacho. Da gusto ver el puesto abierto todavía.",
+          "Ahora todos suben mirando el celular. Nadie mira la bahía.",
+          "Tú: Usted la mira por todos, Don Luis.",
+          "Alguien tiene que hacerlo. Toma, pa' lo que necesite el ascensor. Y cuídate la espalda, que después pasa la cuenta."
         ]
       ],
       "dineroExtra": 550,
@@ -83,19 +92,21 @@
       "nombre": "Javier (Repartidor)",
       "variantesDialogo": [
         [
-          "Uff, buenas tardes compa... Gracias por esperar que subiera con la mochila, me salvaste las piernas.",
-          "Subir esta quebrada pedaleando con pedidos pesados te liquida la espalda. Si este carro no estuviera, mi jornada se duplica.",
-          "Déjate esto de propina. Todo lo que sirva para que los rieles sigan firmes se agradece con el alma."
+          "¡Uff! Gracias por esperarme. Con esta mochila ya no me daban las piernas.",
+          "Subir esta quebrada en bici con pedidos es pa' puro sufrir po. Sin el ascensor me demoro el doble.",
+          "Toma, de propina. Que los rieles sigan firmes, se agradece caleta."
         ],
         [
-          "¡Qué tal, compa! Hoy ando reventado con el reparto, este viaje me dio aire pa' seguir.",
-          "Uno que pasa todo el día subiendo y bajando cerros sabe lo que vale tener un empujón así a mitad de ruta.",
-          "Toma esto, pa'l aceite o pa' un café. ¡Se agradece caleta la buena voluntad!"
+          "¡Wena, compa! Ando reventado, llevo como quince pedidos y son recién las tres.",
+          "Tú: ¿Y no almorzaste?",
+          "Una energética en la micro nomás... Este viaje es lo más parecido a descansar que voy a tener hoy.",
+          "Toma, pal aceite del carro o pa' un café. Tú también te lo mereces."
         ],
         [
-          "Buenas, hermano... Llegué justo a tiempo antes de que cerraras o salieras.",
-          "Si me toca subir todo esto a pata, termino liquidado antes de la tarde.",
-          "Quédate con esto de propina que conseguí. Ojalá el carro siga firme por harto rato más."
+          "¡Espera, espera, espera! ...Ya, llegué. Pensé que se iba sin mí.",
+          "Si me toca subir todo esto a pata, el cliente recibe el pedido frío y yo una estrella.",
+          "Tú: Jaja, ¿y te bajan la nota?",
+          "De una. Toma, por esperarme... fue una propina que me dieron."
         ]
       ],
       "dineroExtra": 1300,
@@ -106,19 +117,23 @@
       "nombre": "Delilah y su papá",
       "variantesDialogo": [
         [
-          "Delilah: ¡Mira, papá, allá abajo se ven los barcos chiquititos! ¿Podemos subirnos todos los días?",
-          "Papá: Buenas tardes, vecino. A mi hija le fascina este carro; cada vez que bajamos al plan me pide esperarlo. Gracias por cuidarlo tan bien.",
-          "Papá: Toma, Delilah, pásale las monedas al caballero... Esto es para que siga comprando repuestos para el carro, muchacho. Se agradece."
+          "Delilah: ¡Papá, mira! ¡Allá abajo se ven los barcos chiquititos!",
+          "Delilah: ¿Podemos subirnos todos los días? ¿Porfa, porfa?",
+          "Papá: Buenas tardes. Cada vez que bajamos al plan me pide esperar el ascensor. No habla de nada más.",
+          "Delilah: Tome, mi papá dijo que podía dárselo."
         ],
         [
-          "Delilah: ¡Hola de nuevo! Hoy vine mirando el cerro entero desde la ventana.",
-          "Papá: Disculpa, es que para ella este paseo es el mejor panorama del día. Le encanta mirar el puerto desde acá.",
-          "Papá: Toma esto para el mantenimiento del carro, vecino. Gracias por hacerle el día tan bonito."
+          "Delilah: ¡Hola de nuevo, señor del ascensor!",
+          "Tú: ¡Hola, Delilah! ¿Cómo estuvo el colegio?",
+          "Delilah: Fome. Pero esto es lo mejor del día.",
+          "Papá: Es verdad, vecino, lo dice todos los días. Toma, pa la mantención. Gracias por alegrarle el día."
         ],
         [
-          "Delilah: ¡Mira, allá va el ascensor! ¡Qué bacán se ve!",
-          "Papá: Buenas tardes. Es bueno poder mostrarle estas cosas tradicionales a los niños antes de que se pierdan.",
-          "Papá: Pásale esto, hija. Es para ayudarte a mantener el ascensor andando, se valora mucho tu pega."
+          "Delilah: Papá, ¿por qué el otro ascensor baja cuando nosotros subimos?",
+          "Papá: Eh... pregúntale al caballero, él sabe.",
+          "Tú: Porque están amarrados al mismo cable. Uno hace de contrapeso del otro.",
+          "Delilah: ¡Ooh! Como un columpio gigante.",
+          "Papá: Jaja, algo así. Toma, vecino, por la clase de física."
         ],
         [
           "Delilah: Oiga, señor conductor, ¿cómo funciona el ascensor?",

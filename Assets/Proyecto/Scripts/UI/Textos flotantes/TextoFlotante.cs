@@ -41,7 +41,7 @@ public class TextoFlotante : MonoBehaviour
 
     private void Update()
     {
-        tiempo += Time.unscaledDeltaTime;
+        tiempo += PausaManager.Dt;
         float t = Mathf.Clamp01(tiempo / duracion);
 
         transform.position = inicio + Vector3.up * (distanciaSubida * t);

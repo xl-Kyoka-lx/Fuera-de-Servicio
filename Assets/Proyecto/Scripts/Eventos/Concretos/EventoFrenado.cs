@@ -8,7 +8,7 @@ public class EventoFrenado : MonoBehaviour
     [Tooltip("Número con el que empieza la cuenta en pantalla. Baja más lento que el tiempo real para llegar a 0 al final de la ventana real")]
     public float segundosEnPantalla = 1.5f;
     [Tooltip("Segundos que de verdad tiene el jugador para frenar (no se muestra)")]
-    public float ventanaReal = 2.5f;
+    public float ventanaReal = 1.5f;
     [Tooltip("Marcado: el punto de frenado del AscensorManager se ajusta para que el ascensor llegue a la estación justo cuando la cuenta llega a 0")]
     public bool sincronizarLlegada = true;
 
@@ -38,7 +38,7 @@ public class EventoFrenado : MonoBehaviour
     [Header("Frenar a mitad del viaje (mantener Shift)")]
     [Tooltip("Popularidad que se pierde al detener el ascensor por completo fuera de la ventana de frenado")]
     public float penalizacionFrenoEnRuta = 15f;
-    public string mensajeFrenoEnRuta = "¡Frenaste a mitad del viaje! Presiona ESPACIO para continuar";
+    public string mensajeFrenoEnRuta = "¡Frenaste a mitad del viaje! Presiona {teclaAcelerar} para continuar";
     [Tooltip("Frenazos a medias (soltar Shift antes de detenerse) por viaje antes de que baje la popularidad")]
     public int frenazosParaQueja = 3;
     [Tooltip("Popularidad que se pierde cada vez que se llega a esa cantidad de frenazos")]
@@ -76,6 +76,7 @@ public class EventoFrenado : MonoBehaviour
     {
         if (inputActions != null)
         {
+            Controles.Aplicar(inputActions);
             inputFrenar = inputActions.FindActionMap(actionMapName)?.FindAction(actionName);
         }
     }
@@ -129,7 +130,7 @@ public class EventoFrenado : MonoBehaviour
 
         if (PanelAccion.Instance != null)
         {
-            PanelAccion.Instance.MostrarAccion("¡FRENA! [SHIFT]", VentanaActual, VentanaVisible);
+            PanelAccion.Instance.MostrarAccion("¡FRENA! [{teclaFrenar}]", VentanaActual, VentanaVisible);
         }
 
         StartCoroutine(EsperarFrenado());
@@ -232,7 +233,7 @@ public class EventoFrenado : MonoBehaviour
 
     private IEnumerator EsperarFrenado()
     {
-        yield return new WaitForSecondsRealtime(VentanaActual);
+        yield return PausaManager.Esperar(VentanaActual);
         EvaluarFrenado();
     }
 

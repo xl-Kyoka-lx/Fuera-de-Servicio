@@ -5,7 +5,7 @@ public class EventoPoleaTrabada : EventoBase
 {
     [Header("Mensajes (salen en la TV)")]
     public string mensajeInicial = "¡La polea se trabó!";
-    public string mensajeInstruccion = "Presiona Espacio al ritmo del brillo";
+    public string mensajeInstruccion = "Presiona {teclaAcelerar} al ritmo del brillo";
     public Color colorMensaje = Color.yellow;
 
     [Header("Ritmo")]
@@ -53,6 +53,7 @@ public class EventoPoleaTrabada : EventoBase
     {
         if (inputActions != null)
         {
+            Controles.Aplicar(inputActions);
             inputResolver = inputActions.FindActionMap(actionMapName)?.FindAction(actionName);
 
             if (inputResolver == null)
@@ -118,7 +119,7 @@ public class EventoPoleaTrabada : EventoBase
 
     protected override void Update()
     {
-        if (!minijuegoActivo) return;
+        if (!minijuegoActivo || PausaManager.juegoPausado) return;
 
         tiempo += Time.unscaledDeltaTime;
         tiempoRestante -= Time.unscaledDeltaTime;

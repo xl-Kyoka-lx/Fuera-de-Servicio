@@ -42,7 +42,7 @@ public class DerrotaAveria : MonoBehaviour
 
     private IEnumerator MostrarConRetraso()
     {
-        yield return new WaitForSecondsRealtime(retraso);
+        yield return PausaManager.Esperar(retraso);
 
         PantallaFueraDeServicio.Mostrar(escenaMenu);
     }

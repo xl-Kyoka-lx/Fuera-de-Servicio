@@ -6,7 +6,7 @@ public class EventoEngrase : EventoBase
 {
     [Header("Mensajes (salen en la TV)")]
     public string mensajeInicial = "¡Sobrecalentamiento! Falta grasa en la polea";
-    public string mensajeInstruccion = "Mantén Espacio para subir el cuadrado y sigue la línea";
+    public string mensajeInstruccion = "Mantén {teclaAcelerar} para subir el cuadrado y sigue la línea";
     public Color colorMensaje = Color.yellow;
 
     [Header("UI de la barra (hijos del prefab)")]
@@ -64,6 +64,7 @@ public class EventoEngrase : EventoBase
     {
         if (inputActions != null)
         {
+            Controles.Aplicar(inputActions);
             inputSubir = inputActions.FindActionMap(actionMapName)?.FindAction(actionName);
 
             if (inputSubir == null)
@@ -130,7 +131,7 @@ public class EventoEngrase : EventoBase
 
     protected override void Update()
     {
-        if (!minijuegoActivo) return;
+        if (!minijuegoActivo || PausaManager.juegoPausado) return;
 
         float dt = Time.unscaledDeltaTime;
 
@@ -231,6 +232,8 @@ public class EventoEngrase : EventoBase
 
         if (sonar && !fuenteEngrase.isPlaying)
         {
+            var bib = Sonidos.Biblioteca;
+            if (bib != null) fuenteEngrase.volume = bib.volumenQte * Configuracion.VolumenQte;
             if (fuenteEngrase.time > 0f) fuenteEngrase.UnPause();
             else fuenteEngrase.Play();
         }

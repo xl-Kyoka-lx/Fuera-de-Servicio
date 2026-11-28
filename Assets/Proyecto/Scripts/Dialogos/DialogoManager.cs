@@ -57,6 +57,7 @@ public class DialogoManager : MonoBehaviour
 
         if (inputActions != null)
         {
+            Controles.Aplicar(inputActions);
             inputContinuar = inputActions.FindActionMap(actionMapName)?.FindAction(actionName);
         }
     }
@@ -72,7 +73,8 @@ public class DialogoManager : MonoBehaviour
     {
         string[] validos = {
         "dineroGanado", "pasajerosTransportados", "eventos",
-        "dineroTotal", "limpieza", "polea", "hora", "dia", "semana"
+        "dineroTotal", "limpieza", "polea", "hora", "dia", "semana",
+        "teclaAcelerar", "teclaFrenar", "teclaTimbre", "teclaPausa", "teclaContinuar"
     };
 
         foreach (var dialogo in dialogosCargados)
@@ -227,7 +229,7 @@ public class DialogoManager : MonoBehaviour
         for (int i = 0; i < textoCompleto.Length; i++)
         {
             textoContenido.text = textoCompleto.Substring(0, i + 1);
-            yield return new WaitForSecondsRealtime(Configuracion.SegundosPorLetra);
+            yield return PausaManager.Esperar(Configuracion.SegundosPorLetra);
         }
 
         textoContenido.text = textoCompleto;
@@ -313,6 +315,8 @@ public class DialogoManager : MonoBehaviour
 
     private string ReemplazarPlaceholders(string texto)
     {
+        texto = Controles.ReemplazarTeclas(texto);
+
         if (GameManager.Instance == null || GameManager.Instance.ResumenDia == null)
         {
             Debug.LogWarning("⚠️ No hay ResumenDiaData disponible");

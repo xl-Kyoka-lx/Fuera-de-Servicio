@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventoPestillo
   duracionMaxima: 10
   mensajeInicial: "\xA1El pestillo de la puerta se trab\xF3!"
-  mensajeInstruccion: "Presiona Espacio cuando el anillo llegue al c\xEDrculo"
+  mensajeInstruccion: "Presiona {teclaAcelerar} cuando el anillo llegue al c\xEDrculo"
   colorMensaje: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   radioCirculo: 110
   escalaInicialAnillo: 3

@@ -26,6 +26,9 @@ public class PantallaFueraDeServicio : MonoBehaviour
         if (Mostrando) return;
         Mostrando = true;
 
+        // Al perder se borra la partida guardada (aunque el jugador cierre el juego en esta pantalla).
+        MenuPrincipal.BorrarPartidaGuardada();
+
         var go = new GameObject("PantallaFueraDeServicio");
         var pantalla = go.AddComponent<PantallaFueraDeServicio>();
         pantalla.escenaMenu = escenaMenu;
@@ -35,6 +38,8 @@ public class PantallaFueraDeServicio : MonoBehaviour
     {
         PausaJuego.Pedir(this);
         CrearUI();
+        MusicaFinal.Iniciar(escenaMenu);
+        StartCoroutine(ApagarAmbiente());
         StartCoroutine(Secuencia());
     }
 
@@ -42,6 +47,35 @@ public class PantallaFueraDeServicio : MonoBehaviour
     {
         Mostrando = false;
         PausaJuego.Liberar(this);
+    }
+
+    // Baja y apaga los sonidos de ambiente (gente, aves, etc.) mientras se oscurece la pantalla.
+    // Se salvan la música final y la fuente de Sonidos (clic de los botones).
+    // Como el juego queda pausado, el ambiente no vuelve a empezar hasta salir de la escena.
+    private IEnumerator ApagarAmbiente()
+    {
+        var fuentes = new System.Collections.Generic.List<AudioSource>();
+        var volumenes = new System.Collections.Generic.List<float>();
+
+        foreach (var f in FindObjectsByType<AudioSource>(FindObjectsSortMode.None))
+        {
+            if (f.GetComponent<MusicaFinal>() != null || f.GetComponent<Sonidos>() != null) continue;
+            fuentes.Add(f);
+            volumenes.Add(f.volume);
+        }
+
+        float t = 0f;
+        while (t < duracionOscurecer)
+        {
+            t += Time.unscaledDeltaTime;
+            float k = 1f - Mathf.Clamp01(t / duracionOscurecer);
+            for (int i = 0; i < fuentes.Count; i++)
+                if (fuentes[i] != null) fuentes[i].volume = volumenes[i] * k;
+            yield return null;
+        }
+
+        foreach (var f in fuentes)
+            if (f != null) { f.Stop(); f.volume = 0f; }
     }
 
     private IEnumerator Secuencia()

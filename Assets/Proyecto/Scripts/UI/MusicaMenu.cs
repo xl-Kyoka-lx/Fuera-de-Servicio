@@ -10,11 +10,22 @@ public class MusicaMenu : MonoBehaviour
 
     private AudioSource fuente;
     private string escenaMenu;
+    private float volumenBase;
+    private bool desvaneciendo;
 
     private static MusicaMenu sonando;
 
     private void Awake()
     {
+        // Si ya se perdió en esta sesión, en el menú suena la música final en lugar de esta
+        if (MusicaFinal.PerdioEnEstaSesion)
+        {
+            GetComponent<AudioSource>().Stop();
+            MusicaFinal.Reproducir(gameObject.scene.name);
+            Destroy(gameObject);
+            return;
+        }
+
         if (sonando != null)
         {
             Destroy(gameObject);
@@ -24,10 +35,19 @@ public class MusicaMenu : MonoBehaviour
 
         fuente = GetComponent<AudioSource>();
         escenaMenu = gameObject.scene.name;
+        volumenBase = fuente.volume;
+        fuente.volume = volumenBase * Configuracion.VolumenMusica;
 
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += AlCargarEscena;
+    }
+
+    private void Update()
+    {
+        // Volumen del Inspector por el de la barra "Volumen Musica" de Opciones (se nota al moverla)
+        if (!desvaneciendo && fuente != null)
+            fuente.volume = volumenBase * Configuracion.VolumenMusica;
     }
 
     private void OnDestroy()
@@ -47,6 +67,7 @@ public class MusicaMenu : MonoBehaviour
 
     private IEnumerator Desvanecer()
     {
+        desvaneciendo = true;
         float volumenInicial = fuente.volume;
         float t = 0f;
 

@@ -29,6 +29,10 @@ public class SonidoAscensor : MonoBehaviour
     [Range(0.5f, 1f)] public float tonoAlFrenar = 0.8f;
 
     private AudioSource fuenteAscensor;
+
+    // Volumen del Inspector por el de la barra "Volumen Ascensor" de Opciones
+    private float VolMotor => volumenMotor * Configuracion.VolumenAscensor;
+    private float VolAscensor => volumen * Configuracion.VolumenAscensor;
     private AudioSource fuenteMotor;
     private float esperaAscensor = -1f;
     private bool apagando;
@@ -77,12 +81,12 @@ public class SonidoAscensor : MonoBehaviour
 
         if (fuenteMotor.clip != null)
         {
-            fuenteMotor.volume = volumenMotor;
+            fuenteMotor.volume = VolMotor;
             fuenteMotor.Play();
         }
 
         fuenteAscensor.Stop();
-        fuenteAscensor.volume = volumen;
+        fuenteAscensor.volume = VolAscensor;
         esperaAscensor = retrasoSonidoAscensor;
     }
 
@@ -127,8 +131,8 @@ public class SonidoAscensor : MonoBehaviour
         {
             float f = ascensorManager.FactorVelocidad;
             float tono = Mathf.Lerp(tonoAlFrenar, 1f, f);
-            fuenteMotor.volume = volumenMotor * f;
-            fuenteAscensor.volume = volumen * f;
+            fuenteMotor.volume = VolMotor * f;
+            fuenteAscensor.volume = VolAscensor * f;
             fuenteMotor.pitch = tono;
             fuenteAscensor.pitch = tono;
         }
@@ -140,8 +144,8 @@ public class SonidoAscensor : MonoBehaviour
         if (!apagando) return;
 
         float duracion = Mathf.Max(0.01f, fundidoSalida);
-        fuenteMotor.volume = Mathf.MoveTowards(fuenteMotor.volume, 0f, volumenMotor / duracion * Time.deltaTime);
-        fuenteAscensor.volume = Mathf.MoveTowards(fuenteAscensor.volume, 0f, volumen / duracion * Time.deltaTime);
+        fuenteMotor.volume = Mathf.MoveTowards(fuenteMotor.volume, 0f, Mathf.Max(VolMotor, 0.01f) / duracion * Time.deltaTime);
+        fuenteAscensor.volume = Mathf.MoveTowards(fuenteAscensor.volume, 0f, Mathf.Max(VolAscensor, 0.01f) / duracion * Time.deltaTime);
 
         if (fuenteMotor.volume <= 0f && fuenteAscensor.volume <= 0f)
         {

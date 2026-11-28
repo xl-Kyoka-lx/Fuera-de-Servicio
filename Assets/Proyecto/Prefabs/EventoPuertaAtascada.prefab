@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventoPuertaAtascada
   duracionMaxima: 10
   mensajeInicial: "\xA1La puerta se atasc\xF3!"
-  mensajeInstruccion: "Presiona [C] 10 veces r\xE1pido!"
+  mensajeInstruccion: "\xA1Presiona {teclaAcelerar} 10 veces r\xE1pido!"
   colorMensaje: {r: 1, g: 0.015686274, b: 0.103096925, a: 1}
   pressesRequeridos: 10
   tiempoLimite: 3

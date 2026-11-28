@@ -17,6 +17,10 @@ public class TemblorPantalla : MonoBehaviour
 
     public static void Temblar(float duracion = 0.4f, float intensidad = 1f)
     {
+        // Barra "Sacudida de cámara" de Opciones: 0 = sin temblor
+        intensidad *= Configuracion.IntensidadSacudida;
+        if (intensidad <= 0f) return;
+
         if (actual != null)
         {
             actual.duracion = Mathf.Max(actual.duracion - actual.tiempo, duracion);
@@ -66,7 +70,7 @@ public class TemblorPantalla : MonoBehaviour
 
     private void LateUpdate()
     {
-        tiempo += Time.unscaledDeltaTime;
+        tiempo += PausaManager.Dt;
         float fuerza = intensidad * (1f - Mathf.Clamp01(tiempo / duracion));
 
         if (fuerza <= 0f)

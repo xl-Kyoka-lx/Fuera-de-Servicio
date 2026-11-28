@@ -25,6 +25,9 @@ MonoBehaviour:
   pestilloAcierto: {fileID: 8300000, guid: c203289e820aec645a1f1c6acc163f0b, type: 3}
   pestilloFallo: {fileID: 8300000, guid: e181cca09e8a5e548874a21a1f3437b1, type: 3}
   volumenQte: 0.8
+  musicaFinal: {fileID: 8300000, guid: f9bd46fcd5a3c5f45beadc2ebf5e4a0b, type: 3}
+  volumenMusicaFinal: 0.8
+  repetirMusicaFinal: 1
   genteNormal:
   - {fileID: 8300000, guid: d1194228f27d4b943bc28faf0c06d3d2, type: 3}
   - {fileID: 8300000, guid: 75015cd40cf1c3345b31780a6049454f, type: 3}

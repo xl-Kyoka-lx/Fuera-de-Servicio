@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Datos", menuName = "GameData")]
-
 [System.Serializable]
 public class EstadoTienda
 {
@@ -33,6 +31,7 @@ public class EstadoTienda
     }
 }
 
+[CreateAssetMenu(fileName = "Datos", menuName = "GameData")]
 public class GameData : ScriptableObject
 {
     public int dineroTotal = 0;

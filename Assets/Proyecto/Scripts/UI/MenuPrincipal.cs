@@ -12,7 +12,16 @@ public class MenuPrincipal : MonoBehaviour
     public Button botonNuevaPartida;
 
     public string nombreEscenaDia = "EscenaDia";
-    public string clavePartidaGuardada = "PartidaIniciada";
+    public string clavePartidaGuardada = ClavePartida;
+
+    public const string ClavePartida = "PartidaIniciada";
+
+    // Se llama al perder: borra la partida guardada para que "Continuar" quede desactivado.
+    public static void BorrarPartidaGuardada()
+    {
+        PlayerPrefs.DeleteKey(ClavePartida);
+        PlayerPrefs.Save();
+    }
 
     private void Start()
     {

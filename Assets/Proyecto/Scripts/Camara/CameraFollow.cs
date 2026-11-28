@@ -8,8 +8,6 @@ public class CameraFollow : MonoBehaviour
 
     
     [SerializeField] private float suavizado = 5f;
-    [SerializeField] private bool seguirEnX = true;
-    [SerializeField] private bool seguirEnY = true;
 
    
     [SerializeField] private bool usarLimites = false;

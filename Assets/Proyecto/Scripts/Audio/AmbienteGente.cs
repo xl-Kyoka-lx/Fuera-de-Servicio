@@ -16,7 +16,13 @@ public class AmbienteGente : MonoBehaviour
     private void Update()
     {
         var b = Sonidos.Biblioteca;
-        if (b == null || PausaJuego.Pausado) return;
+        // Al perder, la pantalla de derrota baja este sonido: no pisarle el volumen
+        if (b == null || PantallaFueraDeServicio.Mostrando) return;
+
+        // Para que el cambio en Opciones se note aunque esté sonando
+        if (fuente.isPlaying) fuente.volume = b.volumenGente * Configuracion.VolumenAmbiente;
+
+        if (PausaJuego.Pausado) return;
 
         if (Time.time >= proximaRevision)
         {
@@ -55,7 +61,7 @@ public class AmbienteGente : MonoBehaviour
         float pan = Random.Range(-0.6f, 0.6f);
         fuente.panStereo = pan;
         fuente.clip = clip;
-        fuente.volume = b.volumenGente;
+        fuente.volume = b.volumenGente * Configuracion.VolumenAmbiente;
         fuente.Play();
 
         IndicadoresSonido.Mostrar(texto, IndicadoresSonido.LadoDesdePan(pan), true, 4f);

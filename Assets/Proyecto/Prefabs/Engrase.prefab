@@ -225,7 +225,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventoEngrase
   duracionMaxima: 10
   mensajeInicial: "\xA1Sobrecalentamiento! Falta grasa en la polea"
-  mensajeInstruccion: "Mant\xE9n Espacio para subir el cuadrado y sigue la l\xEDnea"
+  mensajeInstruccion: "Mant\xE9n {teclaAcelerar} para subir el cuadrado y sigue la l\xEDnea"
   colorMensaje: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   barra: {fileID: 3243770310753953583}
   cuadrado: {fileID: 9107902210564691957}

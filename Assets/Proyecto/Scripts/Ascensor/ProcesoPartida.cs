@@ -56,7 +56,7 @@ public class ProcesoPartida : MonoBehaviour
     [Header("Mensajes de la TV")]
     public string mensajeAvisando = "Avisando a la cabina de abajo...";
     public string mensajeLista = "Cabina de abajo lista";
-    public string mensajeSinW = "¡Frenos de emergencia! Arrancaste sin avisar a la cabina de abajo (W)";
+    public string mensajeSinW = "¡Frenos de emergencia! Arrancaste sin avisar a la cabina de abajo ({teclaTimbre})";
     public string mensajeNoLista = "¡Frenos de emergencia! La cabina de abajo aún no está lista";
     public string mensajeFaltanPasajeros = "Todavía no hay pasajeros suficientes para avisar";
     public float duracionMensajeError = 2.5f;
@@ -99,6 +99,7 @@ public class ProcesoPartida : MonoBehaviour
         if (director == null) director = FindFirstObjectByType<DirectorEventos>();
 
         controls = new AscensorControls();
+        Controles.Aplicar(controls.asset);
         controls.Gameplay.AvisarCabina.performed += OnAvisarCabina;
     }
 
@@ -317,7 +318,7 @@ public class ProcesoPartida : MonoBehaviour
     private void TocarTimbre()
     {
         var b = Sonidos.Biblioteca;
-        if (b != null) Sonidos.Reproducir(b.timbreCabinaAbajo, b.volumenTimbre);
+        if (b != null) Sonidos.Reproducir(b.timbreCabinaAbajo, b.volumenTimbre * Configuracion.VolumenAscensor);
 
         IndicadoresSonido.Mostrar(indicadorTimbre, IndicadoresSonido.Lado.Frente, true);
 

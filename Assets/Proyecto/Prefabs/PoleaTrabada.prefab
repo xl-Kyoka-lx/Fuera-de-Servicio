@@ -238,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EventoPoleaTrabada
   duracionMaxima: 10
   mensajeInicial: "\xA1La polea se trab\xF3!"
-  mensajeInstruccion: Presiona Espacio al ritmo del brillo
+  mensajeInstruccion: "Presiona {teclaAcelerar} al ritmo del brillo"
   colorMensaje: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   periodo: 1
   tolerancia: 0.3

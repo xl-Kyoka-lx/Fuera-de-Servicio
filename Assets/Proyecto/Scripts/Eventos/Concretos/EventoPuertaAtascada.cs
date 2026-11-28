@@ -5,7 +5,7 @@ using TMPro;
 public class EventoPuertaAtascada : EventoBase
 {
     public string mensajeInicial = "¡La puerta se atascó!";
-    public string mensajeInstruccion = "Presiona [C] 10 veces rápido!";
+    public string mensajeInstruccion = "¡Presiona {teclaAcelerar} 10 veces rápido!";
     public Color colorMensaje = Color.yellow;
 
     [Header("mini juego")]
@@ -35,6 +35,7 @@ public class EventoPuertaAtascada : EventoBase
     {
         if (inputActions != null)
         {
+            Controles.Aplicar(inputActions);
             inputResolver = inputActions.FindActionMap(actionMapName)?.FindAction(actionName);
 
             if (inputResolver == null)

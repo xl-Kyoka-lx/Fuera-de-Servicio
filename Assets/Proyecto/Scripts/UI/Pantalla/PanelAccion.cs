@@ -40,6 +40,7 @@ public class PanelAccion : MonoBehaviour
 
     public void MostrarAccion(string texto, float duracion, float duracionMostrada)
     {
+        texto = Controles.ReemplazarTeclas(texto);
         if (corrutinaActual != null)
             StopCoroutine(corrutinaActual);
 
@@ -61,7 +62,7 @@ public class PanelAccion : MonoBehaviour
 
         while (timer < duracion)
         {
-            timer += Time.unscaledDeltaTime;
+            timer += PausaManager.Dt;
             float restante = duracion - timer;
             float porcentaje = restante / duracion;
 
@@ -129,7 +130,7 @@ public class PanelAccion : MonoBehaviour
         if (textoTiempo != null) textoTiempo.text = "";
         if (barraTiempo != null) barraTiempo.fillAmount = 0f;
 
-        yield return new WaitForSecondsRealtime(duracion);
+        yield return PausaManager.Esperar(duracion);
 
         OcultarAccion();
     }

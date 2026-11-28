@@ -38,7 +38,7 @@ public class PanelMensajesMonitor : MonoBehaviour
         if (corrutinaActual != null)
             StopCoroutine(corrutinaActual);
 
-        textoMensaje.text = mensaje;
+        textoMensaje.text = Controles.ReemplazarTeclas(mensaje);
         textoMensaje.color = color;
 
         float duracionReal = duracion > 0f ? duracion : duracionMensaje;
@@ -54,7 +54,7 @@ public class PanelMensajesMonitor : MonoBehaviour
             corrutinaActual = null;
         }
 
-        textoMensaje.text = mensaje;
+        textoMensaje.text = Controles.ReemplazarTeclas(mensaje);
         textoMensaje.color = color;
 
         if (canvasGroup != null)

@@ -12,7 +12,7 @@ public class DecisionesManager : MonoBehaviour
     public float probabilidadSinPlata = 0.06f;
     public int maximoSinPlataPorDia = 2;
     [Tooltip("Popularidad que se gana al dejarlo subir gratis")]
-    public float popularidadSiAyuda = 2f;
+    public float popularidadSiAyuda = 5f;
     [Tooltip("Popularidad que se pierde al no dejarlo subir")]
     public float popularidadSiRechaza = 4f;
 

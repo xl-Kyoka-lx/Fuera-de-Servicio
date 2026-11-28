@@ -153,7 +153,7 @@ public class AmbienteAves : MonoBehaviour
         ave.fuente.panStereo = pan;
         ave.fuente.pitch = Random.Range(rangoTono.x, rangoTono.y);
         ave.filtro.cutoffFrequency = tramo.lejano ? corteLejano : 22000f;
-        ave.fuente.PlayOneShot(clip, tramo.volumen);
+        ave.fuente.PlayOneShot(clip, tramo.volumen * Configuracion.VolumenAmbiente);
 
         string plantilla = string.IsNullOrEmpty(ave.textoIndicador)
             ? (ave.nombre == "Gaviota" ? "*gaviotas {distancia}*" : $"*canto de {ave.nombre.ToLower()} {{distancia}}*")

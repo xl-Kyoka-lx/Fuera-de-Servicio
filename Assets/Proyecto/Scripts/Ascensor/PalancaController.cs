@@ -24,6 +24,7 @@ public class PalancaController : MonoBehaviour
     {
     if (inputActions != null)
     {
+        Controles.Aplicar(inputActions);
         accionMoverAscensor = inputActions.FindActionMap("Gameplay")?.FindAction("MoverAscensor");
     }
     }

@@ -296,7 +296,7 @@ public class EventoColillasLatas : EventoBase
 
     protected override void Update()
     {
-        if (!minijuegoActivo) return;
+        if (!minijuegoActivo || PausaManager.juegoPausado) return;
 
         t += Time.unscaledDeltaTime;
 

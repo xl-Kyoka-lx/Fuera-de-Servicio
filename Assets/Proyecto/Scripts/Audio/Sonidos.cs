@@ -51,7 +51,7 @@ public class Sonidos : MonoBehaviour
     public static void ReproducirQte(System.Func<BibliotecaSonidos, AudioClip> elegir)
     {
         var b = Biblioteca;
-        if (b != null) Reproducir(elegir(b), b.volumenQte);
+        if (b != null) Reproducir(elegir(b), b.volumenQte * Configuracion.VolumenQte);
     }
 
     private void Update()

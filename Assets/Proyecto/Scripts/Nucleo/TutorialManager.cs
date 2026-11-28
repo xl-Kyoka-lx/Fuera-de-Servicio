@@ -388,15 +388,15 @@ public class TutorialManager : MonoBehaviour
 
     private IEnumerator DemostrarIndicadores()
     {
-        yield return new WaitForSecondsRealtime(0.4f);
+        yield return PausaManager.Esperar(0.4f);
 
         float espera = segundosPorIndicador + 0.4f;
         IndicadoresSonido.Mostrar(demoIzquierda, IndicadoresSonido.Lado.Izquierda, true, segundosPorIndicador, true);
-        yield return new WaitForSecondsRealtime(espera);
+        yield return PausaManager.Esperar(espera);
         IndicadoresSonido.Mostrar(demoDerecha, IndicadoresSonido.Lado.Derecha, true, segundosPorIndicador, true);
-        yield return new WaitForSecondsRealtime(espera);
+        yield return PausaManager.Esperar(espera);
         IndicadoresSonido.Mostrar(demoFrente, IndicadoresSonido.Lado.Frente, true, segundosPorIndicador, true);
-        yield return new WaitForSecondsRealtime(espera);
+        yield return PausaManager.Esperar(espera);
 
         Dialogo("tutorial_controles");
     }

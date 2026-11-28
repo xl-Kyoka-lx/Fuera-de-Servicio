@@ -248,7 +248,7 @@ public class Pasajero : MonoBehaviour
 
         while ((transform.position - salida).sqrMagnitude > 0.000001f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, salida, velocidad * Time.unscaledDeltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, salida, velocidad * PausaManager.Dt);
             yield return null;
         }
 

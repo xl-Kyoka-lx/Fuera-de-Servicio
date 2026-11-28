@@ -6,7 +6,7 @@ public class EventoPestillo : EventoBase
 {
     [Header("Mensajes (salen en la TV)")]
     public string mensajeInicial = "¡El pestillo de la puerta se trabó!";
-    public string mensajeInstruccion = "Presiona Espacio cuando el anillo llegue al círculo";
+    public string mensajeInstruccion = "Presiona {teclaAcelerar} cuando el anillo llegue al círculo";
     public Color colorMensaje = Color.yellow;
 
     [Header("Círculo")]
@@ -97,6 +97,7 @@ public class EventoPestillo : EventoBase
     {
         if (inputActions != null)
         {
+            Controles.Aplicar(inputActions);
             inputEspacio = inputActions.FindActionMap(actionMapName)?.FindAction(actionName);
 
             if (inputEspacio == null)
@@ -246,7 +247,7 @@ public class EventoPestillo : EventoBase
 
     protected override void Update()
     {
-        if (!minijuegoActivo) return;
+        if (!minijuegoActivo || PausaManager.juegoPausado) return;
 
         t += Time.unscaledDeltaTime;
 
