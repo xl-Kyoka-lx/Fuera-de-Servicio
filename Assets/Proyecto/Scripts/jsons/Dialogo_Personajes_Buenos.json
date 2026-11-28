@@ -3,43 +3,100 @@
     {
       "id": "camila_vecina",
       "nombre": "Camila",
-      "dialogos": [
-        "Hola... Me alegra tanto verte aquí arriba. Tenía miedo de que el carro cerrara tras lo de tu papá.",
-        "Se nota que le estás poniendo empeño. Tu viejo estaría orgulloso de verte sostener el puesto.",
-        "Ten esto. te va a ayudar a empezar en esto. No es mucho, pero es algo."
+      "variantesDialogo": [
+        [
+          "Hola... Me alegra tanto verte aquí arriba. Tenía miedo de que el carro cerrara tras lo de tu papá.",
+          "Se nota que le estás poniendo empeño. Tu viejo estaría orgulloso de verte sostener el puesto.",
+          "Ten esto, te va a ayudar a empezar. No es mucho, pero es algo."
+        ],
+        [
+          "¡Hola! Qué bueno verte firme en el turno, hoy el cerro se ve súper tranquilo desde acá arriba.",
+          "A veces cuesta creer que esto siga andando con lo difícil que está todo, pero se nota que lo cuidas.",
+          "Toma, guárdate esto para el día. No lo ocupes en tonteras, ¿sí?"
+        ],
+        [
+          "Hola de nuevo. Pasaba a saludar y a darme una vuelta antes de seguir con mis cosas.",
+          "Tu papá siempre decía que un ascensor no es cualquier cosa, es punto de encuentro para los vecinos.",
+          "Ten esto, te va a servir para algún gasto del carro. ¡Mucho ánimo hoy!"
+        ],
+        [
+          "¡Buu!",
+          "Tú: ¡¡¡!!!",
+          "Tú: No me asustes... estoy trabajando.",
+          "Vamos, sé que tienes la habilidad suficiente como para trabajar asustado.",
+          "Tú: Eso no quiere decir que los accidentes no existan.",
+          "Qué serio... Está bien, perdón. Ten, para que no pienses que soy mala."
+        ]
       ],
       "dineroExtra": 1350,
-      "soloTutorial": true
+      "soloTutorial": false,
+      "primerDialogoSoloTutorial": true
     },
     {
       "id": "jordanmusicyt",
       "nombre": "Jordan (YouTuber)",
-      "dialogos": [
-        "¡Qué tal, mi gente! Estamos subiendo por una de las joyas patrimoniales más auténticas de todo el puerto.",
-        "Oye, hermano, qué tremenda máquina... y qué pega te mandas cuidándola tú solo acá arriba.",
-        "Toma, déjate esto para la mantención de parte de la comunidad del canal. ¡El patrimonio no se cae!"
+      "variantesDialogo": [
+        [
+          "¡Qué tal, mi gente! Estamos subiendo por una de las joyas patrimoniales más auténticas de todo el puerto.",
+          "Oye, hermano, qué tremenda máquina... y qué pega te mandas cuidándola tú solo acá arriba.",
+          "Toma, déjate esto para la mantención de parte de la comunidad del canal. ¡El patrimonio no se cae!"
+        ],
+        [
+          "¡Volvimos a subirnos al carro, gente! La vista hacia el plan y el mar sigue siendo una locura.",
+          "En el canal siempre les digo que cuidar lo patrimonial es cuidar la identidad del lugar, no puro postureo.",
+          "Esto va directo pa' engrasar poleas o tapar rayones. ¡Siga dándole, compa!"
+        ],
+        [
+          "¡Qué onda, hermano! Hoy andamos grabando cortito para mostrar cómo late el cerro desde adentro.",
+          "Se nota caleta cuando alguien le pone cariño real a su pega y no lo hace solo por cumplir.",
+          "Déjate esto de aporte de los suscriptores. ¡Aguante el ascensor!"
+        ]
       ],
-      "dineroExtra": 1650,
+      "dineroExtra": 3650,
       "soloTutorial": false
     },
     {
       "id": "don_luis",
       "nombre": "Don Luis",
-      "dialogos": [
-        "Buenas tardes, muchacho. Estaba escuchando el motor mientras subíamos; suena bien afinado.",
-        "Conocí a tu viejo en la maestranza. Él sabía sacarle lustre a estas poleas cuando nadie daba un peso por ellas.",
-        "Guárdate esto para un tarro de grasa o un juego de zapatas. La sal marina no perdona en este puerto."
+      "variantesDialogo": [
+        [
+          "Buenas tardes, muchacho. Estaba escuchando el motor mientras subíamos; suena bien afinado.",
+          "Conocí a tu viejo en la maestranza. Él sabía sacarle lustre a estas poleas cuando nadie daba un peso por ellas.",
+          "Guárdate esto para un tarro de grasa o un juego de zapatas. La sal marina no perdona en este puerto."
+        ],
+        [
+          "Qué tal, joven. Hoy el carro subió bien, casi sin tirones raros ni chirridos de más.",
+          "Tu padre tenía mano firme y paciencia de oro, esos fierros viejos agradecen cuando uno no los apura a la mala.",
+          "Toma esto para tus repuestos. Mientras haya quien los cuide, estos todavía pueden."
+        ],
+        [
+          "Buenas, muchacho. Da gusto ver que el puesto sigue en pie a pesar de los años y el descuido.",
+          "La calle está dura y a veces la gente no mide lo que rompe, pero el buen trabajo siempre se nota.",
+          "Guárdate estas monedas para lo que necesite el ascensor. Cuídate el cuerpo también."
+        ]
       ],
-      "dineroExtra": 1450,
+      "dineroExtra": 550,
       "soloTutorial": false
     },
     {
       "id": "javier_repartidor",
       "nombre": "Javier (Repartidor)",
-      "dialogos": [
-        "Uff, buenas tardes compa... Gracias por esperar que subiera con la mochila, me salvaste las piernas.",
-        "Subir esta quebrada pedaleando con pedidos pesados te liquida la espalda. Si este carro no estuviera, mi jornada se duplica.",
-        "Déjate esto de propina. Todo lo que sirva para que los rieles sigan firmes se agradece con el alma."
+      "variantesDialogo": [
+        [
+          "Uff, buenas tardes compa... Gracias por esperar que subiera con la mochila, me salvaste las piernas.",
+          "Subir esta quebrada pedaleando con pedidos pesados te liquida la espalda. Si este carro no estuviera, mi jornada se duplica.",
+          "Déjate esto de propina. Todo lo que sirva para que los rieles sigan firmes se agradece con el alma."
+        ],
+        [
+          "¡Qué tal, compa! Hoy ando reventado con el reparto, este viaje me dio aire pa' seguir.",
+          "Uno que pasa todo el día subiendo y bajando cerros sabe lo que vale tener un empujón así a mitad de ruta.",
+          "Toma esto, pa'l aceite o pa' un café. ¡Se agradece caleta la buena voluntad!"
+        ],
+        [
+          "Buenas, hermano... Llegué justo a tiempo antes de que cerraras o salieras.",
+          "Si me toca subir todo esto a pata, termino liquidado antes de la tarde.",
+          "Quédate con esto de propina que conseguí. Ojalá el carro siga firme por harto rato más."
+        ]
       ],
       "dineroExtra": 1300,
       "soloTutorial": false
@@ -47,12 +104,58 @@
     {
       "id": "delilah_y_papa",
       "nombre": "Delilah y su papá",
-      "dialogos": [
-        "Delilah: ¡Mira, papá, allá abajo se ven los barcos chiquititos! ¿Podemos subirnos todos los días?",
-        "Papá: Buenas tardes, vecino. A mi hija le fascina este carro; cada vez que bajamos al plan me pide esperarlo. Gracias por cuidarlo tan bien.",
-        "Papá: Toma, Delilah, pásale las monedas al caballero... Esto es para que siga comprando repuestos para el carro, muchacho. Se agradece."
+      "variantesDialogo": [
+        [
+          "Delilah: ¡Mira, papá, allá abajo se ven los barcos chiquititos! ¿Podemos subirnos todos los días?",
+          "Papá: Buenas tardes, vecino. A mi hija le fascina este carro; cada vez que bajamos al plan me pide esperarlo. Gracias por cuidarlo tan bien.",
+          "Papá: Toma, Delilah, pásale las monedas al caballero... Esto es para que siga comprando repuestos para el carro, muchacho. Se agradece."
+        ],
+        [
+          "Delilah: ¡Hola de nuevo! Hoy vine mirando el cerro entero desde la ventana.",
+          "Papá: Disculpa, es que para ella este paseo es el mejor panorama del día. Le encanta mirar el puerto desde acá.",
+          "Papá: Toma esto para el mantenimiento del carro, vecino. Gracias por hacerle el día tan bonito."
+        ],
+        [
+          "Delilah: ¡Mira, allá va el ascensor! ¡Qué bacán se ve!",
+          "Papá: Buenas tardes. Es bueno poder mostrarle estas cosas tradicionales a los niños antes de que se pierdan.",
+          "Papá: Pásale esto, hija. Es para ayudarte a mantener el ascensor andando, se valora mucho tu pega."
+        ],
+        [
+          "Delilah: Oiga, señor conductor, ¿cómo funciona el ascensor?",
+          "Tú: Pues no es complicado: con esto avanza y con esto frena.",
+          "Delilah: ¿Tan fácil es? ¡Yo quiero hacerlo!",
+          "Papá: Delilah, no molestes al maquinista. Perdón por eso, ten por las molestias."
+        ]
       ],
       "dineroExtra": 1450,
+      "soloTutorial": false
+    },
+    {
+      "id": "luchox117",
+      "nombre": "Luis",
+      "variantesDialogo": [
+        [
+          "Disculpa, ¿este ascensor me deja cerca del terminal de buses de Pedro Montt? Vengo de Buin y me perdí brígido.",
+          "Tú: Amigo... va en dirección totalmente contraria. El terminal está en el plan, como a 3 kilómetros de acá. Tiene que bajar y devolverse.",
+          "Puta la wea... ya, qué le voy a hacer. Gracias por decirme."
+        ],
+        [
+          "Disculpe, ¿conoce algún lugar para conocer más de Valparaíso, o que sea auténtico de aquí?",
+          "Tú: Está en uno de esos lugares, pero si quiere otro puede ir al muelle Barón.",
+          "Gracias, veré cómo llegar."
+        ],
+        [
+          "Este es mi último viaje por aquí, ya volveré a visitar Valparaíso otro día.",
+          "Tú: ¿Y qué le pareció Valparaíso?",
+          "Tiene olores algo fuertes en el puerto... pero la paila marina estaba de 10 y me gustó la estética antigua de los edificios.",
+          "Tú: Pues espero que vuelva, entonces.",
+          "Lo haré."
+        ]
+      ],
+      "dineroExtra": 0,
+      "limpiezaExtra": 15,
+      "vuelve": true,
+      "soloSubiendo": true,
       "soloTutorial": false
     }
   ]

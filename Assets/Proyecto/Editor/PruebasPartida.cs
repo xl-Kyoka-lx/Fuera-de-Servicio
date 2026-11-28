@@ -34,6 +34,36 @@ public static class PruebasPartida
         Guardar("El tutorial volverá a aparecer al jugar.");
     }
 
+    [MenuItem("Herramientas/Pruebas/Lanzar timbre de la cabina de abajo")]
+    private static void LanzarSenalDeAbajo()
+    {
+        var proceso = ProcesoPartida.Instance;
+        if (proceso == null)
+        {
+            Debug.LogWarning("[Pruebas] No hay ProcesoPartida en la escena.");
+            return;
+        }
+
+        string motivo = proceso.ForzarSenalDeAbajo();
+        if (motivo != null)
+            Debug.LogWarning("[Pruebas] No se pudo lanzar el timbre: " + motivo);
+        else
+            Debug.Log("[Pruebas] Timbre de la cabina de abajo lanzado: cobra ahora y suena en unos segundos.");
+    }
+
+    [MenuItem("Herramientas/Pruebas/Lanzar timbre de la cabina de abajo", true)]
+    private static bool PuedeLanzarSenalDeAbajo() => Application.isPlaying;
+
+    [MenuItem("Herramientas/Pruebas/Forzar diálogo raro (token pirata)")]
+    private static void ForzarDialogoRaro()
+    {
+        BondadososManager.ForzarDialogoRaro = true;
+        Debug.Log("[Pruebas] El próximo pasajero que suba dirá el diálogo raro al llegar.");
+    }
+
+    [MenuItem("Herramientas/Pruebas/Forzar diálogo raro (token pirata)", true)]
+    private static bool PuedeForzarDialogoRaro() => Application.isPlaying;
+
     private static void Guardar(string mensaje)
     {
         PlayerPrefs.Save();

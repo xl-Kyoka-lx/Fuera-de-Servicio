@@ -123,6 +123,9 @@ public class GameData : ScriptableObject
 
     public EstadoTienda estadoTienda = new EstadoTienda();
 
+    [Tooltip("Pasajeros bondadosos de 'unaSolaVez' que ya aparecieron en esta partida")]
+    public List<string> bondadososVistos = new List<string>();
+
     public System.Action OnDataChanged;
 
     [System.NonSerialized] private bool valoresInicialesCapturados = false;
@@ -167,6 +170,7 @@ public class GameData : ScriptableObject
         pasajerosParaMantenimiento = 0;
 
         estadoTienda = new EstadoTienda();
+        bondadososVistos = new List<string>();
 
         OnDataChanged?.Invoke();
     }

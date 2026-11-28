@@ -502,6 +502,24 @@ public class PasajeroSpawner : MonoBehaviour
         Debug.Log($"🕔 Cierre del día: se retiran {total} pasajeros que esperaban");
     }
 
+    /// <summary>
+    /// Pone a un pasajero que acaba de bajar al principio de la fila de esa misma estación,
+    /// para que tome el ascensor de vuelta altiro. Devuelve false si no se pudo.
+    /// </summary>
+    public bool VolverAHacerFila(Pasajero p, RolPasajero rolRegreso)
+    {
+        if (p == null || diaCerrado) return false;
+
+        var c = AndenDe(p.AscensorIndex, rolRegreso);
+        if (c == null) return false;
+
+        var fila = FilaDe(c);
+        if (fila.Count >= maxEsperandoPorAnden) return false;
+
+        fila.Insert(0, p);
+        return true;
+    }
+
     public void Despedir(Pasajero p)
     {
         if (p == null) return;

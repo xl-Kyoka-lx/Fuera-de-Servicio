@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BibliotecaSonidos
   clicBoton: {fileID: 8300000, guid: f813187b37d1b744aa1caec585bc87cf, type: 3}
   volumenClic: 0.6
+  timbreCabinaAbajo: {fileID: 8300000, guid: 323b3fd39727d4643bca9fd4aba5c07a, type: 3}
+  volumenTimbre: 0.8
   agarrarBasura: {fileID: 8300000, guid: 5640b3b984cad8c4982dc7d0ab8441ec, type: 3}
   basura: {fileID: 8300000, guid: 7f10fe6d0befe0547899661e40b76176, type: 3}
   ascensorDetenido: {fileID: 8300000, guid: 0c381098479e92d44ae53ca1d19f92eb, type: 3}

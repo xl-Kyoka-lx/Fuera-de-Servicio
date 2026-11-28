@@ -59,8 +59,26 @@ public class Pasajero : MonoBehaviour
     [NonSerialized] public PasajeroBondadosoData datosBondadoso;
     public bool EsBondadoso => datosBondadoso != null && !string.IsNullOrEmpty(datosBondadoso.id);
 
+    // Bondadoso que se equivocó de dirección y vuelve a hacer fila para devolverse (ej: Luis)
+    [NonSerialized] public PasajeroBondadosoData datosRegreso;
+    public bool EsRegreso => datosRegreso != null;
+
     [HideInInspector] public bool viajaGratis = false;
     private bool yaSePreguntoSiTienePlata = false;
+
+    // Pagó al subir en la cabina de abajo (cuando esa cabina toca el timbre): al llegar ya no paga
+    private bool pagoPorAdelantado = false;
+    public bool PagoPorAdelantado => pagoPorAdelantado;
+
+    public int CobrarPorAdelantado()
+    {
+        if (pagoPorAdelantado) return 0;
+        pagoPorAdelantado = true;
+
+        int pago = CalcularPago();
+        MostrarPago(pago);
+        return pago;
+    }
 
     private AscensorManager ascensorManager;
     private int ascensorIndex = 0;
@@ -331,7 +349,13 @@ public class Pasajero : MonoBehaviour
 
         estado = EstadoPasajero.DentroDelAscensor;
 
-        if (BondadososManager.Instance != null)
+        if (EsRegreso)
+        {
+            if (BondadososManager.Instance != null)
+                BondadososManager.Instance.AlSubirDeRegreso(this);
+            datosRegreso = null;
+        }
+        else if (BondadososManager.Instance != null)
             BondadososManager.Instance.AlSubirPasajero(this);
 
         if (GameManager.Instance != null && GameManager.Instance.ResumenDia != null)
@@ -438,19 +462,44 @@ public class Pasajero : MonoBehaviour
 
         yield return StartCoroutine(EfectoPop());
 
-        int pago = CalcularPago();
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.PasajeroCompleto();
-            GameManager.Instance.SumarDinero(pago);
-            Debug.Log($"💰 Pasajero pagó ${pago} (Emoción: {emocionActual})");
+
+        if (!pagoPorAdelantado)
+        {
+            int pago = CalcularPago();
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.SumarDinero(pago);
+                Debug.Log($"💰 Pasajero pagó ${pago} (Emoción: {emocionActual})");
+            }
+            MostrarPago(pago);
         }
-        MostrarPago(pago);
+        pagoPorAdelantado = false;
 
         MostrarEmoji();
 
         if (EsBondadoso && BondadososManager.Instance != null)
-            yield return StartCoroutine(BondadososManager.Instance.Encuentro(this, datosBondadoso));
+        {
+            var datos = datosBondadoso;
+            yield return StartCoroutine(BondadososManager.Instance.Encuentro(this, datos));
+
+            if (datos.vuelve && PasajeroSpawner.Instance != null)
+            {
+                var rolRegreso = estacionAbajo ? RolPasajero.SubeEnInicio : RolPasajero.SubeEnFinal;
+                if (PasajeroSpawner.Instance.VolverAHacerFila(this, rolRegreso))
+                {
+                    datosBondadoso = null;
+                    datosRegreso = datos;
+                    viajaGratis = false;
+                    yaSePreguntoSiTienePlata = true;
+                    rol = rolRegreso;
+                    timerEmojiEspera = 0f;
+                    estado = EstadoPasajero.EsperandoEnAnden;
+                    yield break;
+                }
+            }
+        }
 
         MirarHacia(posicionSalida.x - transform.position.x);
         while ((transform.position - posicionSalida).sqrMagnitude > 0.000001f)

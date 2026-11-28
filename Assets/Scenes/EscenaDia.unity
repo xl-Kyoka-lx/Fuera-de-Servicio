@@ -1167,9 +1167,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 549627724}
-  - {fileID: 1020033381}
+  m_Children: []
   m_Father: {fileID: 1723171041}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1190,7 +1188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GreaseBar
   data: {fileID: 11400000, guid: 0ef9326353151db438ba47a4365191bb, type: 2}
-  fillImage: {fileID: 1020033382}
+  fillImage: {fileID: 0}
   maxGrease: 100
 --- !u!1 &252408957
 GameObject:
@@ -2814,81 +2812,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 763992288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &549627723
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 549627724}
-  - component: {fileID: 549627726}
-  - component: {fileID: 549627725}
-  m_Layer: 0
-  m_Name: Barra engrase
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &549627724
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549627723}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 212530813}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11, y: -6}
-  m_SizeDelta: {x: 146.2812, y: 178.2374}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &549627725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549627723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 23a608a9bb5c8694ab923c447b343a28, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 1
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &549627726
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 549627723}
-  m_CullTransparentMesh: 1
 --- !u!1 &561809856
 GameObject:
   m_ObjectHideFlags: 0
@@ -4243,6 +4166,9 @@ MonoBehaviour:
   maximoPorDia: 4
   multiplicadorDinero: 1
   idCamila: camila_vecina
+  dialogoRaroUnoEn: 137500
+  dialogoRaroHablante: Pasajero
+  dialogoRaroTexto: "Sabes... si viste esto, habr\xEDas podido ganar el token pirata."
 --- !u!1 &726788791
 GameObject:
   m_ObjectHideFlags: 0
@@ -5245,81 +5171,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &1020033380
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1020033381}
-  - component: {fileID: 1020033383}
-  - component: {fileID: 1020033382}
-  m_Layer: 0
-  m_Name: barra interior
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1020033381
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1020033380}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 212530813}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -11.000093, y: -4.5740867}
-  m_SizeDelta: {x: 7.6939, y: 144.1005}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1020033382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1020033380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 5764624276825411149, guid: 0928f64bd0a5e2f4c937c9624d4d62ab, type: 3}
-  m_Type: 3
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 1
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1020033383
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1020033380}
-  m_CullTransparentMesh: 1
 --- !u!1 &1039368933
 GameObject:
   m_ObjectHideFlags: 0
@@ -6492,6 +6343,16 @@ MonoBehaviour:
   pasajerosMinimosParaAvisar: 0
   esperaMin: 2
   esperaMax: 4
+  senalDeAbajoActiva: 1
+  probabilidadSenalDeAbajo: 0.3
+  senalDespuesMin: 6
+  senalDespuesMax: 12
+  segundosEntrePagoYTimbre: 2
+  pasajerosMinimosParaSenal: 1
+  mensajeCobroAbajo: 'Cabina de abajo: +${dinero} ({pasajeros} pasajeros)'
+  mensajeAbajoLlena: Cabina de abajo llena
+  mensajeAbajoCerrada: Cabina de abajo cerrada
+  indicadorTimbre: Timbre de la cabina de abajo
   penalizacionPorArranqueIncorrecto: 8
   recuperacionPorViajeLimpio: 2
   mensajeAvisando: Avisando a la cabina de abajo...
@@ -8255,7 +8116,7 @@ MonoBehaviour:
   tieneFrenoReforzado: 0
   tieneMallaProtectora: 0
   dineroRecaudadoTotal: 0
-  popularidadMinima: 50
+  popularidadMinima: 2.9
   maxGanadoEnUnDia: 0
   maxPerdidoEnUnDia: 0
 --- !u!1 &1660451676

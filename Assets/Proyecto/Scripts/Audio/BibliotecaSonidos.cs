@@ -7,6 +7,11 @@ public class BibliotecaSonidos : ScriptableObject
     public AudioClip clicBoton;
     [Range(0f, 1f)] public float volumenClic = 0.6f;
 
+    [Header("Ascensor")]
+    [Tooltip("Timbre que toca la cabina de abajo cuando avisa por su cuenta que está lista")]
+    public AudioClip timbreCabinaAbajo;
+    [Range(0f, 1f)] public float volumenTimbre = 0.8f;
+
     [Header("QTE")]
     public AudioClip agarrarBasura;
     [Tooltip("Suena al recoger el último círculo de la basura")]
